@@ -3,7 +3,7 @@
 
 ## Key people
 
-### GUI team:
+### User Interface team:
 - Skyler Tran
 - Jake Watkins
 - Molly Yu
@@ -11,7 +11,7 @@
 
 ---
 
-### DB team:
+### Database team:
 - Steve Shoemaker
 - Parker Smith
 - Isaac Joseph
