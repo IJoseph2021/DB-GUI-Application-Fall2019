@@ -1,5 +1,5 @@
 # THE SHARK TEAM - Election Buddy project
-*Election Buddy* is hosted on Google Cloud Services. Election Buddy ~~does something~~.
+*Election Buddy* is hosted on Google Cloud Services. *Election Buddy* ~~does something~~.
 
 ## Key people
 
