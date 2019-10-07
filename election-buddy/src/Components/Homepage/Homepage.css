@@ -1,0 +1,55 @@
+body {
+  margin: 0;
+}
+
+.navBar {
+  margin: 0;
+  width: 100%;
+  background-color: white;
+  display:flex;
+  align-items:center;
+}
+
+.navBar img{
+  display: block;
+  width: 5%;
+  float: left;
+}
+
+.navBar a{
+  width: fit-content;
+  text-decoration: none;
+  color: black;
+  padding: 0em 2em;
+}
+
+.navBar a:hover{
+  color: orange;
+}
+
+.navBar ul{
+  padding: 0;
+  margin-left: auto;
+}
+
+.navBar li.right{
+  display: inline;
+}
+
+.navBar li.right-border{
+  display: inline;
+  text-align: right;
+  border-radius: 1em;
+  padding-bottom: .25em;
+  border-style: solid;
+  border-color: green;
+}
+
+.left{
+  float: left;
+  font-style: italic;
+}
+
+.clear{
+  clear: both;
+}
