@@ -1,19 +1,18 @@
 body {
   margin: 0;
+  background-color: white;
+  margin: auto;
 }
 
 .navBar {
   margin: 0;
   width: 100%;
-  background-color: white;
   display:flex;
   align-items:center;
 }
 
 .navBar img{
-  display: block;
   width: 5%;
-  float: left;
 }
 
 .navBar a{
@@ -28,26 +27,33 @@ body {
 }
 
 .navBar ul{
+  text-align: center;
+  display: block;
+  font-family: 'Merriweather', serif;
   padding: 0;
-  margin-left: auto;
+  font-size: 14px;
+  margin:auto;
 }
 
 .navBar li.right{
   display: inline;
+  vertical-align: middle;
 }
 
 .navBar li.right-border{
   display: inline;
-  text-align: right;
-  border-radius: 1em;
-  padding-bottom: .25em;
+/*  text-align: right; */
+  border-radius: .75em;
+  padding: .5em;
   border-style: solid;
-  border-color: green;
+  border-color: #90EE90;
+  vertical-align: middle;
 }
 
 .left{
   float: left;
-  font-style: italic;
+  font-size: 30px;
+  font-family: 'Lobster', cursive;
 }
 
 .clear{
