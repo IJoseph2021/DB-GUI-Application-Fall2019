@@ -22,7 +22,6 @@ function Homepage() {
         <div className = "clear"></div>
       </div>
       <Candidate/>
-      <Footer/>
     </div>
   );
 }
