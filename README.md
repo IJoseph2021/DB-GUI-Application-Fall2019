@@ -6,7 +6,6 @@
 ### User Interface team:
 - Skyler Tran
 - Jake Watkins
-- Molly Yu
 - Giancarlo Rinaldini
 
 ---
@@ -15,3 +14,5 @@
 - Steve Shoemaker
 - Parker Smith
 - Isaac Joseph
+- Molly Yu
+
