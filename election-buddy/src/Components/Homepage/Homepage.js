@@ -3,8 +3,8 @@ import logo from '../../logo_transparent.png';
 import './Homepage.css';
 import Candidate from './Candidate.js';
 import Footer from './Footer.js';
+import Content from './Content.js'
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-
 
 function Homepage() {
   return (
@@ -22,6 +22,7 @@ function Homepage() {
         <div className = "clear"></div>
       </div>
       <Candidate/>
+      <Content/>
     </div>
   );
 }
