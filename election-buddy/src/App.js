@@ -1,24 +1,19 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Footer from './Components/Homepage/Footer';
+import Homepage from './Components/Homepage/Homepage';
+import LoginPage from './Components/LoginPage/LoginPage';
+
+var loggedin = false;
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Homepage/>
+      <div>{loggedin && <LoginPage/>}</div>
+      <Footer/>
     </div>
   );
 }
