@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import "./LoginPage.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-
+import UserFunctions from '../../API/UserFunctions';
 
 class LoginPage extends Component {
+	userFuncs = new UserFunctions();
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			username: null,
 			password: null,
-			validLogin: true
+			validLogin: false
 		};
 	}
     render() {
