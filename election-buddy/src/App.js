@@ -5,7 +5,7 @@ import Footer from './Components/Homepage/Footer';
 import Homepage from './Components/Homepage/Homepage';
 import LoginPage from './Components/LoginPage/LoginPage';
 
-var loggedin = false;
+var loggedin = true;
 
 
 function App() {
