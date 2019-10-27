@@ -14,7 +14,23 @@ class LoginPage extends Component {
 			validLogin: false
 		};
 	}
+
+	validateForm() {
+		return this.state.username.length > 0 && this.state.password.length > 0;
+	}
+
+	handleSubmit(event){
+		event.preventDefault();
+		const user = {
+			user_name: this.state.username,
+			user_password: this.state.password
+		};
+	}
+
     render() {
+			//console.log(this.state.username);
+			//console.log(this.state.password);
+
       return (
         <div className="login-page">
           <div>
@@ -23,14 +39,27 @@ class LoginPage extends Component {
             <form>
               <div className="form-group">
                 <label htmlFor="username">Username:</label>
-                <input id="username" className="form-control" type="text"></input>
+                <input
+								id="username"
+								className="form-control"
+								type="text"
+								onChange={event => this.setState({ username: event.target.value })}
+								></input>
               </div>
 
               <div className="form-group">
                 <label htmlFor="userPassword">Password:</label>
-                <input id="password" className="form-control" type="password"></input>
+                <input
+								id="password"
+								className="form-control"
+								type="password"
+								onChange={event => this.setState({ password: event.target.value })}
+								></input>
               </div>
-              <button type="submit" className="form-button">Log In</button>
+              <button
+							type="submit"
+							className="form-button"
+							>Log In</button>
             </form>
           </div>
         </div>
