@@ -54,8 +54,10 @@ exports.login = function(req,res){
                 if(err)
                     res.send("<p1> login unsuccessful <\p1>");
                 //If something was returned, login was successful
-                else
-                    res.send("<p1> login successful <\p1>");
+                else{
+                    if(rows.length == 1) res.send("<p1> login successful <\p1>");
+                    else res.send("<p1> login unsuccessful <\p1>");
+                }
             });
 }
 
