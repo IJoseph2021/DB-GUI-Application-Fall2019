@@ -17,9 +17,9 @@ const login = require('./login');
 var connection = mysql.createConnection({
   //db is the host and that name is assigned based on the 
   //container name given in the docker-compose file
-  host: 'db',
+  host: '34.67.95.217',
   port: '3306',
-  user: 'user',
+  user: 'dbpassword',
   password: 'password',
   database: 'electionBuddy'
 });
