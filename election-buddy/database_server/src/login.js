@@ -19,13 +19,13 @@ exports.createAccount = function(req,res){
     email = req.params.email;
 
     //Making sure were using the right database
-    mysqlConnection.query('USE ELECTIONBUDDY;', function(err, rows, fields){});
+    //mysqlConnection.query('USE ELECTIONBUDDY;', function(err, rows, fields){});
 
     //Inseting the account into the db
     query = "INSERT INTO electionBuddy.USER (username,fname,lname,passhash,email)"+ 
     " VALUES(\"" +  user + "\",\"" +fname + "\",\"" + lname + "\",\"" + pass + "\",\"" + email + "\");";
     
-
+    console.log(query);
     mysqlConnection.query(query, 
             function(err,rows,fields){
                 if(err){
@@ -51,7 +51,7 @@ exports.login = function(req,res){
     mysqlConnection.query(query,
             function(err,rows,fields){
                 //If nothing is returned, login was unsuccessful
-                if(rows.length == 0)
+                if(err)
                     res.send("<p1> login unsuccessful <\p1>");
                 //If something was returned, login was successful
                 else

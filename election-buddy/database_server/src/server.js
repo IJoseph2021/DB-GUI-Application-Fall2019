@@ -19,8 +19,8 @@ var connection = mysql.createConnection({
   //container name given in the docker-compose file
   host: '34.67.95.217',
   port: '3306',
-  user: 'dbpassword',
-  password: 'password',
+  user: 'root',
+  password: 'dbpassword',
   database: 'electionBuddy'
 });
 
@@ -78,7 +78,7 @@ app.get('/setupdb', (req, res) => {
 //GET /checkdb
 app.get('/checkdb', (req, res) => {
   //execute a query to select * from table named data. 
-  connection.query('SELECT * from data2', function (err, rows, fields) {
+  connection.query('SELECT * from USER', function (err, rows, fields) {
     if (err) {
       logger.error("Error while executing Query");
     };
