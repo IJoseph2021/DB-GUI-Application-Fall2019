@@ -13,8 +13,6 @@ function App() {
   return (
     <div>
       <Homepage/>
-      <div>{loggedin && <LoginPage/>}</div>
-      <div>{signedup && <SignupPage/>}</div>
       <Footer/>
     </div>
   );
