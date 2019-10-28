@@ -7,13 +7,14 @@ import LoginPage from './Components/LoginPage/LoginPage';
 import SignupPage from './Components/SignupPage/SignupPage';
 
 var loggedin = true;
-
+var signedup = true;
 
 function App() {
   return (
     <div>
       <Homepage/>
       <div>{loggedin && <LoginPage/>}</div>
+      <div>{signedup && <SignupPage/>}</div>
       <Footer/>
     </div>
   );
