@@ -116,4 +116,4 @@ class Signup extends Component {
     }
 }
 
-export default SignupPage;
+export default Signup;
