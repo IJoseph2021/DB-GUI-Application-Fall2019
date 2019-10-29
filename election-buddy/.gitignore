@@ -3,6 +3,7 @@
 # dependencies
 /node_modules
 /.pnp
+/database_server/src/node_modules
 .pnp.js
 
 # testing

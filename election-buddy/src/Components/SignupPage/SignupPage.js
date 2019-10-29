@@ -22,7 +22,7 @@ class SignupPage extends Component {
         return (
             this.state.username.length > 0 &&
             this.state.password > 0 &&
-            this.state.password == this.state.confirmPassword
+            this.state.password === this.state.confirmPassword
         );
     }
 
