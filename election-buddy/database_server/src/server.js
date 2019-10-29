@@ -12,6 +12,7 @@ const cors = require('cors');
 const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
 const mysql = require('mysql');
 const login = require('./login');
+const session = require('express-session');
 
 //create the mysql connection object.  
 var connection = mysql.createConnection({
@@ -24,7 +25,12 @@ var connection = mysql.createConnection({
   database: 'electionBuddy'
 });
 
+
+
 login.createConnection(connection);
+login.setSessionCreater(session);
+
+
 
 //set up some configs for express. 
 const config = {
@@ -49,6 +55,13 @@ connection.connect(function (err) {
     logger.error("Cannot connect to DB!");
   logger.info("Connected to the DB!");
 });
+
+//using session
+app.use(session({
+  secret: '2C44-4D44-WppQ38S',
+  resave: true,
+  saveUninitialized: true
+}));
 
 /**     REQUEST HANDLERS        */
 

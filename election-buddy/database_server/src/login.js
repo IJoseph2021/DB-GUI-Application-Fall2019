@@ -2,13 +2,20 @@
 
 //storing the mysql query
 var mysqlConnection;
-
+var sessionCreater;
 //Linking the mysql connection
 exports.createConnection = function(newMysqlConnection){
     mysqlConnection = newMysqlConnection;
     
 };
 
+exports.setSessionCreater = function(session){
+    sessionCreater = session;
+}
+
+exports.setApp = function(newApp){
+    app = newApp;
+}
 //Creating an account function
 exports.createAccount = function(req,res){
     
@@ -38,6 +45,7 @@ exports.createAccount = function(req,res){
             });
         } 
 
+
 exports.login = function(req,res){
     
     //assigning the values
@@ -56,7 +64,11 @@ exports.login = function(req,res){
                     res.send("<p1> login unsuccessful <\p1>");
                 //If something was returned, login was successful
                 else{
-                    if(rows.length == 1) res.send("<p1> login successful <\p1>");
+                    
+                    if(rows.length == 1){
+                        req.session.user = user;
+                        res.send("<p1> login successful <\p1>");
+                    } 
                     else res.send("<p1> login unsuccessful <\p1>");
                 }
             });
@@ -101,8 +113,8 @@ exports.getUserID = function(req,res){
                                     }
                                 }
                                 else{
-                                    console.log(rows[0]);
                                     res.send("<p1>Not Found <p1>");
                                 }
                             });
 }
+
