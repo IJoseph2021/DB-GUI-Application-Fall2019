@@ -16,3 +16,4 @@
 - Isaac Joseph
 - Molly Yu
 
+*Note*: Remote server only updates when changes are pushed to **master** branch.
