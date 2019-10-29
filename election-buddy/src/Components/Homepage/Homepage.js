@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Homepage.css';
 import Content from './Content.js';
-import Candidate from './Candidate.js';
+import Candidate from '../CandidateCards/Candidate.js';
 
 
 function Homepage () {

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import "./LoginPage.css";
+import "./Login.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import UserFunctions from '../../API/UserFunctions';
 
-class LoginPage extends Component {
+class Login extends Component {
 	userFuncs = new UserFunctions();
 	constructor(props) {
 		super(props);

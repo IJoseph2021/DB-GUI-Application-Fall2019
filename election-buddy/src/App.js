@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Nav from './Components/Homepage/Nav'
-import Footer from './Components/Homepage/Footer';
+import Nav from './Components/NavBar/Nav'
+import Footer from './Components/Footer/Footer';
 import Homepage from './Components/Homepage/Homepage';
-import LoginPage from './Components/LoginPage/LoginPage';
-import SignupPage from './Components/SignupPage/SignupPage';
+import LoginPage from './Components/Login/Login';
+import SignupPage from './Components/Signup/Signup';
 
 var loggedin = true;
 var signedup = true;
@@ -17,8 +17,8 @@ function App() {
       <Nav/>
         <Switch>
           <Route exact path="/" component={Homepage}/>
-          <Route path="/login" component={LoginPage}/>
-          <Route path="/registration" component={SignupPage}/>
+          <Route path="/login" component={Login}/>
+          <Route path="/registration" component={Signup}/>
         </Switch>
       <Footer/>
     </Router>
