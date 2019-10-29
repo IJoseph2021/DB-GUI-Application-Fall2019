@@ -6,6 +6,7 @@ var mysqlConnection;
 //Linking the mysql connection
 exports.createConnection = function(newMysqlConnection){
     mysqlConnection = newMysqlConnection;
+    
 };
 
 //Creating an account function
@@ -82,4 +83,26 @@ exports.getEmail = function(req,res){
                     }
                     res.send(rows[0]);
                 });
+}
+
+exports.getUserID = function(req,res){
+    query = 'SELECT USER.USERID FROM USER WHERE USER.username = \'' + req.params.user + '\';';
+    console.log(query);
+    mysqlConnection.query('USE electionBuddy;', 
+                    function(err,rows,fields){});
+    mysqlConnection.query('SELECT USER.ID FROM USER WHERE USER.username = \'' + req.params.user + '\';',
+                            function(err,rows,fields){
+                                if(!err){
+                                    if(rows[0]!= undefined){
+                                        res.send(rows[0]);
+                                    }
+                                    else{
+                                        res.send("<p1> Not Found </p1>")
+                                    }
+                                }
+                                else{
+                                    console.log(rows[0]);
+                                    res.send("<p1>Not Found <p1>");
+                                }
+                            });
 }

@@ -100,6 +100,7 @@ app.get('/login/login/:user/:pass', login.login);
 app.get('/login/updateEmail/:user/:email', login.updateEmail);
 app.get('/login/getEmail/:user', login.getEmail);
 
+app.get('/login/getUserId/:user', login.getUserID);
 
 //connecting the express object to listen on a particular port as defined in the config object. 
 app.listen(config.port, config.host, (e) => {
