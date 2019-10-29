@@ -67,6 +67,7 @@ exports.login = function(req,res){
                     
                     if(rows.length == 1){
                         req.session.user = user;
+                        req.session.isLoggedIn = true;
                         res.send("<p1> login successful <\p1>");
                     } 
                     else res.send("<p1> login unsuccessful <\p1>");
@@ -118,3 +119,10 @@ exports.getUserID = function(req,res){
                             });
 }
 
+exports.isLoggedIn = function(req,res,next){
+    if(req.session.isLoggedIn == true){
+        return next();
+    } else {
+        res.sendStatus(401);
+    }
+}
