@@ -4,8 +4,8 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Nav from './Components/NavBar/Nav'
 import Footer from './Components/Footer/Footer';
 import Homepage from './Components/Homepage/Homepage';
-import LoginPage from './Components/Login/Login';
-import SignupPage from './Components/Signup/Signup';
+import Login from './Components/Login/Login';
+import Signup from './Components/Signup/Signup';
 
 var loggedin = true;
 var signedup = true;
