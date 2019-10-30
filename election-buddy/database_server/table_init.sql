@@ -27,6 +27,18 @@ CREATE TABLE CANDIDATE (
 	city varchar(25)
 );
 
+INSERT INTO CANDIDATE VALUES
+("99933933", "DEM", "40207", "Kentucky", "Louisville"),
+("45454564", "REP", "40208", "Kentucky", "Louisville"),
+("12312312", "IND", "40210", "Kentucky", "Lexington"),
+("89891212", "REP", "75205", "Texas", "Dallas"),
+("45464748", "GREEN", "75206", "Texas", "Dallas")
+("12131456", "DEM", "75209", "Texas", "Dallas");
+
+
+
+
+
 CREATE TABLE ADMIN(
 	userID INT(8),
     adminLevel INT(8)
