@@ -43,3 +43,24 @@ exports.getCitySession = function(req,res){
         }
     });
 }
+
+//Written by Parker-- please check and see if correct
+exports.updateZipCodeSession = function(req,res){
+    userID = req.session.userID;
+    mysqlConnection.query(`UPDATE VOTER SET zipCode = '${req.params.zipCode}' WHERE userID = '${req.session.userId}';`, function(err,rows,fields){
+        if(err) console.log(err.message);
+    })
+    res.send('update Attempted');
+}
+
+exports.getZipCodeSession = function(req,res){
+    userID = req.session.userId;
+    console.log(`SELECT zipCode FROM VOTER WHERE userID = '${userID}';`);
+    mysqlConnection.query(`SELECT zipCode FROM VOTER WHERE userID = '${userID}';`,function(err,rows,fields){
+        if(rows[0] != undefined){
+            res.send(rows[0].zipCode);
+        } else {
+            res.send("zipCode not found");
+        }
+    });
+}
