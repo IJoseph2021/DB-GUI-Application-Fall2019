@@ -6,6 +6,7 @@ CREATE TABLE USER (
     lname varchar(20),
     passhash varchar(100),
     email varchar(30));
+    
 INSERT INTO USER VALUES
 ("12345678","ABC","Abe", "Atkins","password1","ABC@1213.com"),
 ("23456789","BCD","Brutus", "Broglio","password2","BCD@1214.com"),
@@ -17,6 +18,7 @@ INSERT INTO USER VALUES
 ("19829878","HIJ","John", "Adams","password8","HIJ@1311.com"),
 ("58769893","IJK","James", "Madison","password9","IJK@1312.com"),
 ("54899458","JKL","James", "Monroe","password10","JKL@1313.com");
+
 CREATE TABLE CANDIDATE (
 	userID INT(8),
     partyCode INT(8),
@@ -29,6 +31,7 @@ CREATE TABLE ADMIN(
 	userID INT(8),
     adminLevel INT(8)
 );
+
 INSERT INTO ADMIN VALUES
 ("12345678",0),
 ("23456789",3),
