@@ -82,7 +82,7 @@ CREATE TABLE PARTY(
     partyName varchar(25)
 );
 
-INSERT INTO PARTY
+INSERT INTO PARTY VALUES
 ("REP", "Republican"),
 ("DEM", "Democrat"),
 ("GREEN", "Green Party"),
