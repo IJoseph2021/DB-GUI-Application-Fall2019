@@ -70,5 +70,10 @@ CREATE TABLE PARTY(
     partyName varchar(25)
 );
 
-
+INSERT INTO PARTY
+("REP", "Republican"),
+("DEM", "Democrat"),
+("GREEN", "Green Party"),
+("IND", "Independy"),
+("LIB", "Libertarian");
     
