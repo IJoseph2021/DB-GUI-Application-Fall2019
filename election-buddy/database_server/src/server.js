@@ -12,7 +12,8 @@ const cors = require('cors');
 const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
 const mysql = require('mysql');
 const login = require('./login');
-const voter = require('./voter.js')
+const voter = require('./voter.js');
+const party = require('./party.js');
 const session = require('express-session');
 
 //create the mysql connection object.  
@@ -34,6 +35,8 @@ login.setSessionCreater(session);
 //sending voter the mysql info
 voter.createConnection(connection);
 
+//sending party the mysql info
+party.createConnection(connection);
 
 
 //set up some configs for express. 
@@ -127,6 +130,18 @@ app.get('/voter/session/setVoter', login.isLoggedIn, voter.setVoter);
 app.get('/voter/session/updateCity/:city', login.isLoggedIn, voter.updateCitySession);
 
 app.get('/voter/session/getCitySession', login.isLoggedIn, voter.getCitySession);
+
+app.get('/voter/session/updateCounty/:county', login.isLoggedIn, voter.updateCountySession);
+
+app.get('/voter/session/getCountySession', login.isLoggedIn, voter.getCountySession);
+
+app.get('/voter/session/updateParty/:partyName', login.isLoggedIn, voter.sessionUpdateParty);
+
+app.get('/party/createParty/:party', login.isLoggedIn, party.createParty);
+app.get('/party/getPartyName/:partyCode', party.getPartyName);
+app.get('/party/getPartyCode/:partyName', party.getPartyCode);
+
+
 //connecting the express object to listen on a particular port as defined in the config object. 
 app.listen(config.port, config.host, (e) => {
   if (e) {

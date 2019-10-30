@@ -43,3 +43,43 @@ exports.getCitySession = function(req,res){
         }
     });
 }
+
+exports.updateCountySession = function(req,res){
+    userID = req.session.userId;
+    console.log(`UPDATE VOTER SET County = '${req.params.County}' WHERE userID = '${req.session.userId}';`);
+    mysqlConnection.query(`UPDATE VOTER SET County = '${req.params.county}' WHERE userID = '${req.session.userId}';`, function(err,rows,fields){
+        if(err) console.log(err.message);
+    })
+    res.send('update Attempted');
+}
+
+exports.getCountySession = function(req,res){
+    userID = req.session.userId;
+    console.log(`SELECT COUNTY FROM VOTER WHERE userID = '${userID}';`);
+    mysqlConnection.query(`SELECT COUNTY FROM VOTER WHERE userID = '${userID}';`,function(err,rows,fields){
+        if(rows[0] != undefined){
+            res.send(rows[0].County);
+        } else {
+            res.send("City not found");
+        }
+    });
+}
+
+exports.sessionUpdateParty = function(req,res){
+    userID = req.session.userId;
+    
+    mysqlConnection.query(`SELECT partyCode FROM PARTY WHERE partyName = '${req.params.partyName}'`,function(err,rows,fields){
+        if(err){console.log("finding party name: " + err.message)};
+        if(rows.length == undefined || rows[0] == undefined){
+            res.send('Party Not Found');
+        } else {
+            mysqlConnection.query(`UPDATE VOTER SET partyCode = '${rows[0].partyCode}' WHERE userID = '${userID}';`, function(innerErr,innerRows,innerFields){
+                if(innerErr) console.log(innerErr.message);
+                else res.send('Party Updated');
+            });
+            
+        }
+    });
+
+    
+}
