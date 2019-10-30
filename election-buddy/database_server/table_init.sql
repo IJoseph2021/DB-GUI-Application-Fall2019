@@ -65,6 +65,18 @@ CREATE TABLE VOTER(
 	city varchar(25)
 );
 
+INSERT INTO VOTER VALUES
+("12345678", "REP", "40207", "Kentucky", "Louisville"),
+("23456789", "REP", "40208", "Kentucky", "Louisville"),
+("12456757", "DEM", "30301", "Georgia", "Atlanta"),
+("93285937", "DEM", "40507", "Kentucky", "Lexington"),
+("23894945", "IND", "75205", "Texas", "Dallas"),
+("56478296", "DEM", "75206", "Texas", "Dallas"),
+("16398635", "REP", "75209", "Texas", "Dallas"),
+("21748269", "REP", "75229", "Texas", "Dallas"),
+("92786541", "REP", "39506", "Mississippi", "Jackson"),
+("28376937", "DEM", "39203", "Mississippi", "Jackson");
+
 CREATE TABLE PARTY(
 	partyCode varchar(8) PRIMARY KEY,
     partyName varchar(25)
