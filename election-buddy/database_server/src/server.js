@@ -12,6 +12,8 @@ const cors = require('cors');
 const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
 const mysql = require('mysql');
 const login = require('./login');
+const voter = require('./voter.js')
+const session = require('express-session');
 
 //create the mysql connection object.  
 var connection = mysql.createConnection({
@@ -24,7 +26,15 @@ var connection = mysql.createConnection({
   database: 'electionBuddy'
 });
 
+
+//sending login the mysql info
 login.createConnection(connection);
+login.setSessionCreater(session);
+
+//sending voter the mysql info
+voter.createConnection(connection);
+
+
 
 //set up some configs for express. 
 const config = {
@@ -49,6 +59,13 @@ connection.connect(function (err) {
     logger.error("Cannot connect to DB!");
   logger.info("Connected to the DB!");
 });
+
+//using session
+app.use(session({
+  secret: '2C44-4D44-WppQ38S',
+  resave: true,
+  saveUninitialized: true
+}));
 
 /**     REQUEST HANDLERS        */
 
@@ -92,16 +109,24 @@ app.get('/checkdb', (req, res) => {
 });
 
 
+
 app.get('/login/create/:user/:fname/:lname/:pass/:email', login.createAccount);
 
 
 app.get('/login/login/:user/:pass', login.login);
 
-app.get('/login/updateEmail/:user/:email', login.updateEmail);
-app.get('/login/getEmail/:user', login.getEmail);
+app.get('/login/updateEmail/:user/:email', login.isLoggedIn, login.updateEmail);
+app.get('/login/getEmail/:user', login.isLoggedIn, login.getEmail);
 
-app.get('/login/getUserId/:user', login.getUserID);
+app.get('/login/getUserId/:user', login.isLoggedIn, login.getUserID);
 
+app.get('/login/session/getUserId', login.isLoggedIn, login.getSessionUserId);
+
+app.get('/voter/session/setVoter', login.isLoggedIn, voter.setVoter);
+
+app.get('/voter/session/updateCity/:city', login.isLoggedIn, voter.updateCitySession);
+
+app.get('/voter/session/getCitySession', login.isLoggedIn, voter.getCitySession);
 //connecting the express object to listen on a particular port as defined in the config object. 
 app.listen(config.port, config.host, (e) => {
   if (e) {
@@ -109,3 +134,4 @@ app.listen(config.port, config.host, (e) => {
   }
   logger.info(`${config.name} running on ${config.host}:${config.port}`);
 });
+
