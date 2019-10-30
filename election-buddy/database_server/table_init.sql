@@ -21,7 +21,7 @@ INSERT INTO USER VALUES
 
 CREATE TABLE CANDIDATE (
 	userID INT(8),
-    partyCode INT(8),
+    partyCode varchar(8),
     zipCode varchar(10),
     state varchar(2),
 	city varchar(25)
@@ -30,12 +30,13 @@ CREATE TABLE CANDIDATE (
 INSERT INTO CANDIDATE VALUES
 ("99933933", "DEM", "40207", "Kentucky", "Louisville"),
 ("45454564", "REP", "40208", "Kentucky", "Louisville"),
-("12312312", "IND", "40210", "Kentucky", "Lexington"),
+("12312312", "IND", "40502", "Kentucky", "Lexington"),
+("12678911", "DEM", "40507", "Kentucky", "Lexington"),
 ("89891212", "REP", "75205", "Texas", "Dallas"),
-("45464748", "GREEN", "75206", "Texas", "Dallas")
-("12131456", "DEM", "75209", "Texas", "Dallas");
-
-
+("45464748", "GREEN", "75206", "Texas", "Dallas"),
+("12131456", "DEM", "75209", "Texas", "Dallas"),
+("45453333", "REP", "75210", "Texas", "Dallas"),
+("33445566", "DEM", "75211", "Texas", "Dallas");
 
 
 
@@ -58,14 +59,33 @@ INSERT INTO ADMIN VALUES
 
 CREATE TABLE VOTER(
 	userID INT(8),
-    partyCode INT(8),
+    partyCode varchar(8),
     zipCode varchar(10),
     state varchar(2),
 	city varchar(25)
 );
 
+INSERT INTO VOTER VALUES
+("12345678", "REP", "40207", "Kentucky", "Louisville"),
+("23456789", "REP", "40208", "Kentucky", "Louisville"),
+("12456757", "DEM", "30301", "Georgia", "Atlanta"),
+("93285937", "DEM", "40507", "Kentucky", "Lexington"),
+("23894945", "IND", "75205", "Texas", "Dallas"),
+("56478296", "DEM", "75206", "Texas", "Dallas"),
+("16398635", "REP", "75209", "Texas", "Dallas"),
+("21748269", "REP", "75229", "Texas", "Dallas"),
+("92786541", "REP", "39506", "Mississippi", "Jackson"),
+("28376937", "DEM", "39203", "Mississippi", "Jackson");
+
 CREATE TABLE PARTY(
-	partyCode INT(8) PRIMARY KEY,
+	partyCode varchar(8) PRIMARY KEY,
     partyName varchar(25)
 );
+
+INSERT INTO PARTY VALUES
+("REP", "Republican"),
+("DEM", "Democrat"),
+("GREEN", "Green Party"),
+("IND", "Independy"),
+("LIB", "Libertarian");
     
