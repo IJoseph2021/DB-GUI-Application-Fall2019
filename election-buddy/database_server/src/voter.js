@@ -92,6 +92,7 @@ exports.sessionUpdateParty = function(req,res){
             
         }
     });
+}
 
     
 
