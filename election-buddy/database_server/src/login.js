@@ -69,11 +69,29 @@ exports.login = function(req,res){
                         req.session.user = user;
                         req.session.userId = rows[0].ID;
                         req.session.isLoggedIn = true;
+                        req.session.adminLevel = getAdminLevel(req.session.userId);
+                        
                         res.send("<p1> login successful <\p1>");
                     } 
                     else res.send("<p1> login unsuccessful <\p1>");
                 }
             });
+    
+}
+
+const getAdminLevel = function(userID){
+    console.log(`SELECT adminLevel FROM ADMIN WHERE userID = '${userID};'`);
+    mysqlConnection.query(`SELECT adminLevel FROM ADMIN WHERE userID = '${userID};'` ,function(iErr,iRow, iFields){
+        if(!iErr){
+            if(iRow == undefined || iRow[0] == undefined){
+                return 0;
+            }
+            else{
+                console.log(iRow[0].adminLevel);
+                return iRow[0].adminLevel;
+            }
+        }
+    });
 }
 
 exports.updateEmail = function(req,res){
