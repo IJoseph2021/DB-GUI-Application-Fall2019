@@ -130,6 +130,8 @@ app.get('/login/getUserId/:user', login.isLoggedIn, login.getUserID);
 
 app.get('/login/session/getUserId', login.isLoggedIn, login.getSessionUserId);
 
+app.get('/login/session/updatePassword/:newPass', login.isLoggedIn,login.changePassword);
+
 app.get('/voter/session/setVoter', login.isLoggedIn, voter.setVoter);
 
 app.get('/voter/session/updateCity/:city', login.isLoggedIn, voter.updateCitySession);
