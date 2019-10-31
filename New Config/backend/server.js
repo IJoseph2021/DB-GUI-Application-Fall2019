@@ -18,6 +18,8 @@ const admin = require('./admin.js');
 const candidate = require('./candidate.js');
 const session = require('express-session');
 
+const routes = [login,voter,party,admin,candidate];
+
 //create the mysql connection object.  
 var connection = mysql.createConnection({
   //db is the host and that name is assigned based on the 
@@ -29,20 +31,13 @@ var connection = mysql.createConnection({
   database: 'electionBuddy'
 });
 
+var devConnect = mysql.createConnection({
 
-//sending login the mysql info
-login.createConnection(connection);
-login.setSessionCreater(session);
-
-//sending voter the mysql info
-voter.createConnection(connection);
-
-//sending party the mysql info
-party.createConnection(connection);
-
-admin.setConnection(connection);
-
-candidate.setConnection(connection);
+  host: 'backend-db',
+  port: '3306',
+  user: 'user',
+  password: 'password'
+});
 
 //set up some configs for express. 
 const config = {
@@ -67,6 +62,13 @@ connection.connect(function (err) {
     logger.error("Cannot connect to DB!");
   logger.info("Connected to the DB!");
 });
+
+devConnect.connect(function(err){
+  if(err)
+    logger.error("can't connect to dev DB!");
+})
+
+app.get('./useDevServer')
 
 //using session
 app.use(session({
@@ -116,6 +118,19 @@ app.get('/checkdb', (req, res) => {
   })
 });
 
+app.get('/useDevDB', function(req,res){
+  for(var i = 0; i < routes.length; i++){
+    routes[i].createConnection(devConnect);
+  }
+  res.send("using dev db");
+});
+
+app.get('/useProdDB', function(req,res){
+  for(var i = 0; i < routes.length; i++){
+    routes[i].createConnection(connection);
+  }
+  res.send("using dev db");
+});
 
 
 app.get('/login/create/:user/:fname/:lname/:pass/:email', login.createAccount);
