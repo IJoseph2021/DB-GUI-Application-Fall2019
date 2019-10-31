@@ -47,7 +47,7 @@ candidate.setConnection(connection);
 //set up some configs for express. 
 const config = {
   name: 'sample-express-app',
-  port: 3000,
+  port: 8000,
   host: '0.0.0.0',
 };
 
