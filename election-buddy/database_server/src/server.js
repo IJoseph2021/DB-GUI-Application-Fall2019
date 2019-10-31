@@ -15,6 +15,7 @@ const login = require('./login.js');
 const voter = require('./voter.js');
 const party = require('./party.js');
 const admin = require('./admin.js');
+const candidate = require('./candidate.js');
 const session = require('express-session');
 
 //create the mysql connection object.  
@@ -41,6 +42,7 @@ party.createConnection(connection);
 
 admin.setConnection(connection);
 
+candidate.setConnection(connection);
 
 //set up some configs for express. 
 const config = {
@@ -145,6 +147,9 @@ app.get('/party/getPartyName/:partyCode', party.getPartyName);
 app.get('/party/getPartyCode/:partyName', party.getPartyCode);
 
 app.get('/admin/session/getAdminLevel', login.isLoggedIn, admin.getAdminLevel);
+app.get('/admin/session/verify/:ID',login.isLoggedIn,admin.isAdmin, admin.verifyCandidate);
+
+app.get('/candidate/session/becomeCandidate',login.isLoggedIn, candidate.becomeCandidate);
 
 
 //connecting the express object to listen on a particular port as defined in the config object. 
