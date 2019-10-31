@@ -74,7 +74,9 @@ exports.login = function(req,res){
                     else res.send("<p1> login unsuccessful <\p1>");
                 }
             });
+    
 }
+
 
 exports.updateEmail = function(req,res){
     
@@ -131,4 +133,14 @@ exports.isLoggedIn = function(req,res,next){
     } else {
         res.sendStatus(401);
     }
+}
+
+exports.changePassword = function(req,res){
+    mysqlConnection.query(`UPDATE USER SET passhash = '${req.params.newPass}' WHERE ID = '${req.session.userId}';`,function(err,rows,fields){
+        if(err){
+            res.send("error");
+        } else {
+            res.send("password updated");
+        }
+    });
 }

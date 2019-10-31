@@ -14,6 +14,8 @@ const mysql = require('mysql');
 const login = require('./login.js');
 const voter = require('./voter.js');
 const party = require('./party.js');
+const admin = require('./admin.js');
+const candidate = require('./candidate.js');
 const session = require('express-session');
 
 //create the mysql connection object.  
@@ -38,6 +40,9 @@ voter.createConnection(connection);
 //sending party the mysql info
 party.createConnection(connection);
 
+admin.setConnection(connection);
+
+candidate.setConnection(connection);
 
 //set up some configs for express. 
 const config = {
@@ -125,6 +130,8 @@ app.get('/login/getUserId/:user', login.isLoggedIn, login.getUserID);
 
 app.get('/login/session/getUserId', login.isLoggedIn, login.getSessionUserId);
 
+app.get('/login/session/updatePassword/:newPass', login.isLoggedIn,login.changePassword);
+
 app.get('/voter/session/setVoter', login.isLoggedIn, voter.setVoter);
 
 app.get('/voter/session/updateCity/:city', login.isLoggedIn, voter.updateCitySession);
@@ -140,6 +147,11 @@ app.get('/voter/session/updateParty/:partyName', login.isLoggedIn, voter.session
 app.get('/party/createParty/:party', login.isLoggedIn, party.createParty);
 app.get('/party/getPartyName/:partyCode', party.getPartyName);
 app.get('/party/getPartyCode/:partyName', party.getPartyCode);
+
+app.get('/admin/session/getAdminLevel', login.isLoggedIn, admin.getAdminLevel);
+app.get('/admin/session/verify/:ID',login.isLoggedIn,admin.isAdmin, admin.verifyCandidate);
+
+app.get('/candidate/session/becomeCandidate',login.isLoggedIn, candidate.becomeCandidate);
 
 
 //connecting the express object to listen on a particular port as defined in the config object. 
