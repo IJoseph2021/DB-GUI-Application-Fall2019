@@ -54,7 +54,6 @@ exports.updateCountySession = function(req,res){
     res.send('update Attempted');
 }
 
-//Written by Parker-- please check and see if correct
 exports.updateZipCodeSession = function(req,res){
     userID = req.session.userID;
     mysqlConnection.query(`UPDATE VOTER SET zipCode = '${req.params.zipCode}' WHERE userID = '${req.session.userId}';`, function(err,rows,fields){

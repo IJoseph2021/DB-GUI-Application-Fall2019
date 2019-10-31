@@ -143,6 +143,9 @@ app.get('/voter/session/updateCounty/:county', login.isLoggedIn, voter.updateCou
 app.get('/voter/session/getCountySession', login.isLoggedIn, voter.getCountySession);
 
 app.get('/voter/session/updateParty/:partyName', login.isLoggedIn, voter.sessionUpdateParty);
+app.get('/voter/session/updateZipCode/:zipCode', login.isLoggedIn, voter.updateZipCodeSession);
+app.get('/voter/session/getZipCode/', login.isLoggedIn, voter.getZipCodeSession);
+
 
 app.get('/party/createParty/:party', login.isLoggedIn, party.createParty);
 app.get('/party/getPartyName/:partyCode', party.getPartyName);
@@ -152,6 +155,7 @@ app.get('/admin/session/getAdminLevel', login.isLoggedIn, admin.getAdminLevel);
 app.get('/admin/session/verify/:ID',login.isLoggedIn,admin.isAdmin, admin.verifyCandidate);
 
 app.get('/candidate/session/becomeCandidate',login.isLoggedIn, candidate.becomeCandidate);
+
 
 
 //connecting the express object to listen on a particular port as defined in the config object. 
