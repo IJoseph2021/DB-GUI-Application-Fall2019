@@ -102,4 +102,18 @@ INSERT INTO PARTY VALUES
 ("GREEN", "Green Party"),
 ("IND", "Independy"),
 ("LIB", "Libertarian");
+
+CREATE TABLE CANDIDATE_QUESTION(
+    question_ID INT(8)
+    question_Time datetime()
+    asker_ID INT(8)
+    askee_ID INT(8)
+    question varchar(140)
+);
+
+INSERT INTO CANDIDATE_QUESTION
+    ('00001', '2019-04-22', '23456789', '89891212', 'How much wood could a woodchuck chuck if a woodchuck could chuck wood'),
+    ('00002', '2019-05-21', '54899458', '33445566', 'Is Flat Earth the real deal?'),
+    ('00003', '2019-03-03', '19829878', '45453333', 'What is your stance on the position of Constable?');
+
     
