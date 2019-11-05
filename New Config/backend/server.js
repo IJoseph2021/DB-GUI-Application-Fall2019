@@ -17,6 +17,7 @@ const party = require('./party.js');
 const admin = require('./admin.js');
 const candidate = require('./candidate.js');
 const session = require('express-session');
+var fileReader = require('fs');
 
 const routes = [login,voter,party,admin,candidate];
 
@@ -34,6 +35,7 @@ var connection = mysql.createConnection({
 var devConnect = mysql.createConnection({
 
   host: 'backend-db',
+  database: 'electionBuddy',
   port: '3306',
   user: 'user',
   password: 'password'
@@ -64,8 +66,10 @@ connection.connect(function (err) {
 });
 
 devConnect.connect(function(err){
-  if(err)
+  if(err){
+    logger.error(err.message);
     logger.error("can't connect to dev DB!");
+  }
 })
 
 app.get('./useDevServer')
@@ -116,6 +120,31 @@ app.get('/checkdb', (req, res) => {
     res.status(200);
     res.send('<h1>' + rows[0].id + ' ' + rows[0].name + '</h1>');
   })
+});
+
+app.get('/setupDevDb', function(req,res){
+  for(var i = 0; i < routes.length; i++){
+    routes[i].createConnection(devConnect);
+  }
+  fileReader.readFile("mysqlDev_init/InitialDevData.sql","utf8", function(err,contents){
+    var query = "";
+    for(charCtr = 0; charCtr < contents.length; charCtr++){
+      query += contents[charCtr];
+      if(contents[charCtr] == ';'){
+        
+        
+        devConnect.query(query, function(err,rows,fields){
+          if(err){
+            logger.error(err.message);
+          }
+        })
+        query = "";
+      }
+    }
+  });
+  
+
+  res.send("DevDataLoaded");
 });
 
 app.get('/useDevDB', function(req,res){
