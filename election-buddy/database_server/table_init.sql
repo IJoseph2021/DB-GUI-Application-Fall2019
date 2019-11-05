@@ -116,4 +116,5 @@ INSERT INTO CANDIDATE_QUESTION
     ('00002', '2019-05-21', '54899458', '33445566', 'Is Flat Earth the real deal?'),
     ('00003', '2019-03-03', '19829878', '45453333', 'What is your stance on the position of Constable?');
 
+
     

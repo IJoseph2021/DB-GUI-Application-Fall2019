@@ -17,6 +17,7 @@ const party = require('./party.js');
 const admin = require('./admin.js');
 const candidate = require('./candidate.js');
 const session = require('express-session');
+const questions = require('./questions.js');
 
 //create the mysql connection object.  
 var connection = mysql.createConnection({
@@ -155,6 +156,7 @@ app.get('/admin/session/getAdminLevel', login.isLoggedIn, admin.getAdminLevel);
 app.get('/admin/session/verify/:ID',login.isLoggedIn,admin.isAdmin, admin.verifyCandidate);
 
 app.get('/candidate/session/becomeCandidate',login.isLoggedIn, candidate.becomeCandidate);
+app.get('/questions/session/createQuestion/:question_ID/:question_Time/:asker_ID/:askee_ID/:question',login.isLoggedIn, questions.createQuestion);
 
 
 
