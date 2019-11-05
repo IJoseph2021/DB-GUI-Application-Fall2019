@@ -104,17 +104,30 @@ INSERT INTO PARTY VALUES
 ("LIB", "Libertarian");
 
 CREATE TABLE CANDIDATE_QUESTION(
-    question_ID INT(8)
-    question_Time datetime()
-    asker_ID INT(8)
-    askee_ID INT(8)
+    question_ID INT(8),
+    question_Time datetime,
+    asker_ID INT(8),
+    askee_ID INT(8),
     question varchar(140)
 );
 
-INSERT INTO CANDIDATE_QUESTION
-    ('00001', '2019-04-22', '23456789', '89891212', 'How much wood could a woodchuck chuck if a woodchuck could chuck wood'),
-    ('00002', '2019-05-21', '54899458', '33445566', 'Is Flat Earth the real deal?'),
-    ('00003', '2019-03-03', '19829878', '45453333', 'What is your stance on the position of Constable?');
+INSERT INTO CANDIDATE_QUESTION VALUES
+("00001", "2019-04-22", "23456789", "89891212", "How much wood could a woodchuck chuck if a woodchuck could chuck wood"),
+("00002", "2019-05-21", "54899458", "33445566", "Is Flat Earth the real deal?"),
+("00003", "2019-03-03", "19829878", "45453333", "What is your stance on the position of Constable?");
 
 
+CREATE TABLE CANDIDATE_COMMENT(
+	question_ID INT(8),
+    comment_ID INT(8),
+    comment_Time datetime,
+    commenter_ID INT(8),
+    comentee_ID INT(8),
+    comment_ varchar(140)
+);
+
+INSERT INTO CANDIDATE_COMMENT VALUES
+("00001", "00001","2019-04-23" ,"23456789", "89891212", "some wood"),
+("00001", "00002", "2019-04-24" ,"54899458", "33445566", "the earth is flat, prove that its not lol"),
+("00003", "00003", "2019-03-03","19829878", "45453333", "idk");
     
