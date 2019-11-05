@@ -1,6 +1,6 @@
 var mysqlConnection;
 
-exports.createConnection = function(newMysqlConnection){
+exports.setConnection = function(newMysqlConnection){
     mysqlConnection = newMysqlConnection;
 };
 
@@ -30,4 +30,19 @@ exports.createQuestion = function(req,res){
             }
         });
     
+}
+
+exports.getQuestion = function(req, res){
+    userID = req.session.userId;
+    qID = req.params.question_ID
+
+    console.log(`SELECT question FROM CANDIDATE_QUESTION WHERE question_ID = '${qID}';`);
+    mysqlConnection.query(`SELECT question FROM CANDIDATE_QUESTION WHERE question_ID = '${qID}';`,function(err,rows,fields){
+        if(rows[0] != undefined){
+            res.send(rows[0].question);
+        }
+        else{
+            res.send("question not found");
+        }
+    });
 }
