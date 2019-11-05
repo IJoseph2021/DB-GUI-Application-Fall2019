@@ -1,6 +1,6 @@
 var mysqlconnection;
 
-exports.setConnection = function(input){
+exports.createConnection = function(input){
     mysqlconnection = input;
 }
 
