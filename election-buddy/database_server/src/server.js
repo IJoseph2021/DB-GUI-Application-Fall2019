@@ -159,7 +159,9 @@ app.get('/admin/session/verify/:ID',login.isLoggedIn,admin.isAdmin, admin.verify
 
 app.get('/candidate/session/becomeCandidate',login.isLoggedIn, candidate.becomeCandidate);
 app.get('/questions/session/createQuestion/:question_ID/:question_Time/:asker_ID/:askee_ID/:question',login.isLoggedIn, questions.createQuestion);
-app.get('/questions/session/getQuestion/:question_ID', login.isLoggedIn, questions.getQuestion)
+app.get('/questions/session/getQuestion/:question_ID', login.isLoggedIn, questions.getQuestion);
+app.get('/questions/session/removeQuestion/:question_ID', login.isLoggedIn, questions.removeQuestion);
+app.get('/questions/session/updateQuestion/:question_ID/:update_Time/:question2', login.isLoggedIn, questions.updateQuestion);
 
 
 //connecting the express object to listen on a particular port as defined in the config object. 
