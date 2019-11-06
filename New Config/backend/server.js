@@ -19,6 +19,8 @@ const candidate = require('./candidate.js');
 const session = require('express-session');
 var fileReader = require('fs');
 
+
+//List of all potential route files.
 const routes = [login,voter,party,admin,candidate];
 
 //create the mysql connection object.  
@@ -32,8 +34,9 @@ var connection = mysql.createConnection({
   database: 'electionBuddy'
 });
 
+//Setup for connecting to the dev mysql connection
+//Made by Steve Shoemaker
 var devConnect = mysql.createConnection({
-
   host: 'backend-db',
   database: 'electionBuddy',
   port: '3306',
@@ -65,14 +68,14 @@ connection.connect(function (err) {
   logger.info("Connected to the DB!");
 });
 
+//Made by Steve
+//Dev Connection
 devConnect.connect(function(err){
   if(err){
     logger.error(err.message);
     logger.error("can't connect to dev DB!");
   }
-})
-
-app.get('./useDevServer')
+});
 
 //using session
 app.use(session({
@@ -122,6 +125,8 @@ app.get('/checkdb', (req, res) => {
   })
 });
 
+
+//Loads the Dev mysql DB
 app.get('/setupDevDb', function(req,res){
   for(var i = 0; i < routes.length; i++){
     routes[i].createConnection(devConnect);
@@ -142,11 +147,11 @@ app.get('/setupDevDb', function(req,res){
       }
     }
   });
-  
-
   res.send("DevDataLoaded");
 });
 
+//Connect to Dev DB
+//Made by Steve Shoemaker
 app.get('/useDevDB', function(req,res){
   for(var i = 0; i < routes.length; i++){
     routes[i].createConnection(devConnect);
@@ -154,47 +159,83 @@ app.get('/useDevDB', function(req,res){
   res.send("using dev db");
 });
 
+//Route to use prod db
 app.get('/useProdDB', function(req,res){
   for(var i = 0; i < routes.length; i++){
     routes[i].createConnection(connection);
   }
-  res.send("using dev db");
+  res.send("using prodDB");
 });
 
+//Login Routes
 
+//Create Account
 app.get('/login/create/:user/:fname/:lname/:pass/:email', login.createAccount);
 
-
+//login
 app.get('/login/login/:user/:pass', login.login);
 
+//updating Email
 app.get('/login/updateEmail/:user/:email', login.isLoggedIn, login.updateEmail);
+
+//Get Email
 app.get('/login/getEmail/:user', login.isLoggedIn, login.getEmail);
 
-app.get('/login/getUserId/:user', login.isLoggedIn, login.getUserID);
+//Get User ID
+app.get('/login/getUserId/:user', login.getUserID);
 
+//Get User ID Session
 app.get('/login/session/getUserId', login.isLoggedIn, login.getSessionUserId);
 
+//Update Session Password
 app.get('/login/session/updatePassword/:newPass', login.isLoggedIn,login.changePassword);
 
+
+
+//Voter Routes
+
+//Making the current session a voter
 app.get('/voter/session/setVoter', login.isLoggedIn, voter.setVoter);
 
+//Updates the city of the voter
 app.get('/voter/session/updateCity/:city', login.isLoggedIn, voter.updateCitySession);
 
+//Gets the voters session
 app.get('/voter/session/getCitySession', login.isLoggedIn, voter.getCitySession);
 
+//Updates the voter county
 app.get('/voter/session/updateCounty/:county', login.isLoggedIn, voter.updateCountySession);
 
+//Gets the voter county
 app.get('/voter/session/getCountySession', login.isLoggedIn, voter.getCountySession);
 
+//Updates the voter Party
 app.get('/voter/session/updateParty/:partyName', login.isLoggedIn, voter.sessionUpdateParty);
 
+//Party Routes
+
+//Creates a party
 app.get('/party/createParty/:party', login.isLoggedIn, party.createParty);
+
+//Gets a party name
 app.get('/party/getPartyName/:partyCode', party.getPartyName);
+
+//Gets a party Code
 app.get('/party/getPartyCode/:partyName', party.getPartyCode);
 
+
+//Admin Routes
+
+//Gets admin level #
 app.get('/admin/session/getAdminLevel', login.isLoggedIn, admin.getAdminLevel);
+
+//Verifies a candidate
 app.get('/admin/session/verify/:ID',login.isLoggedIn,admin.isAdmin, admin.verifyCandidate);
 
+
+//Candidate Routes
+
+//Allows a user to become a candidate
 app.get('/candidate/session/becomeCandidate',login.isLoggedIn, candidate.becomeCandidate);
 
 
