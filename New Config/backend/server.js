@@ -18,10 +18,11 @@ const admin = require('./admin.js');
 const candidate = require('./candidate.js');
 const session = require('express-session');
 var fileReader = require('fs');
+const questions = require('./questions.js');
 
 
 //List of all potential route files.
-const routes = [login,voter,party,admin,candidate];
+const routes = [login,voter,party,admin,candidate, questions];
 
 //create the mysql connection object.  
 var connection = mysql.createConnection({
@@ -237,6 +238,20 @@ app.get('/admin/session/verify/:ID',login.isLoggedIn,admin.isAdmin, admin.verify
 
 //Allows a user to become a candidate
 app.get('/candidate/session/becomeCandidate',login.isLoggedIn, candidate.becomeCandidate);
+
+//Questions Routes
+
+//Creates a questsion
+app.get('/questions/session/createQuestion/:question_ID/:question_Time/:asker_ID/:askee_ID/:question',login.isLoggedIn, questions.createQuestion);
+
+//Gets a question on ID
+app.get('/questions/session/getQuestion/:question_ID', login.isLoggedIn, questions.getQuestion);
+
+//Removes a question on ID
+app.get('/questions/session/removeQuestion/:question_ID', login.isLoggedIn, questions.removeQuestion);
+
+//Updates a question Time
+app.get('/questions/session/updateQuestion/:question_ID/:update_Time/:question2', login.isLoggedIn, questions.updateQuestion);
 
 
 //connecting the express object to listen on a particular port as defined in the config object. 
