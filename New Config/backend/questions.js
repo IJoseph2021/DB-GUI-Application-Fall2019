@@ -1,6 +1,6 @@
 var mysqlConnection;
 
-exports.createConnection = function(newMysqlConnection){
+exports.setConnection = function(newMysqlConnection){
     mysqlConnection = newMysqlConnection;
 };
 
@@ -80,3 +80,85 @@ exports.updateQuestion = function(req, res){
 
 
 //remove, reply, soft delete, time stamps for create and update
+
+exports.createComment = function(req, res){
+    comment_Time = req.params.comment_Time;
+    commenter_ID = req.params.commenter_ID;
+    commentee_ID = req.params.commentee_ID;
+    user_ID = req.params.user_ID;
+    comment = req.params.comment;
+    active = 1;
+    update_Time = req.params.comment_Time
+
+    query = "INSERT INTO electionBuddy.COMMENT (comment_Time, commenter_ID, commentee_ID, user_ID, comment, active, update_Time)"+
+    " VALUES(\""+ comment_Time + "\",\"" + commenter_ID + "\",\"" + commentee_ID + "\",\"" + user_ID + "\",\"" + comment + "\",\"" + active + "\",\"" + update_Time + "\" );";
+
+    console.log(query);
+    mysqlConnection.query(query, 
+        function(err,rows,fields){
+            if(err){
+                res.send("Comment Creation Failed");
+                }
+            else {
+                res.send("Comment Created");
+            }
+        });
+}
+
+exports.getComment = function(req, res){
+    cID = req.params.commenter_ID
+
+    console.log(`SELECT comment FROM COMMENT WHERE commenter_ID = '${cID}';`);
+    mysqlConnection.query(`SELECT comment FROM COMMENT WHERE commenter_ID = '${cID}';`,function(err,rows,fields){
+        if(rows[0] != undefined){
+            res.send(rows[0].comment);
+        }
+        else{
+            res.send("comment not found");
+        }
+    });
+}
+
+exports.removeComment = function(req, res){
+    cID = req.params.commenter_ID
+    console.log(`UPDATE COMMENT SET active = 0 WHERE commenter_ID = '${cID}';`);
+    mysqlConnection.query(`UPDATE COMMENT SET active = 0 WHERE commenter_ID = '${cID}';`,function(err,rows,fields){
+    
+        if(err){
+            res.send("Comment Remove Failed");
+            }
+        else {
+            res.send("Changed to inactive... soft remove");
+        }        
+    });
+}
+
+exports.updateComment = function(req, res){
+    cID = req.params.commenter_ID
+    comment2 = req.params.comment2
+    update_Time = req.params.update_Time
+
+    console.log(`UPDATE COMMENT SET comment = '${comment2}', update_Time = '${update_Time}' WHERE commenter_ID = '${cID}';`);
+    mysqlConnection.query(`UPDATE COMMENT SET comment = '${comment2}', update_Time = '${update_Time}' WHERE commenter_ID = '${cID}';`,function(err,rows,fields){
+        if(err){
+            res.send("Error Updating Comment");
+        }
+        else{
+            res.send("Comment updated with new time stamp");
+        }
+    });
+}
+
+exports.getCommentTree = function(req, res){
+    qID = req.params.question_ID
+    console.log(`SELECT comment FROM COMMENT WHERE commentee_ID = '${qID}';`);
+    mysqlConnection.query(`SELECT comment FROM COMMENT WHERE commentee_ID = '${qID}';`, function(err,rows,fields){
+ 
+        if(rows[0] != undefined){
+            res.send(rows.comment);
+        }
+        else{
+            res.send("question not found");
+        }
+    });
+}
