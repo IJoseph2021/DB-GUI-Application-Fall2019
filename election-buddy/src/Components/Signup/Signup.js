@@ -56,7 +56,7 @@ class Signup extends Component {
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="userPassword">Password:</label>
+                            <label htmlFor="password">Password:</label>
                             <input
                                 id="password"
                                 className="form-control"

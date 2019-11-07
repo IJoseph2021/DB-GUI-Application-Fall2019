@@ -7,6 +7,7 @@ import Footer from './Components/Footer/Footer';
 import Homepage from './Components/Homepage/Homepage';
 import Login from './Components/Login/Login';
 import Signup from './Components/Signup/Signup';
+import UserProfile from './Components/ProfilePage/UserProfile';
 
 var loggedIn = true;
 var signedUp = true;
@@ -26,6 +27,7 @@ function App() {
           )}/>
           <Route path="/login" component={Login}/>
           <Route path="/registration" component={Signup}/>
+          <Route path="/profile" component={UserProfile}/>
         </Switch>
       <Footer/>
     </Router>
