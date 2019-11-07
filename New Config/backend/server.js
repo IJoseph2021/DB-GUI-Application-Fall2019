@@ -135,7 +135,7 @@ app.get('/setupDevDb', function(req,res){
   for(var i = 0; i < routes.length; i++){
     routes[i].createConnection(devConnect);
   }
-  fileReader.readFile("mysqlDev_init/InitialDevData.sql","utf8", function(err,contents){
+  fileReader.readFile("mysqlDev_init/tables_init.sql","utf8", function(err,contents){
     var query = "";
     for(charCtr = 0; charCtr < contents.length; charCtr++){
       query += contents[charCtr];

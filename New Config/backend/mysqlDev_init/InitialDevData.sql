@@ -1,5 +1,3 @@
-
-
 USE electionBuddy;
 CREATE TABLE USER (
 	ID INT(8) PRIMARY KEY,
@@ -21,28 +19,52 @@ INSERT INTO USER VALUES
 ("58769893","IJK","James", "Madison","password9","IJK@1312.com"),
 ("54899458","JKL","James", "Monroe","password10","JKL@1313.com");
 
+CREATE TABLE PARTY(
+	partyCode varchar(8) PRIMARY KEY,
+    partyName varchar(25)
+);
+
+INSERT INTO PARTY VALUES
+("REP", "Republican"),
+("DEM", "Democrat"),
+("GREEN", "Green Party"),
+("IND", "Independy"),
+("LIB", "Libertarian");
+
 CREATE TABLE CANDIDATE (
-	userID INT(8),
+	userID INT(8) PRIMARY KEY,
     partyCode varchar(8),
     zipCode varchar(10),
     state varchar(2),
-	city varchar(25)
+	city varchar(25),
 );
 
+ALTER TABLE `electionBuddy`.`CANDIDATE` 
+CHANGE COLUMN `userID` `userID` INT(8) NOT NULL ,
+ADD PRIMARY KEY (`userID`);
+
+
+ALTER TABLE `electionBuddy`.`CANDIDATE` 
+ADD CONSTRAINT `userID`
+  FOREIGN KEY (`userID`)
+  REFERENCES `electionBuddy`.`USER` (`ID`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
 INSERT INTO CANDIDATE VALUES
-("99933933", "DEM", "40207", "KY", "Louisville"),
-("45454564", "REP", "40208", "KY", "Louisville"),
-("12312312", "IND", "40502", "KY", "Lexington"),
-("12678911", "DEM", "40507", "KY", "Lexington"),
-("89891212", "REP", "75205", "TX", "Dallas"),
-("45464748", "GREEN", "75206", "TX", "Dallas"),
-("12131456", "DEM", "75209", "TX", "Dallas"),
-("45453333", "REP", "75210", "TX", "Dallas"),
-("33445566", "DEM", "75211", "TX", "Dallas");
+("12345678", "DEM", "40207", "Kentucky", "Louisville"),
+("45454564", "REP", "40208", "Kentucky", "Louisville"),
+("12312312", "IND", "40502", "Kentucky", "Lexington"),
+("12678911", "DEM", "40507", "Kentucky", "Lexington"),
+("89891212", "REP", "75205", "Texas", "Dallas"),
+("45464748", "GREEN", "75206", "Texas", "Dallas"),
+("12131456", "DEM", "75209", "Texas", "Dallas"),
+("45453333", "REP", "75210", "Texas", "Dallas"),
+("33445566", "DEM", "75211", "Texas", "Dallas");
 
 CREATE TABLE CANDIDATE_FAVORITE(
 	userID INT(8),
-    candidateID INT(8),
+    candidateID INT(8)
 );
 
 INSERT INTO CANDIDATE_FAVORITE VALUES
@@ -82,28 +104,18 @@ CREATE TABLE VOTER(
 );
 
 INSERT INTO VOTER VALUES
-("12345678", "REP", "40207", "KY", "Louisville"),
-("23456789", "REP", "40208", "KY", "Louisville"),
-("12456757", "DEM", "30301", "GA", "Atlanta"),
-("93285937", "DEM", "40507", "KY", "Lexington"),
-("23894945", "IND", "75205", "TX", "Dallas"),
-("56478296", "DEM", "75206", "TX", "Dallas"),
-("16398635", "REP", "75209", "TX", "Dallas"),
-("21748269", "REP", "75229", "TX", "Dallas"),
-("92786541", "REP", "39506", "MS", "Jackson"),
-("28376937", "DEM", "39203", "MS", "Jackson");
+("12345678", "REP", "40207", "Kentucky", "Louisville"),
+("23456789", "REP", "40208", "Kentucky", "Louisville"),
+("12456757", "DEM", "30301", "Georgia", "Atlanta"),
+("93285937", "DEM", "40507", "Kentucky", "Lexington"),
+("23894945", "IND", "75205", "Texas", "Dallas"),
+("56478296", "DEM", "75206", "Texas", "Dallas"),
+("16398635", "REP", "75209", "Texas", "Dallas"),
+("21748269", "REP", "75229", "Texas", "Dallas"),
+("92786541", "REP", "39506", "Mississippi", "Jackson"),
+("28376937", "DEM", "39203", "Mississippi", "Jackson");
 
-CREATE TABLE PARTY(
-	partyCode varchar(8) PRIMARY KEY,
-    partyName varchar(25)
-);
 
-INSERT INTO PARTY VALUES
-("REP", "Republican"),
-("DEM", "Democrat"),
-("GREEN", "Green Party"),
-("IND", "Independy"),
-("LIB", "Libertarian");
 
 CREATE TABLE CANDIDATE_QUESTION(
     question_ID INT(8),
@@ -132,4 +144,19 @@ INSERT INTO CANDIDATE_COMMENT VALUES
 ("00001", "00001","2019-04-23" ,"23456789", "89891212", "some wood"),
 ("00001", "00002", "2019-04-24" ,"54899458", "33445566", "the earth is flat, prove that its not lol"),
 ("00003", "00003", "2019-03-03","19829878", "45453333", "idk");
-    
+
+
+CREATE TABLE `electionBuddy`.`ELECTION` (
+  `electionID` INT(8) NOT NULL AUTO_INCREMENT,
+  `candidateID` INT(8) NOT NULL,
+  `name` VARCHAR(45) NULL,
+  `location` VARCHAR(45) NULL,
+  `level` VARCHAR(45) NULL,
+  `time` DATETIME NULL,
+  PRIMARY KEY (`electionID`, `candidateID`),
+  INDEX `userID_idx` (`candidateID` ASC) VISIBLE,
+  CONSTRAINT `userID`
+    FOREIGN KEY (`candidateID`)
+    REFERENCES `electionBuddy`.`CANDIDATE` (`userID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);

@@ -130,4 +130,14 @@ INSERT INTO CANDIDATE_COMMENT VALUES
 ("00001", "00001","2019-04-23" ,"23456789", "89891212", "some wood"),
 ("00001", "00002", "2019-04-24" ,"54899458", "33445566", "the earth is flat, prove that its not lol"),
 ("00003", "00003", "2019-03-03","19829878", "45453333", "idk");
-    
+
+
+CREATE TABLE ELECTION(
+    electionID INT(8),
+    electionLevel VARCHAR(),
+    electionLocation VARCHAR(),
+    electionTime datetime,
+    candidateID INT(8),
+    PRIMARY KEY(electionID, candidateID),
+    FOREIGN KEY(candidateID) REFERENCES CANDIDATE(userID)
+);
