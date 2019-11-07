@@ -157,11 +157,17 @@ app.get('/party/getPartyCode/:partyName', party.getPartyCode);
 app.get('/admin/session/getAdminLevel', login.isLoggedIn, admin.getAdminLevel);
 app.get('/admin/session/verify/:ID',login.isLoggedIn,admin.isAdmin, admin.verifyCandidate);
 
-app.get('/candidate/session/becomeCandidate',login.isLoggedIn, candidate.becomeCandidate);
+app.get('/candidate/session/becomeCandidate', login.isLoggedIn, candidate.becomeCandidate);
 app.get('/questions/session/createQuestion/:question_ID/:question_Time/:asker_ID/:askee_ID/:question',login.isLoggedIn, questions.createQuestion);
 app.get('/questions/session/getQuestion/:question_ID', login.isLoggedIn, questions.getQuestion);
 app.get('/questions/session/removeQuestion/:question_ID', login.isLoggedIn, questions.removeQuestion);
 app.get('/questions/session/updateQuestion/:question_ID/:update_Time/:question2', login.isLoggedIn, questions.updateQuestion);
+app.get('/questions/session/createComment/:comment_Time/:commenter_ID/:commentee_ID/:user_ID/:comment', login.isLoggedIn, questions.createComment);
+app.get('/questions/session/getComment/:commenter_ID', login.isLoggedIn, questions.getComment);
+app.get('/questions/session/removeQuestion/:commenter_ID', login.isLoggedIn, questions.removeComment);
+app.get('/questions/session/updateComment/:commenter_ID/:update_Time/:comment2', login.isLoggedIn, questions.updateComment);
+app.get('/questions/session/getCommentTree/:question_ID', login.isLoggedIn, questions.getCommentTree);
+
 
 
 //connecting the express object to listen on a particular port as defined in the config object. 
