@@ -1,9 +1,14 @@
+/*
+This file stores all the candidate routes
+*/
 var mysqlConnection;
 
-exports.setConnection = function(newConnect){
+exports.createConnection = function(newConnect){
     mysqlConnection = newConnect;
 }
 
+//Steve
+//This function adds a user to the candidate table
 exports.becomeCandidate = function(req,res){
     mysqlConnection.query(`INSERT INTO CANDIDATE(USERID) VALUES(${req.session.userId})`,function(err,rows,fields){
         if(err){

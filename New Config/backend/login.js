@@ -16,6 +16,8 @@ exports.setSessionCreater = function(session){
 exports.setApp = function(newApp){
     app = newApp;
 }
+
+//Steve
 //Creating an account function
 exports.createAccount = function(req,res){
     
@@ -45,7 +47,8 @@ exports.createAccount = function(req,res){
             });
         } 
 
-
+//Steve
+//login function
 exports.login = function(req,res){
     
     //assigning the values
@@ -77,7 +80,8 @@ exports.login = function(req,res){
     
 }
 
-
+//Steve Shoemaker
+//Update email in user table route
 exports.updateEmail = function(req,res){
     
     mysqlConnection.query("UPDATE USER SET USER.email = \'" + req.params.email + "\'  WHERE USER.username = \'" +  req.params.user + "\';",
@@ -91,6 +95,8 @@ exports.updateEmail = function(req,res){
 
 }
 
+//Steve
+//Gets the user
 exports.getEmail = function(req,res){
     mysqlConnection.query("SELECT USER.EMAIL FROM USER WHERE USER.username = \'" + req.params.user + "\';",
                 function(err, rows, fields){
@@ -101,6 +107,8 @@ exports.getEmail = function(req,res){
                 });
 }
 
+//Steve
+//Gets the current user id
 exports.getUserID = function(req,res){
     query = 'SELECT USER.USERID FROM USER WHERE USER.username = \'' + req.params.user + '\';';
     console.log(query);
@@ -122,11 +130,15 @@ exports.getUserID = function(req,res){
                             });
 }
 
+//Steve
+//gets the session user id
 exports.getSessionUserId = function(req,res){
     console.log(req.session.userId);
     res.send(req.session.userId);
 }
 
+//Stephen Shoemaker
+//Checks the session to see if the person is logged in
 exports.isLoggedIn = function(req,res,next){
     if(req.session.isLoggedIn == true){
         return next();
@@ -135,6 +147,8 @@ exports.isLoggedIn = function(req,res,next){
     }
 }
 
+//Steve Shoemaker
+//Changes the password
 exports.changePassword = function(req,res){
     mysqlConnection.query(`UPDATE USER SET passhash = '${req.params.newPass}' WHERE ID = '${req.session.userId}';`,function(err,rows,fields){
         if(err){

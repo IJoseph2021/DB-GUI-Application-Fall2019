@@ -1,17 +1,21 @@
+/*
+Voter File
+This file manages all the routes for the voters
+*/
+
 var mysqlConnection;
 
 exports.createConnection = function(newMysqlConnection){
     mysqlConnection = newMysqlConnection;
 };
 
+//Steve Shoemaker
+//This function makes someone a voter
 exports.setVoter = function(req,res){
     userID = req.session.userId;
-    console.log(`SELECT USER.ID FROM USER WHERE ID = '${userID}';`);
     mysqlConnection.query(`SELECT USER.ID FROM USER WHERE ID = '${userID}';`,
                             function(OuterErr,OuterRows,OuterFields){
                                 if(!OuterErr){
-                                    console.log('Yo');
-                                    console.log(`INSERT INTO VOTER(USERID) VALUES('${userID}');`);
                                     mysqlConnection.query(`INSERT INTO VOTER(USERID) VALUES('${userID}');`,function(err,rows,fields){
                                         if(err){
                                             console.log(err.message);
@@ -24,6 +28,8 @@ exports.setVoter = function(req,res){
     res.send("Voter Attempted");
 }
 
+//Steve Shoemaker
+//Updates the city of the session voter
 exports.updateCitySession = function(req,res){
     userID = req.session.userId;
     mysqlConnection.query(`UPDATE VOTER SET city = '${req.params.city}' WHERE userID = '${req.session.userId}';`, function(err,rows,fields){
@@ -32,9 +38,10 @@ exports.updateCitySession = function(req,res){
     res.send('update Attempted');
 }
 
+//Steve Shoemaker
+//Gets the city of the current user
 exports.getCitySession = function(req,res){
     userID = req.session.userId;
-    console.log(`SELECT CITY FROM VOTER WHERE userID = '${userID}';`);
     mysqlConnection.query(`SELECT CITY FROM VOTER WHERE userID = '${userID}';`,function(err,rows,fields){
         if(rows[0] != undefined){
             res.send(rows[0].CITY);
@@ -44,10 +51,10 @@ exports.getCitySession = function(req,res){
     });
 }
 
-
+//Steve Shoemaker
+//Updates the county of the current user
 exports.updateCountySession = function(req,res){
     userID = req.session.userId;
-    console.log(`UPDATE VOTER SET County = '${req.params.County}' WHERE userID = '${req.session.userId}';`);
     mysqlConnection.query(`UPDATE VOTER SET County = '${req.params.county}' WHERE userID = '${req.session.userId}';`, function(err,rows,fields){
       if(err) console.log(err.message);
     })
@@ -64,10 +71,10 @@ exports.updateZipCodeSession = function(req,res){
     res.send('update Attempted');
 }
 
-
+//Steve Shoemaker
+//Gets the county of the current user
 exports.getCountySession = function(req,res){
     userID = req.session.userId;
-    console.log(`SELECT COUNTY FROM VOTER WHERE userID = '${userID}';`);
     mysqlConnection.query(`SELECT COUNTY FROM VOTER WHERE userID = '${userID}';`,function(err,rows,fields){
         if(rows[0] != undefined){
             res.send(rows[0].County);
@@ -77,6 +84,8 @@ exports.getCountySession = function(req,res){
     });
 }
 
+//Stephen Shoemaker
+//This route updates the party of the voter
 exports.sessionUpdateParty = function(req,res){
     userID = req.session.userId;
     
@@ -94,8 +103,8 @@ exports.sessionUpdateParty = function(req,res){
     });
 }
 
-    
-
+//Steve Shoemaker
+//Get Zip code of the current user
 exports.getZipCodeSession = function(req,res){
     userID = req.session.userId;
     console.log(`SELECT zipCode FROM VOTER WHERE userID = '${userID}';`);

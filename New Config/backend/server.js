@@ -17,6 +17,12 @@ const party = require('./party.js');
 const admin = require('./admin.js');
 const candidate = require('./candidate.js');
 const session = require('express-session');
+var fileReader = require('fs');
+const questions = require('./questions.js');
+
+
+//List of all potential route files.
+const routes = [login,voter,party,admin,candidate, questions];
 
 //create the mysql connection object.  
 var connection = mysql.createConnection({
@@ -29,20 +35,15 @@ var connection = mysql.createConnection({
   database: 'electionBuddy'
 });
 
-
-//sending login the mysql info
-login.createConnection(connection);
-login.setSessionCreater(session);
-
-//sending voter the mysql info
-voter.createConnection(connection);
-
-//sending party the mysql info
-party.createConnection(connection);
-
-admin.setConnection(connection);
-
-candidate.setConnection(connection);
+//Setup for connecting to the dev mysql connection
+//Made by Steve Shoemaker
+var devConnect = mysql.createConnection({
+  host: 'backend-db',
+  database: 'electionBuddy',
+  port: '3306',
+  user: 'user',
+  password: 'password'
+});
 
 //set up some configs for express. 
 const config = {
@@ -66,6 +67,18 @@ connection.connect(function (err) {
   if (err)
     logger.error("Cannot connect to DB!");
   logger.info("Connected to the DB!");
+  for(var i = 0; i < routes.length; i++){
+    routes[i].createConnection(connection);
+  }
+});
+
+//Made by Steve
+//Dev Connection
+devConnect.connect(function(err){
+  if(err){
+    logger.error(err.message);
+    logger.error("can't connect to dev DB!");
+  }
 });
 
 //using session
@@ -117,41 +130,131 @@ app.get('/checkdb', (req, res) => {
 });
 
 
+//Loads the Dev mysql DB
+app.get('/setupDevDb', function(req,res){
+  for(var i = 0; i < routes.length; i++){
+    routes[i].createConnection(devConnect);
+  }
+  fileReader.readFile("mysqlDev_init/InitialDevData.sql","utf8", function(err,contents){
+    var query = "";
+    for(charCtr = 0; charCtr < contents.length; charCtr++){
+      query += contents[charCtr];
+      if(contents[charCtr] == ';'){
+        
+        
+        devConnect.query(query, function(err,rows,fields){
+          if(err){
+            logger.error(err.message);
+          }
+        })
+        query = "";
+      }
+    }
+  });
+  res.send("DevDataLoaded");
+});
 
+//Connect to Dev DB
+//Made by Steve Shoemaker
+app.get('/useDevDB', function(req,res){
+  for(var i = 0; i < routes.length; i++){
+    routes[i].createConnection(devConnect);
+  }
+  res.send("using dev db");
+});
+
+//Route to use prod db
+app.get('/useProdDB', function(req,res){
+  for(var i = 0; i < routes.length; i++){
+    routes[i].createConnection(connection);
+  }
+  res.send("using prodDB");
+});
+
+//Login Routes
+
+//Create Account
 app.get('/login/create/:user/:fname/:lname/:pass/:email', login.createAccount);
 
-
+//login
 app.get('/login/login/:user/:pass', login.login);
 
+//updating Email
 app.get('/login/updateEmail/:user/:email', login.isLoggedIn, login.updateEmail);
+
+//Get Email
 app.get('/login/getEmail/:user', login.isLoggedIn, login.getEmail);
 
-app.get('/login/getUserId/:user', login.isLoggedIn, login.getUserID);
+//Get User ID
+app.get('/login/getUserId/:user', login.getUserID);
 
+//Get User ID Session
 app.get('/login/session/getUserId', login.isLoggedIn, login.getSessionUserId);
 
+//Update Session Password
 app.get('/login/session/updatePassword/:newPass', login.isLoggedIn,login.changePassword);
 
+
+
+//Voter Routes
+
+//Making the current session a voter
 app.get('/voter/session/setVoter', login.isLoggedIn, voter.setVoter);
 
+//Updates the city of the voter
 app.get('/voter/session/updateCity/:city', login.isLoggedIn, voter.updateCitySession);
 
+//Gets the voters session
 app.get('/voter/session/getCitySession', login.isLoggedIn, voter.getCitySession);
 
+//Updates the voter county
 app.get('/voter/session/updateCounty/:county', login.isLoggedIn, voter.updateCountySession);
 
+//Gets the voter county
 app.get('/voter/session/getCountySession', login.isLoggedIn, voter.getCountySession);
 
+//Updates the voter Party
 app.get('/voter/session/updateParty/:partyName', login.isLoggedIn, voter.sessionUpdateParty);
 
+//Party Routes
+
+//Creates a party
 app.get('/party/createParty/:party', login.isLoggedIn, party.createParty);
+
+//Gets a party name
 app.get('/party/getPartyName/:partyCode', party.getPartyName);
+
+//Gets a party Code
 app.get('/party/getPartyCode/:partyName', party.getPartyCode);
 
+
+//Admin Routes
+
+//Gets admin level #
 app.get('/admin/session/getAdminLevel', login.isLoggedIn, admin.getAdminLevel);
+
+//Verifies a candidate
 app.get('/admin/session/verify/:ID',login.isLoggedIn,admin.isAdmin, admin.verifyCandidate);
 
+
+//Candidate Routes
+
+//Allows a user to become a candidate
 app.get('/candidate/session/becomeCandidate',login.isLoggedIn, candidate.becomeCandidate);
+
+//Questions Routes
+
+//Creates a questsion
+app.get('/questions/session/createQuestion/:question_ID/:question_Time/:asker_ID/:askee_ID/:question',login.isLoggedIn, questions.createQuestion);
+
+//Gets a question on ID
+app.get('/questions/session/getQuestion/:question_ID', login.isLoggedIn, questions.getQuestion);
+
+//Removes a question on ID
+app.get('/questions/session/removeQuestion/:question_ID', login.isLoggedIn, questions.removeQuestion);
+
+//Updates a question Time
+app.get('/questions/session/updateQuestion/:question_ID/:update_Time/:question2', login.isLoggedIn, questions.updateQuestion);
 
 
 //connecting the express object to listen on a particular port as defined in the config object. 
