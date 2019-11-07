@@ -167,7 +167,7 @@ app.get('/questions/session/getComment/:commenter_ID', login.isLoggedIn, questio
 app.get('/questions/session/removeQuestion/:commenter_ID', login.isLoggedIn, questions.removeComment);
 app.get('/questions/session/updateComment/:commenter_ID/:update_Time/:comment2', login.isLoggedIn, questions.updateComment);
 app.get('/questions/session/getCommentTree/:question_ID', login.isLoggedIn, questions.getCommentTree);
-
+app.get('/candidate/session/becomeFavorite',login.isLoggedIn, candidate.becomeFavorite);
 
 
 //connecting the express object to listen on a particular port as defined in the config object. 
