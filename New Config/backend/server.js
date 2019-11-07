@@ -216,6 +216,10 @@ app.get('/voter/session/getCountySession', login.isLoggedIn, voter.getCountySess
 //Updates the voter Party
 app.get('/voter/session/updateParty/:partyName', login.isLoggedIn, voter.sessionUpdateParty);
 
+//Get zip code of current user
+app.get('/voter/session/getZipCodeSession', login.isLoggedIn, voter.getZipCodeSession);
+
+
 //Party Routes
 
 //Creates a party
@@ -255,6 +259,23 @@ app.get('/questions/session/removeQuestion/:question_ID', login.isLoggedIn, ques
 
 //Updates a question Time
 app.get('/questions/session/updateQuestion/:question_ID/:update_Time/:question2', login.isLoggedIn, questions.updateQuestion);
+
+// Creates a comment
+app.get('/questions/session/createComment/:comment_Time/:commenter_ID/:commentee_ID/:user_ID/:comment', login.isLoggedIn, questions.createComment);
+
+// Gets comment based on the comment ID
+app.get('/questions/session/getComment/:commenter_ID', login.isLoggedIn, questions.getComment);
+
+// Soft Removes comment based on the comment ID
+app.get('/questions/session/removeQuestion/:commenter_ID', login.isLoggedIn, questions.removeComment);
+
+// Updates a comment with new text and new time stamp
+app.get('/questions/session/updateComment/:commenter_ID/:update_Time/:comment2', login.isLoggedIn, questions.updateComment);
+
+// Outputs the tree of comments for a question
+app.get('/questions/session/getQuestionTree/:question_ID', login.isLoggedIn, questions.getCommentTree);
+
+
 
 
 //connecting the express object to listen on a particular port as defined in the config object. 
