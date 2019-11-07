@@ -67,6 +67,9 @@ connection.connect(function (err) {
   if (err)
     logger.error("Cannot connect to DB!");
   logger.info("Connected to the DB!");
+  for(var i = 0; i < routes.length; i++){
+    routes[i].createConnection(connection);
+  }
 });
 
 //Made by Steve

@@ -1,6 +1,6 @@
 var mysqlConnection;
 
-exports.setConnection = function(newMysqlConnection){
+exports.createConnection = function(newMysqlConnection){
     mysqlConnection = newMysqlConnection;
 };
 
