@@ -15,12 +15,33 @@ exports.becomeCandidate = function(req,res){
     });
 }
 
-exports.becomeFavorite = function (req, res) {
-    mysqlConnection.query(`INSERT INTO CANDIDATE_FAVORITE(CANDIDATEID) VALUES(${req.session.userId})` ,function (err, rows, fields) {
+exports.getcandidateFavorite = function (req, res) {
+    mysqlConnection.query(`SELECT candidateID FROM CANDIDATE_FAVORITE WHERE userID = '${req.params.userId}'`,function (err, rows, fields) {
         if (err) {
-            res.send(err);
+            res.send("Not Found");
         } else {
-            res.send("candidate favorite update");
+            res.send("candidate favorite found");
+        }
+    });
+}
+
+exports.updateCandidateFavorite = function (req, res) {
+    mysqlConnection.query(`UPDATE CANDIDATE_FAVORITE SET candidateID = '${req.params.candidateID}' WHERE userID = '${req.session.userId}';`, function (err, rows, fields) {
+        if (err) {
+            res.send("err");
+        
+        }else {
+            res.send("candidate favorite updated");
+        }
+    });
+}
+
+exports.getcandidatebyState = function (req, res) {
+    mysqlConnection.query(`SELECT candidateID FROM CANDIDATE WHERE state = '${req.params.state}';`,function (err, rows,fields) {
+        if (err) {
+            res.send("Not Found.");
+        } else {
+            res.send(row[0].candidateID);
         }
     });
 }
