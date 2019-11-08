@@ -1,9 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\public",
-    "\\src"
+    "\\database_server",
+    "\\database_server\\src"
   ],
-  "SelectedNode": "\\src",
+  "SelectedNode": "\\database_server\\src\\server.js",
   "PreviewInSolutionExplorer": false
 }
