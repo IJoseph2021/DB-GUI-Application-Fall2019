@@ -171,6 +171,7 @@ app.get('/candidate/session/becomeCandidate', login.isLoggedIn, candidate.become
 app.get('/candidate/session/getcandidateFavorite/:userID', login.isLoggedIn, candidate.getcandidateFavorite);
 app.get('/candidate/session/updateCandidateFavorite/:candidateID', login.isLoggedIn, candidate.updateCandidateFavorite);
 app.get('/candidate/session/getcandidatebyState/:state', login.isLoggedIn, candidate.getcandidatebyState);
+
 //connecting the express object to listen on a particular port as defined in the config object. 
 app.listen(config.port, config.host, (e) => {
   if (e) {
