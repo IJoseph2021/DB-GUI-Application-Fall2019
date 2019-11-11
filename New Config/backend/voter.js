@@ -124,14 +124,44 @@ exports.getZipCodeSession = function(req,res){
 exports.getVoterList = function(req,res){
     partyCode = req.params.partyCode
     zipCode = req.params.zipCode
-    
-    console.log(`SELECT USER.fname, USER.lname FROM USER INNER JOIN VOTER ON USER.ID = VOTER.userID WHERE partyCode = '${userID}' AND zipCode = '${zipCode}';`);
-    mysqlConnection.query(`SELECT USER.fname, USER.lname FROM USER INNER JOIN VOTER ON USER.ID = VOTER.userID WHERE partyCode = '${userID}' AND zipCode = '${zipCode}';`, function(err,rows,fields){
-        if(rows[0] != undefined){
-            res.send(rows);
-        }
-        else{
-            res.send("no users found that match preferences");
-        }
-    });
+    state = req.params.state
+    city = req.params.city
+
+    if(zipCode != "0"){
+
+        console.log(`SELECT USER.fname, USER.lname FROM USER INNER JOIN VOTER ON USER.ID = VOTER.userID WHERE partyCode = '${partyCode}' AND zipCode = '${zipCode}';`);
+        mysqlConnection.query(`SELECT USER.fname, USER.lname FROM USER INNER JOIN VOTER ON USER.ID = VOTER.userID WHERE partyCode = '${partyCode}' AND zipCode = '${zipCode}';`, function(err,rows,fields){
+            if(rows[0] != undefined){
+                res.send(rows);
+            }
+            else{
+                res.send("no users found that match zip code preference");
+            }
+        });
+    }
+
+    else if(city != "0"){
+        console.log(`SELECT USER.fname, USER.lname FROM USER INNER JOIN VOTER ON USER.ID = VOTER.userID WHERE partyCode = '${partyCode}' AND city = '${city}';`);
+        mysqlConnection.query(`SELECT USER.fname, USER.lname FROM USER INNER JOIN VOTER ON USER.ID = VOTER.userID WHERE partyCode = '${partyCode}' AND city = '${city}';`, function(err,rows,fields){
+            if(rows[0] != undefined){
+                res.send(rows);
+            }
+            else{
+                res.send("no users found that match city preference");
+            }
+        });
+    }
+
+    else
+    {
+        console.log(`SELECT USER.fname, USER.lname FROM USER INNER JOIN VOTER ON USER.ID = VOTER.userID WHERE partyCode = '${partyCode}' AND state = '${state}';`);
+        mysqlConnection.query(`SELECT USER.fname, USER.lname FROM USER INNER JOIN VOTER ON USER.ID = VOTER.userID WHERE partyCode = '${partyCode}' AND state = '${state}';`, function(err,rows,fields){
+            if(rows[0] != undefined){
+                res.send(rows);
+            }
+            else{
+                res.send("no users found that match state preference");
+            }
+        });
+    }
 }
