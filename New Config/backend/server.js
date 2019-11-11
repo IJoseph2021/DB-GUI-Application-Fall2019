@@ -216,6 +216,9 @@ app.get('/voter/session/getCountySession', login.isLoggedIn, voter.getCountySess
 //Updates the voter Party
 app.get('/voter/session/updateParty/:partyName', login.isLoggedIn, voter.sessionUpdateParty);
 
+//Gets voter list based on location
+app.get('/voter/session/getVoterList/:partyCode/:state/:city/:zipCode', login.isLoggedIn, voter.getVoterList);
+
 //Get zip code of current user
 app.get('/voter/session/getZipCodeSession', login.isLoggedIn, voter.getZipCodeSession);
 
@@ -273,7 +276,7 @@ app.get('/questions/session/removeQuestion/:commenter_ID', login.isLoggedIn, que
 app.get('/questions/session/updateComment/:commenter_ID/:update_Time/:comment2', login.isLoggedIn, questions.updateComment);
 
 // Outputs the tree of comments for a question
-app.get('/questions/session/getQuestionTree/:question_ID', login.isLoggedIn, questions.getCommentTree);
+app.get('/questions/session/getQuestionTree/:question_ID', login.isLoggedIn, questions.getQuestionTree);
 
 
 
