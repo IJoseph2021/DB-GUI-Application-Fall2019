@@ -163,4 +163,19 @@ exports.getQuestionTree = function(req, res){
                 res.send(rows);
             }
         });
-    }   
+    }  
+    
+exports.getCommentTree = function(req, res){
+    cID = req.params.commentee_ID
+    query = "SELECT comment FROM COMMENT WHERE COMMENT.commentee_ID = \'" + cID + "\'" +
+    "AND COMMENT.active = \"" + 1 + "\";";
+    mysqlConnection.query(query,
+        function(err,rows,fields){
+            if(err){
+                res.send("comment not found");
+            }
+            else{
+                res.send(rows);
+            }
+        });
+}
