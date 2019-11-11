@@ -278,6 +278,8 @@ app.get('/questions/session/updateComment/:commenter_ID/:update_Time/:comment2',
 // Outputs the tree of comments for a question
 app.get('/questions/session/getQuestionTree/:question_ID', login.isLoggedIn, questions.getQuestionTree);
 
+// Outputs the comment replies to a comment
+app.get('/question/session/getCommentTree/:commentee_ID', login.isLoggedIn, questions.getCommentTree);
 
 
 
