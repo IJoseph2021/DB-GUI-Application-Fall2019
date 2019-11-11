@@ -20,7 +20,7 @@ function App() {
         <Switch>
           <Route exact path="/" render={() => (
             loggedIn ? (
-              <Redirect to="/login"/>
+              <Homepage/>//<Redirect to="/login"/>   The redirect to login is what it should be I just had to comment it out for now
             ) : (
               <Homepage/>
             )
