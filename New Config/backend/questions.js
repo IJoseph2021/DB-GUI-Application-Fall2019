@@ -1,6 +1,6 @@
 var mysqlConnection;
 
-exports.setConnection = function(newMysqlConnection){
+exports.createConnection = function(newMysqlConnection){
     mysqlConnection = newMysqlConnection;
 };
 
@@ -149,16 +149,18 @@ exports.updateComment = function(req, res){
     });
 }
 
-exports.getCommentTree = function(req, res){
+exports.getQuestionTree = function(req, res){
     qID = req.params.question_ID
-    console.log(`SELECT comment FROM COMMENT WHERE commentee_ID = '${qID}';`);
-    mysqlConnection.query(`SELECT comment FROM COMMENT WHERE commentee_ID = '${qID}';`, function(err,rows,fields){
- 
-        if(rows[0] != undefined){
-            res.send(rows.comment);
-        }
-        else{
-            res.send("question not found");
-        }
-    });
-}
+    query = "SELECT comment FROM COMMENT WHERE COMMENT.commentee_ID = \'" + qID + "\'" +
+    "AND COMMENT.active = \"" + 1 + "\";";
+    mysqlConnection.query(query,
+        function(err,rows,fields){
+            if(err){
+                res.send("question not found");
+            }
+            else{
+                //res.send(rows.comment);
+                res.send(rows);
+            }
+        });
+    }    

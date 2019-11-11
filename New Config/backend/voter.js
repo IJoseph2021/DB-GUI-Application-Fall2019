@@ -117,3 +117,21 @@ exports.getZipCodeSession = function(req,res){
     });
 
 }
+
+//Parker Smith
+//Find list of voters by party and zipCode
+
+exports.getVoterList = function(req,res){
+    partyCode = req.params.partyCode
+    zipCode = req.params.zipCode
+    
+    console.log(`SELECT USER.fname, USER.lname FROM USER INNER JOIN VOTER ON USER.ID = VOTER.userID WHERE partyCode = '${userID}' AND zipCode = '${zipCode}';`);
+    mysqlConnection.query(`SELECT USER.fname, USER.lname FROM USER INNER JOIN VOTER ON USER.ID = VOTER.userID WHERE partyCode = '${userID}' AND zipCode = '${zipCode}';`, function(err,rows,fields){
+        if(rows[0] != undefined){
+            res.send(rows);
+        }
+        else{
+            res.send("no users found that match preferences");
+        }
+    });
+}
