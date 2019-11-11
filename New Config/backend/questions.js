@@ -8,13 +8,18 @@ exports.createConnection = function(newMysqlConnection){
 
 exports.createQuestion = function(req,res){
 
-    question_ID = req.params.question_ID;
-    question_Time = req.params.question_Time;
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+
+    //question_ID = req.params.question_ID;
+    question_Time = dateTime;
     asker_ID = req.params.asker_ID;
     askee_ID = req.params.askee_ID;
     question = req.params.question;
     active = 1;
-    update_Time = req.params.question_Time
+    update_Time = dateTime;
 
     query = "INSERT INTO electionBuddy.CANDIDATE_QUESTION (question_ID, question_Time, asker_ID, askee_ID, question, active, update_Time)"+
     " VALUES(\""+ question_ID + "\",\"" + question_Time + "\",\"" + asker_ID + "\",\"" + askee_ID + "\",\"" + question + "\",\"" + active + "\",\"" + update_Time + "\" );";
@@ -34,7 +39,7 @@ exports.createQuestion = function(req,res){
 
 exports.getQuestion = function(req, res){
     userID = req.session.userId;
-    qID = req.params.question_ID
+    qID = req.params.question_ID;
 
     console.log(`SELECT question FROM CANDIDATE_QUESTION WHERE question_ID = '${qID}';`);
     mysqlConnection.query(`SELECT question FROM CANDIDATE_QUESTION WHERE question_ID = '${qID}';`,function(err,rows,fields){
@@ -63,9 +68,15 @@ exports.removeQuestion = function(req, res){
 }
 
 exports.updateQuestion = function(req, res){
-    qID = req.params.question_ID
-    question2 = req.params.question2
-    update_Time = req.params.update_Time
+    
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+    
+    qID = req.params.question_ID;
+    question2 = req.params.question2;
+    update_Time = dateTime;
 
     console.log(`UPDATE CANDIDATE_QUESTION SET question = '${question2}', update_Time = '${update_Time}' WHERE question_ID = '${qID}';`);
     mysqlConnection.query(`UPDATE CANDIDATE_QUESTION SET question = '${question2}', update_Time = '${update_Time}' WHERE question_ID = '${qID}';`,function(err,rows,fields){
@@ -82,13 +93,19 @@ exports.updateQuestion = function(req, res){
 //remove, reply, soft delete, time stamps for create and update
 
 exports.createComment = function(req, res){
-    comment_Time = req.params.comment_Time;
-    commenter_ID = req.params.commenter_ID;
+    
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+
+    comment_Time = dateTime;
+    //commenter_ID = req.params.commenter_ID;
     commentee_ID = req.params.commentee_ID;
     user_ID = req.params.user_ID;
     comment = req.params.comment;
     active = 1;
-    update_Time = req.params.comment_Time
+    update_Time = dateTime;
 
     query = "INSERT INTO electionBuddy.COMMENT (comment_Time, commenter_ID, commentee_ID, user_ID, comment, active, update_Time)"+
     " VALUES(\""+ comment_Time + "\",\"" + commenter_ID + "\",\"" + commentee_ID + "\",\"" + user_ID + "\",\"" + comment + "\",\"" + active + "\",\"" + update_Time + "\" );";
@@ -134,9 +151,15 @@ exports.removeComment = function(req, res){
 }
 
 exports.updateComment = function(req, res){
-    cID = req.params.commenter_ID
-    comment2 = req.params.comment2
-    update_Time = req.params.update_Time
+
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+
+    cID = req.params.commenter_ID;
+    comment2 = req.params.comment2;
+    update_Time = dateTime;
 
     console.log(`UPDATE COMMENT SET comment = '${comment2}', update_Time = '${update_Time}' WHERE commenter_ID = '${cID}';`);
     mysqlConnection.query(`UPDATE COMMENT SET comment = '${comment2}', update_Time = '${update_Time}' WHERE commenter_ID = '${cID}';`,function(err,rows,fields){
