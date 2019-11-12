@@ -8,12 +8,19 @@ div.header-republican {
   
 div.header-democrat {
     width: 50%;
-    padding: 5% 0;
+    padding: 3% 0;
     float:right;
     text-align: center;
     background: rgba(2,66,242, 0.7);
 }
   
+.candidateInfo, .candidateNews {
+    background: lightgray;
+    width: 100%;
+    padding: 1% 0 0 0;
+    text-align: left;
+}
+
 .clear{
     clear: both;
 }
