@@ -228,6 +228,9 @@ app.get('/voter/session/getZipCodeSession', login.isLoggedIn, voter.getZipCodeSe
 //Creates a party
 app.get('/party/createParty/:party', login.isLoggedIn, party.createParty);
 
+//Create party and code
+app.get('/party/createPartyAndCode/:partyCode/:partyName', login.isLoggedIn, party.createPartyAndCode);
+
 //Gets a party name
 app.get('/party/getPartyName/:partyCode', party.getPartyName);
 

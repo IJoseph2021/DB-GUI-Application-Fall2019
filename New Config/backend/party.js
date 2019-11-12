@@ -48,15 +48,15 @@ exports.getPartyCode = function(req,res){
 exports.createPartyAndCode = function(req,res){
     partyCode = req.params.partyCode;
     partyName = req.params.partyName;
-    query = "INSERT INTO PARTY (partyCode, partyName) VALUES (\"" + partyCode + "\",\"" + partyName + "\");";
+    query = "INSERT INTO PARTY (partyCode, partyName)" + " VALUES (\"" + partyCode + "\",\"" + partyName + "\");";
     console.log(query);
     mysqlConnection.query(query, 
         function(err,rows,fields){
             if(err){
-                res.send("Question Creation Failed");
+                res.send("Party Creation Failed");
                 }
             else {
-                res.send("Question Created");
+                res.send("Party Created");
             }
         });
 }
