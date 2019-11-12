@@ -255,7 +255,7 @@ app.get('/candidate/session/becomeCandidate',login.isLoggedIn, candidate.becomeC
 //Questions Routes
 
 //Creates a questsion
-app.get('/questions/session/createQuestion/:question_ID/:question_Time/:asker_ID/:askee_ID/:question',login.isLoggedIn, questions.createQuestion);
+app.get('/questions/session/createQuestion/:asker_ID/:askee_ID/:question',login.isLoggedIn, questions.createQuestion);
 
 //Gets a question on ID
 app.get('/questions/session/getQuestion/:question_ID', login.isLoggedIn, questions.getQuestion);
@@ -264,10 +264,10 @@ app.get('/questions/session/getQuestion/:question_ID', login.isLoggedIn, questio
 app.get('/questions/session/removeQuestion/:question_ID', login.isLoggedIn, questions.removeQuestion);
 
 //Updates a question Time
-app.get('/questions/session/updateQuestion/:question_ID/:update_Time/:question2', login.isLoggedIn, questions.updateQuestion);
+app.get('/questions/session/updateQuestion/:question_ID/:question2', login.isLoggedIn, questions.updateQuestion);
 
 // Creates a comment
-app.get('/questions/session/createComment/:comment_Time/:commenter_ID/:commentee_ID/:user_ID/:comment', login.isLoggedIn, questions.createComment);
+app.get('/questions/session/createComment/:commenter_ID/:user_ID/:comment', login.isLoggedIn, questions.createComment);
 
 // Gets comment based on the comment ID
 app.get('/questions/session/getComment/:commenter_ID', login.isLoggedIn, questions.getComment);
@@ -276,7 +276,7 @@ app.get('/questions/session/getComment/:commenter_ID', login.isLoggedIn, questio
 app.get('/questions/session/removeQuestion/:commenter_ID', login.isLoggedIn, questions.removeComment);
 
 // Updates a comment with new text and new time stamp
-app.get('/questions/session/updateComment/:commenter_ID/:update_Time/:comment2', login.isLoggedIn, questions.updateComment);
+app.get('/questions/session/updateComment/:commenter_ID/:comment2', login.isLoggedIn, questions.updateComment);
 
 // Outputs the tree of comments for a question
 app.get('/questions/session/getQuestionTree/:question_ID', login.isLoggedIn, questions.getQuestionTree);
