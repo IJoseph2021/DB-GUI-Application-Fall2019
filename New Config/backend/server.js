@@ -252,6 +252,10 @@ app.get('/admin/session/verify/:ID',login.isLoggedIn,admin.isAdmin, admin.verify
 //Allows a user to become a candidate
 app.get('/candidate/session/becomeCandidate',login.isLoggedIn, candidate.becomeCandidate);
 
+//Return list of candidates by party code
+app.get('/candidate/session/getCandidateList/:partyCode',login.isLoggedIn, candidate.getCandidateList);
+
+
 //Questions Routes
 
 //Creates a questsion
