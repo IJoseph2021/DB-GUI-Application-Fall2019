@@ -10,6 +10,7 @@ import Signup from './Components/Signup/Signup';
 import UserProfile from './Components/ProfilePage/UserProfile';
 
 var loggedIn = true;
+var userLoggedIn = window.localStorage.getItem('userId')
 var signedUp = true;
 
 function App() {
@@ -19,7 +20,7 @@ function App() {
       <Nav/>
         <Switch>
           <Route exact path="/" render={() => (
-            loggedIn ? (
+            userLoggedIn ? (
               <Redirect to="/login"/>
             ) : (
               <Homepage/>
