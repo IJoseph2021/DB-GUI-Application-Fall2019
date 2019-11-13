@@ -8,9 +8,7 @@ CREATE TABLE `electionBuddy`.`USER` (
   `passhash` VARCHAR(20) NOT NULL,
   `email` VARCHAR(30) NULL,
   PRIMARY KEY (`ID`),
-  UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE,
-  UNIQUE INDEX `fname_UNIQUE` (`fname` ASC) VISIBLE,
-  UNIQUE INDEX `lname_UNIQUE` (`lname` ASC) VISIBLE);
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE);
 
 
 CREATE TABLE `electionBuddy`.`PARTY` (
