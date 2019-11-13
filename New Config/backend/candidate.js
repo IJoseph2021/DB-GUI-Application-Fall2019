@@ -44,7 +44,7 @@ exports.updateCandidateFavorite = function (req, res) {
     });
 }
 // Baohua Yu
-// get candidate by state/zipcode/partycode/city
+// get candidate by state/zipcode/city/partyCode
 exports.getCandidateList = function (req, res) {
     state = req.params.state
     zipCode = req.params.zipCode
