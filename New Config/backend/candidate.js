@@ -26,12 +26,12 @@ exports.getcandidateFavorite = function (req, res) {
         if (err) {
             res.send("Not Found");
         } else {
-            res.send("candidate favorite found");
+            res.send(rows);
         }
     });
 }
 
-//Baohua Yu
+
 // update the candidate favorite
 exports.updateCandidateFavorite = function (req, res) {
     mysqlConnection.query(`UPDATE CANDIDATE_FAVORITE SET candidateID = '${req.params.candidateID}' WHERE userID = '${req.session.userId}';`, function (err, rows, fields) {
