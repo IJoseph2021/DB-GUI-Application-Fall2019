@@ -135,22 +135,26 @@ app.get('/setupDevDb', function(req,res){
   for(var i = 0; i < routes.length; i++){
     routes[i].createConnection(devConnect);
   }
-  fileReader.readFile("mysqlDev_init/tables_init.sql","utf8", function(err,contents){
-    var query = "";
-    for(charCtr = 0; charCtr < contents.length; charCtr++){
-      query += contents[charCtr];
-      if(contents[charCtr] == ';'){
-        
-        
-        devConnect.query(query, function(err,rows,fields){
-          if(err){
-            logger.error(err.message);
-          }
-        })
-        query = "";
-      }
+  fileReader.readdir("mysqlDev_init", function(err, filenames){
+    if(err){
+      res.send(err.message);
+      return;
     }
-  });
+    filenames.forEach(function(filename){
+      fileReader.readFile("mysqlDev_init/" + filename, 'utf-8', function(err, contents) {
+      var query = "";
+      for(charCtr = 0; charCtr < contents.length; charCtr++){
+        query += contents[charCtr];
+        if(contents[charCtr] == ';'){
+          devConnect.query(query, function(err,rows,fields){
+            if(err){
+              logger.error(err.message);
+              }
+            });
+          query = "";
+          }
+        }
+      })})}); 
   res.send("DevDataLoaded");
 });
 
@@ -228,6 +232,9 @@ app.get('/voter/session/getZipCodeSession', login.isLoggedIn, voter.getZipCodeSe
 //Creates a party
 app.get('/party/createParty/:party', login.isLoggedIn, party.createParty);
 
+//Create party and code
+app.get('/party/createPartyAndCode/:partyCode/:partyName', login.isLoggedIn, party.createPartyAndCode);
+
 //Gets a party name
 app.get('/party/getPartyName/:partyCode', party.getPartyName);
 
@@ -247,12 +254,30 @@ app.get('/admin/session/verify/:ID',login.isLoggedIn,admin.isAdmin, admin.verify
 //Candidate Routes
 
 //Allows a user to become a candidate
-app.get('/candidate/session/becomeCandidate',login.isLoggedIn, candidate.becomeCandidate);
+app.get('/candidate/session/becomeCandidate', login.isLoggedIn, candidate.becomeCandidate);
+
+//Getting the candidate favorite
+app.get('/candidate/session/getcandidateFavorite/:userID', login.isLoggedIn, candidate.getcandidateFavorite);
+
+//Update the canidate favorite
+app.get('/candidate/session/updateCandidateFavorite/:candidateID', login.isLoggedIn, candidate.updateCandidateFavorite);
+
+//Get candidate by state
+app.get('/candidate/session/getcandidatebyState/:state', login.isLoggedIn, candidate.getcandidatebyState);
+
+
+//Return list of candidates by party code
+app.get('/candidate/session/getCandidateList/:partyCode',login.isLoggedIn, candidate.getCandidateList);
+
+
+//Return list of candidates by party code
+app.get('/candidate/session/getCandidateList/:partyCode',login.isLoggedIn, candidate.getCandidateList);
+
 
 //Questions Routes
 
 //Creates a questsion
-app.get('/questions/session/createQuestion/:question_ID/:question_Time/:asker_ID/:askee_ID/:question',login.isLoggedIn, questions.createQuestion);
+app.get('/questions/session/createQuestion/:asker_ID/:askee_ID/:question',login.isLoggedIn, questions.createQuestion);
 
 //Gets a question on ID
 app.get('/questions/session/getQuestion/:question_ID', login.isLoggedIn, questions.getQuestion);
@@ -261,10 +286,10 @@ app.get('/questions/session/getQuestion/:question_ID', login.isLoggedIn, questio
 app.get('/questions/session/removeQuestion/:question_ID', login.isLoggedIn, questions.removeQuestion);
 
 //Updates a question Time
-app.get('/questions/session/updateQuestion/:question_ID/:update_Time/:question2', login.isLoggedIn, questions.updateQuestion);
+app.get('/questions/session/updateQuestion/:question_ID/:question2', login.isLoggedIn, questions.updateQuestion);
 
 // Creates a comment
-app.get('/questions/session/createComment/:comment_Time/:commenter_ID/:commentee_ID/:user_ID/:comment', login.isLoggedIn, questions.createComment);
+app.get('/questions/session/createComment/:commenter_ID/:user_ID/:comment', login.isLoggedIn, questions.createComment);
 
 // Gets comment based on the comment ID
 app.get('/questions/session/getComment/:commenter_ID', login.isLoggedIn, questions.getComment);
@@ -273,7 +298,7 @@ app.get('/questions/session/getComment/:commenter_ID', login.isLoggedIn, questio
 app.get('/questions/session/removeQuestion/:commenter_ID', login.isLoggedIn, questions.removeComment);
 
 // Updates a comment with new text and new time stamp
-app.get('/questions/session/updateComment/:commenter_ID/:update_Time/:comment2', login.isLoggedIn, questions.updateComment);
+app.get('/questions/session/updateComment/:commenter_ID/:comment2', login.isLoggedIn, questions.updateComment);
 
 // Outputs the tree of comments for a question
 app.get('/questions/session/getQuestionTree/:question_ID', login.isLoggedIn, questions.getQuestionTree);
