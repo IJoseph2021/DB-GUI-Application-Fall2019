@@ -21,6 +21,7 @@ exports.becomeCandidate = function(req,res){
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // user can have more than one favorite candiates
 exports.getcandidateFavorite = function (req, res) {
     mysqlConnection.query(`SELECT candidateID FROM CANDIDATE_FAVORITE WHERE userID = '${req.params.userId}'`, function (err, rows, fields) {
@@ -86,6 +87,8 @@ exports.getCandidateList = function (req, res) {
 =======
 =======
 >>>>>>> dece6a4c541fab547ed277832d8d18f3eb190625
+=======
+>>>>>>> dece6a4c541fab547ed277832d8d18f3eb190625
 exports.getCandidateList = function(req,res){
     partyCode = req.params.partyCode;
 
@@ -100,7 +103,9 @@ exports.getCandidateList = function(req,res){
     });
     
 <<<<<<< HEAD
+<<<<<<< HEAD
 }
+>>>>>>> dece6a4c541fab547ed277832d8d18f3eb190625
 =======
 }
 >>>>>>> dece6a4c541fab547ed277832d8d18f3eb190625
