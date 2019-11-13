@@ -263,19 +263,10 @@ app.get('/candidate/session/getcandidateFavorite/:userID', login.isLoggedIn, can
 app.get('/candidate/session/updateCandidateFavorite/:candidateID', login.isLoggedIn, candidate.updateCandidateFavorite);
 
 //Get candidate by state
-app.get('/candidate/session/getcandidatebyState/:state', login.isLoggedIn, candidate.getcandidatebyState);
+app.get('/candidate/session/getcandidateList/:state/:zipCode/:city/:partyCode', login.isLoggedIn, candidate.getCandidateList);
 
 
-//Return list of candidates by party code
-app.get('/candidate/session/getCandidateList/:partyCode',login.isLoggedIn, candidate.getCandidateList);
 
-
-//Return list of candidates by party code
-app.get('/candidate/session/getCandidateList/:partyCode',login.isLoggedIn, candidate.getCandidateList);
-
-
-//Return list of candidates by party code
-app.get('/candidate/session/getCandidateList/:partyCode',login.isLoggedIn, candidate.getCandidateList);
 
 
 //Questions Routes
