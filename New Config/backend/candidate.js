@@ -19,7 +19,7 @@ exports.becomeCandidate = function(req,res){
     });
 }
 
-
+//Baohua Yu
 // user can have more than one favorite candiates
 exports.getcandidateFavorite = function (req, res) {
     mysqlConnection.query(`SELECT candidateID FROM CANDIDATE_FAVORITE WHERE userID = '${req.params.userId}'`, function (err, rows, fields) {
@@ -31,6 +31,8 @@ exports.getcandidateFavorite = function (req, res) {
     });
 }
 
+//Baohua Yu
+// update the candidate favorite
 exports.updateCandidateFavorite = function (req, res) {
     mysqlConnection.query(`UPDATE CANDIDATE_FAVORITE SET candidateID = '${req.params.candidateID}' WHERE userID = '${req.session.userId}';`, function (err, rows, fields) {
         if (err) {
@@ -41,6 +43,7 @@ exports.updateCandidateFavorite = function (req, res) {
         }
     });
 }
+// Baohua Yu
 // get candidate by state/zipcode/partycode/city
 exports.getCandidateList = function (req, res) {
     state = req.params.state
