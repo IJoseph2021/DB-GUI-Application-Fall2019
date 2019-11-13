@@ -101,6 +101,8 @@ exports.getCandidateList = function(req,res){
     
 <<<<<<< HEAD
 }
+=======
+}
 >>>>>>> dece6a4c541fab547ed277832d8d18f3eb190625
 =======
 }

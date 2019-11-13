@@ -274,6 +274,10 @@ app.get('/candidate/session/getCandidateList/:partyCode',login.isLoggedIn, candi
 app.get('/candidate/session/getCandidateList/:partyCode',login.isLoggedIn, candidate.getCandidateList);
 
 
+//Return list of candidates by party code
+app.get('/candidate/session/getCandidateList/:partyCode',login.isLoggedIn, candidate.getCandidateList);
+
+
 //Questions Routes
 
 //Creates a questsion
