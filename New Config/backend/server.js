@@ -135,22 +135,26 @@ app.get('/setupDevDb', function(req,res){
   for(var i = 0; i < routes.length; i++){
     routes[i].createConnection(devConnect);
   }
-  fileReader.readFile("mysqlDev_init/tables_init.sql","utf8", function(err,contents){
-    var query = "";
-    for(charCtr = 0; charCtr < contents.length; charCtr++){
-      query += contents[charCtr];
-      if(contents[charCtr] == ';'){
-        
-        
-        devConnect.query(query, function(err,rows,fields){
-          if(err){
-            logger.error(err.message);
-          }
-        })
-        query = "";
-      }
+  fileReader.readdir("mysqlDev_init", function(err, filenames){
+    if(err){
+      res.send(err.message);
+      return;
     }
-  });
+    filenames.forEach(function(filename){
+      fileReader.readFile("mysqlDev_init/" + filename, 'utf-8', function(err, contents) {
+      var query = "";
+      for(charCtr = 0; charCtr < contents.length; charCtr++){
+        query += contents[charCtr];
+        if(contents[charCtr] == ';'){
+          devConnect.query(query, function(err,rows,fields){
+            if(err){
+              logger.error(err.message);
+              }
+            });
+          query = "";
+          }
+        }
+      })})}); 
   res.send("DevDataLoaded");
 });
 

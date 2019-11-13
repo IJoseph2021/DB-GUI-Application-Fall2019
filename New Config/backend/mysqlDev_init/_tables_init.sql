@@ -126,3 +126,27 @@ CREATE TABLE `electionBuddy`.`CANDIDATE_COMMENT` (
     REFERENCES `electionBuddy`.`USER` (`ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
+
+
+CREATE TABLE `electionBuddy`.`ELECTIONS` (
+  `electionID` INT NOT NULL AUTO_INCREMENT,
+  `level` VARCHAR(30) NOT NULL,
+  `location` VARCHAR(45) NOT NULL,
+  `time` DATETIME NOT NULL,
+  PRIMARY KEY (`electionID`));
+
+CREATE TABLE `electionBuddy`.`ELECTION_CANDIDATES` (
+  `electionID` INT NOT NULL,
+  `userID` INT NOT NULL,
+  INDEX `electionID_idx` (`electionID` ASC) VISIBLE,
+  INDEX `electionCandidate_idx` (`userID` ASC) VISIBLE,
+  CONSTRAINT `electionID`
+    FOREIGN KEY (`electionID`)
+    REFERENCES `electionBuddy`.`ELECTIONS` (`electionID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `electionCandidate`
+    FOREIGN KEY (`userID`)
+    REFERENCES `electionBuddy`.`CANDIDATE` (`userID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
