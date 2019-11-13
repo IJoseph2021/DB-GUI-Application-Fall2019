@@ -270,12 +270,6 @@ app.get('/candidate/session/getcandidateList/:state', login.isLoggedIn, candidat
 app.get('/candidate/session/getCandidateList/:partyCode',login.isLoggedIn, candidate.getCandidateList);
 
 
-// //Return list of candidates by party code
-// app.get('/candidate/session/getCandidateList/:partyCode',login.isLoggedIn, candidate.getCandidateList);
-
-
-// //Return list of candidates by party code
-// app.get('/candidate/session/getCandidateList/:partyCode',login.isLoggedIn, candidate.getCandidateList);
 
 
 //Questions Routes
