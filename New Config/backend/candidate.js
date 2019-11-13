@@ -61,7 +61,7 @@ exports.getCandidateList = function (req, res) {
     }
     else if (zipCode != "0") {
         console.log(`SELECT USERID FROM CANDIDATE WHERE zipCode = '${zipCode}';`);
-        mysqlConnection.query(`SELECT USERID FROM CANDIDATE WHERE zipCode = '${zipCode}';`), function (err, rows, fields) {
+        mysqlConnection.query(`SELECT USERID FROM CANDIDATE WHERE zipCode = '${zipCode}';`, function (err, rows, fields) {
             if (rows[0] != undefined) {
                 res.send(rows);
 
@@ -71,29 +71,25 @@ exports.getCandidateList = function (req, res) {
         });
     }
 
-    else if (city != "0"){
+    else if (city != "0") {
         console.log(`SELECT USERID FROM CANDIDATE WHERE city = '${city}';`);
-        mysqlConnection.query(`SELECT USERID FROM CANDIDATE WHERE city = '${city}';`), function (err, rows, fields) {
+        mysqlConnection.query(`SELECT USERID FROM CANDIDATE WHERE city = '${city}';`, function (err, rows, fields) {
             if (rows[0] != undefined) {
                 res.send(rows);
             } else {
-                res.send("No candidate found base on he city reference")
-            }
-    }
-}
-
-
-    exports.getCandidateList = function (req, res) {
-        partyCode = req.params.partyCode;
-
-        console.log(`SELECT USER.fname, USER.lname FROM USER INNER JOIN CANDIDATE ON USER.ID = CANDIDATE.userID WHERE partyCode = '${partyCode}';`);
-        mysqlConnection.query(`SELECT USER.fname, USER.lname FROM USER INNER JOIN CANDIDATE ON USER.ID = CANDIDATE.userID WHERE partyCode = '${partyCode}';`, function (err, rows, fields) {
-            if (rows[0] != undefined) {
-                res.send(rows);
-            }
-            else {
-                res.send("no candidates found with that party");
+                res.send("No candidate found base on the city reference");
             }
         });
-
     }
+    else
+    {
+        console.log(`SELECT USERID FROM CANDIDATE WHERE partyCode = '${partyCode}';`);
+        mysqlConnection.query(`SELECT USERID FROM CANDIDATE WHERE partyCode = '${partyCode}';`, function (err, rows, field) {
+            if (rows[0] != undefined) {
+                res.send(rows);
+            } else {
+                res.send("No candidate found base on the partyCode reference");
+            }
+        });
+    }
+}
