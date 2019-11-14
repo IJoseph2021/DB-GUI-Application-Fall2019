@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "./Login.css";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 import UserFunctions from '../../API/UserFunctions';
 
 class Login extends Component {
@@ -9,27 +9,42 @@ class Login extends Component {
 		super(props);
 
 		this.state = {
-			username: null,
-			password: null,
-			validLogin: false
+			username: '',
+			password: ''
 		};
+
+		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
 	validateForm() {
 		return this.state.username.length > 0 && this.state.password.length > 0;
 	}
 
-	handleSubmit(event){
+	handleSubmit = async(event) => {
 		event.preventDefault();
 		const user = {
-			user_name: this.state.username,
-			user_password: this.state.password
+			username: this.state.username,
+			pass: this.state.password
 		};
+		// this.setState({username: '', password: ''})
+
+		this.userFuncs.login(user).then(res => {
+			if (res) {
+				localStorage.setItem('token', user.username);
+				this.props.history.push("/");
+			}
+			return res.data;
+		}).catch(err => {
+ 		//error caught here
+		});
 	}
 
     render() {
 			//console.log(this.state.username);
 			//console.log(this.state.password);
+			if (localStorage.getItem('token')) {
+				return <Redirect to="/" />;
+			}
 
       return (
         <div className="login-page">
@@ -40,6 +55,7 @@ class Login extends Component {
               <div className="form-group">
                 <label htmlFor="username">Username:</label>
                 <input
+								value={this.state.username}
 								id="username"
 								className="form-control"
 								type="text"
@@ -50,6 +66,7 @@ class Login extends Component {
               <div className="form-group">
                 <label htmlFor="password">Password:</label>
                 <input
+								value={this.state.password}
 								id="password"
 								className="form-control"
 								type="password"
@@ -57,7 +74,8 @@ class Login extends Component {
 								></input>
               </div>
               <button
-							type="submit"
+							onClick={this.handleSubmit}
+							type="button"
 							className="form-button"
 							>Log In</button>
             </form>

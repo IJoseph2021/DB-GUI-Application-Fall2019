@@ -4,6 +4,7 @@ class UserFunctions {
   URL = "http://electionbuddy.skylerlt.com:8000";
 
     login(user){
+      console.log(user)
         return new Promise((resolve, reject) => {
             return axios.get(this.URL + '/login/login/' + user.username + '/' + user.pass)
                 .then(resp => resolve(resp.data))
@@ -25,7 +26,7 @@ class UserFunctions {
         })
     }
 
-    updateUser(user) {
+    updateUserEmail(user) {
         return new Promise((resolve, reject) => {
             return axios.get(this.URL + '/login/updateEmail/' +
             user.username + '/' +

@@ -1,6 +1,6 @@
 import React from 'react';
 import "./Footer.css";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Link } from "react-router-dom";
 import logo from '../../logo_transparent.png';
 
 
