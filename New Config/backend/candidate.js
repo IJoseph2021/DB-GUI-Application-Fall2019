@@ -22,11 +22,11 @@ exports.becomeCandidate = function(req,res){
 //Baohua Yu
 // user can have more than one favorite candiates
 exports.getcandidateFavorite = function (req, res) {
-    mysqlConnection.query(`SELECT candidateID FROM CANDIDATE_FAVORITE WHERE userID = '${req.params.userId}'`, function (err, rows, fields) {
-        if (err) {
+    mysqlConnection.query(`SELECT candidateID FROM CANDIDATE_FAVORITE WHERE userID = '${req.session.userId}'`, function (err, rows, fields) {
+        if (rows[0] == undefined) {
             res.send("Not Found");
         } else {
-            res.send(rows);
+            res.send(rows[0].candidateID);
         }
     });
 }

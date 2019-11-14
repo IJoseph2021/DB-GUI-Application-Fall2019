@@ -271,7 +271,7 @@ app.get('/admin/session/addElection/:level/:location/:time/:name', login.isLogge
 app.get('/candidate/session/becomeCandidate', login.isLoggedIn, candidate.becomeCandidate);
 
 //Getting the candidate favorite
-app.get('/candidate/session/getcandidateFavorite/:userID', login.isLoggedIn, candidate.getcandidateFavorite);
+app.get('/candidate/session/getcandidateFavorite', login.isLoggedIn, candidate.getcandidateFavorite);
 
 //Update the canidate favorite
 app.get('/candidate/session/updateCandidateFavorite/:candidateID', login.isLoggedIn, candidate.updateCandidateFavorite);
