@@ -9,23 +9,30 @@ export default class UserProfile extends React.Component {
 			username: "John",
       firstName: "",
       lastName: "",
-      state: "",
+      us_state: "",
       city: "",
       zip: "",
       party: ""
 		};
 	}
 
-	validateForm() {
-		return this.state.username.length > 0 && this.state.password.length > 0;
+
+	getUserInfo = async (event) => {
+
 	}
 
-	handleSubmit(event){
+	handleSubmit = async (event) =>{
 		event.preventDefault();
-		const user = {
-			user_name: this.state.username,
-			user_password: this.state.password
 
+		const userInfo = {
+			username: this.state.username,
+			pass: this.state.password,
+			firstname: this.state.firstName,
+			lastName: this.state.lastName,
+			us_state: this.state.us_state,
+			city: this.state.city,
+			zip: this.state.zip,
+			party: this.state.party
 		};
 	}
 
@@ -39,6 +46,7 @@ export default class UserProfile extends React.Component {
               <div className="form-group">
                 <label htmlFor="username">Username:</label>
                 <input
+								value={this.state.username}
 								id="username"
 								className="form-control"
 								type="text"
@@ -49,6 +57,7 @@ export default class UserProfile extends React.Component {
               <div className="form-group">
                 <label htmlFor="firstName">First Name:</label>
                 <input
+								value={this.state.firstname}
 								id="firstName"
 								className="form-control"
 								type="text"
@@ -59,6 +68,7 @@ export default class UserProfile extends React.Component {
               <div className="form-group">
                 <label htmlFor="lastName">Last Name:</label>
                 <input
+								value={this.state.lastname}
                 id="lastName"
                 className="form-control"
                 type="text"
@@ -66,13 +76,14 @@ export default class UserProfile extends React.Component {
                 ></input>
               </div>
 
-              <div class="form-group">
+              <div className="form-group">
               	<label htmlFor="state">State:</label>
               		<select
+									value={this.state.us_state}
                   className ="form-control"
                   id="state"
                   name="state"
-                  onChange={event => this.setState({ state: event.target.value })}>
+                  onChange={event => this.setState({ us_state: event.target.value })}>
               			<option value="">N/A</option>
               			<option value="AK">Alaska</option>
               			<option value="AL">Alabama</option>
@@ -132,6 +143,7 @@ export default class UserProfile extends React.Component {
               <div className="form-group">
                 <label htmlFor="city">City:</label>
                 <input
+								value={this.state.city}
                 id="city"
                 className="form-control"
                 type="text"
@@ -142,6 +154,7 @@ export default class UserProfile extends React.Component {
               <div className="form-group">
                 <label htmlFor="zip">Zipcode:</label>
                 <input
+								value={this.state.zip}
                 id="zip"
                 className="form-control"
                 type="text"
@@ -151,9 +164,10 @@ export default class UserProfile extends React.Component {
 
 
               {/* 5 choices for party: Republican, Democratic, Independent */}
-              <div class="form-group">
+              <div className="form-group">
                 <label htmlFor="party">Party:</label>
                   <select
+									value={this.state.party}
                   className ="form-control"
                   id="party"
                   name="party"

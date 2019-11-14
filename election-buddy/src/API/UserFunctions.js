@@ -1,11 +1,12 @@
 import axios from 'axios';
 
 class UserFunctions {
-  URL = "http://electionbuddy.skylerlt.com:4000";
+  URL = "http://electionbuddy.skylerlt.com:8000";
 
     login(user){
+      console.log(user)
         return new Promise((resolve, reject) => {
-            return axios.post(this.URL + '/login', user)
+            return axios.get(this.URL + '/login/login/' + user.username + '/' + user.pass)
                 .then(resp => resolve(resp.data))
                 .catch(resp => reject(resp));
         })
@@ -13,27 +14,36 @@ class UserFunctions {
 
     signUp(newUser) {
         return new Promise((resolve, reject) => {
-            return axios.post(this.URL + '/register', newUser)
+            return axios.get(this.URL + '/create/' +
+            newUser.username + '/' +
+            newUser.fname + '/' +
+            newUser.lname + '/' +
+            newUser.pass + '/' +
+            newUser.email
+          )
                 .then(resp => resolve(resp.data))
                 .catch(resp => reject(resp));
         })
     }
 
-    updateUser(user, userId) {
+    updateUserEmail(user) {
         return new Promise((resolve, reject) => {
-            return axios.post(this.URL + '/users/info/update', user, {params :{
-                user_id: userId
-            }}).then(resp => resolve(resp.data))
+            return axios.get(this.URL + '/login/updateEmail/' +
+            user.username + '/' +
+            user.email
+            ).then(resp => resolve(resp.data))
                 .catch(resp => reject(resp));
         })
     }
-    getUser(userId) {
+
+    getUser(user){
+
+    }
+
+    getUserEmail(username) {
         return new Promise((resolve, reject) => {
-            return axios.get(this.URL + '/users/info', {
-                params: {
-                    user_id: userId
-                }
-            }).then(resp => resolve(resp.data))
+            return axios.get(this.URL + '/login/getEmail/' + username)
+                .then(resp => resolve(resp.data))
                 .catch(resp => reject(resp));
         })
     }
