@@ -44,6 +44,7 @@ exports.updateCandidateFavorite = function (req, res) {
     });
 }
 // Baohua Yu
+//Isaac J.
 // get candidate by state/zipcode/city/partyCode
 exports.getCandidateList = function (req, res) {
     state = req.params.state
@@ -95,4 +96,31 @@ exports.getCandidateList = function (req, res) {
             }
         });
     }
+}
+
+//Isaac Joseph
+exports.enterElection = function(req,res){
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+
+    electionID = req.params.electionID;
+    level = req.params.user_level;
+    location = req.params.location;
+    time = dateTime;
+ 
+    query = "INSERT INTO ELECTIONS (electionID, level, location, time)"+
+    " VALUES(\""+ electionID + "\",\"" + level + "\",\"" + location + "\",\"" + time + "\");";
+
+    console.log(query);
+    mysqlConnection.query(query, 
+        function(err,rows,fields){
+            if(err){
+                res.send("Candidate addition to election Failed");
+                }
+            else {
+                res.send("Candidate addition to election Created");
+            }
+        });
 }

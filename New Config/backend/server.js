@@ -265,6 +265,8 @@ app.get('/candidate/session/updateCandidateFavorite/:candidateID', login.isLogge
 //Get candidate by state
 app.get('/candidate/session/getcandidateList/:state/:zipCode/:city/:partyCode', login.isLoggedIn, candidate.getCandidateList);
 
+app.get('/candidate/session/enterElection/:electionID/:level/:location', login.isLoggedIn, candidate.enterElection);
+
 
 
 
