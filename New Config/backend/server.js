@@ -264,10 +264,19 @@ app.get('/admin/session/verify/:ID',login.isLoggedIn,admin.isAdmin, admin.verify
 //Candidate Routes
 
 //Allows a user to become a candidate
-app.get('/candidate/session/becomeCandidate',login.isLoggedIn, candidate.becomeCandidate);
+app.get('/candidate/session/becomeCandidate', login.isLoggedIn, candidate.becomeCandidate);
 
-//Return list of candidates by party code
-app.get('/candidate/session/getCandidateList/:partyCode',login.isLoggedIn, candidate.getCandidateList);
+//Getting the candidate favorite
+app.get('/candidate/session/getcandidateFavorite/:userID', login.isLoggedIn, candidate.getcandidateFavorite);
+
+//Update the canidate favorite
+app.get('/candidate/session/updateCandidateFavorite/:candidateID', login.isLoggedIn, candidate.updateCandidateFavorite);
+
+//Get candidate by state
+app.get('/candidate/session/getcandidateList/:state/:zipCode/:city/:partyCode', login.isLoggedIn, candidate.getCandidateList);
+
+
+
 
 
 //Questions Routes
