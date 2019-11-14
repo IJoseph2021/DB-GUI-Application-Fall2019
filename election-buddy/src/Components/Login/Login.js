@@ -42,6 +42,8 @@ class Login extends Component {
     render() {
 			//console.log(this.state.username);
 			//console.log(this.state.password);
+
+			// This causes stack overflow in react
 			// if (localStorage.getItem('token')) {
 			// 	return <Redirect to="/" />;
 			// }
