@@ -121,47 +121,46 @@ exports.getZipCodeSession = function(req,res){
 //Parker Smith
 //Find list of voters by party and zipCode
 
-exports.getVoterList = function(req,res){
+exports.getVoterListZipCode = function(req,res){
     partyCode = req.params.partyCode
     zipCode = req.params.zipCode
-    state = req.params.state
-    city = req.params.city
-
-    if(zipCode != "0"){
-
-        console.log(`SELECT USER.fname, USER.lname FROM USER INNER JOIN VOTER ON USER.ID = VOTER.userID WHERE partyCode = '${partyCode}' AND zipCode = '${zipCode}';`);
-        mysqlConnection.query(`SELECT USER.fname, USER.lname FROM USER INNER JOIN VOTER ON USER.ID = VOTER.userID WHERE partyCode = '${partyCode}' AND zipCode = '${zipCode}';`, function(err,rows,fields){
-            if(rows[0] != undefined){
-                res.send(rows);
-            }
-            else{
-                res.send("no users found that match zip code preference");
-            }
-        });
-    }
-
-    else if(city != "0"){
-        console.log(`SELECT USER.fname, USER.lname FROM USER INNER JOIN VOTER ON USER.ID = VOTER.userID WHERE partyCode = '${partyCode}' AND city = '${city}';`);
-        mysqlConnection.query(`SELECT USER.fname, USER.lname FROM USER INNER JOIN VOTER ON USER.ID = VOTER.userID WHERE partyCode = '${partyCode}' AND city = '${city}';`, function(err,rows,fields){
-            if(rows[0] != undefined){
-                res.send(rows);
-            }
-            else{
-                res.send("no users found that match city preference");
-            }
-        });
-    }
-
-    else
-    {
-        console.log(`SELECT USER.fname, USER.lname FROM USER INNER JOIN VOTER ON USER.ID = VOTER.userID WHERE partyCode = '${partyCode}' AND state = '${state}';`);
-        mysqlConnection.query(`SELECT USER.fname, USER.lname FROM USER INNER JOIN VOTER ON USER.ID = VOTER.userID WHERE partyCode = '${partyCode}' AND state = '${state}';`, function(err,rows,fields){
-            if(rows[0] != undefined){
-                res.send(rows);
-            }
-            else{
-                res.send("no users found that match state preference");
-            }
-        });
-    }
+   
+    console.log(`SELECT USER.fname, USER.lname FROM USER INNER JOIN VOTER ON USER.ID = VOTER.userID WHERE partyCode = '${partyCode}' AND zipCode = '${zipCode}';`);
+    mysqlConnection.query(`SELECT USER.fname, USER.lname FROM USER INNER JOIN VOTER ON USER.ID = VOTER.userID WHERE partyCode = '${partyCode}' AND zipCode = '${zipCode}';`, function(err,rows,fields){
+        if(rows[0] != undefined){
+            res.send(rows);
+        }
+        else{
+            res.send("no users found that match zip code preference");
+        }
+    });
 }
+    
+exports.getVoterListCity = function(req,res){
+    partyCode = req.params.partyCode
+    city = req.params.city
+    console.log(`SELECT USER.fname, USER.lname FROM USER INNER JOIN VOTER ON USER.ID = VOTER.userID WHERE partyCode = '${partyCode}' AND city = '${city}';`);
+    mysqlConnection.query(`SELECT USER.fname, USER.lname FROM USER INNER JOIN VOTER ON USER.ID = VOTER.userID WHERE partyCode = '${partyCode}' AND city = '${city}';`, function(err,rows,fields){
+        if(rows[0] != undefined){
+            res.send(rows);
+        }
+        else{
+            res.send("no users found that match city preference");
+        }
+    });
+}
+
+exports.getVoterListState = function(req,res){
+    partyCode = req.params.partyCode
+    state = req.params.state
+    console.log(`SELECT USER.fname, USER.lname FROM USER INNER JOIN VOTER ON USER.ID = VOTER.userID WHERE partyCode = '${partyCode}' AND state = '${state}';`);
+    mysqlConnection.query(`SELECT USER.fname, USER.lname FROM USER INNER JOIN VOTER ON USER.ID = VOTER.userID WHERE partyCode = '${partyCode}' AND state = '${state}';`, function(err,rows,fields){
+        if(rows[0] != undefined){
+            res.send(rows);
+        }
+        else{
+            res.send("no users found that match state preference");
+        }
+    });
+}
+
