@@ -20,7 +20,7 @@ class Login extends Component {
 		return this.state.username.length > 0 && this.state.password.length > 0;
 	}
 
-	handleSubmit = async(event) => {
+	async handleSubmit(event){
 		event.preventDefault();
 		const user = {
 			username: this.state.username,
@@ -42,9 +42,9 @@ class Login extends Component {
     render() {
 			//console.log(this.state.username);
 			//console.log(this.state.password);
-			if (localStorage.getItem('token')) {
-				return <Redirect to="/" />;
-			}
+			// if (localStorage.getItem('token')) {
+			// 	return <Redirect to="/" />;
+			// }
 
       return (
         <div className="login-page">
