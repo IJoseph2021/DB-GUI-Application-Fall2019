@@ -8,6 +8,7 @@ INSERT INTO
         ("11", "DEM", 90278, "CA", "Los Angeles"),
         ("18", "REP", 90278, "CA", "Los Angeles"),
         ("21", "REP", 75275, "TX", "Austin"),
-        ("18", "REP", 72566, "TX", "Huoston"),
-        ("17", "DEM", 75266, "TX", "Huoston");
+        ("13", "REP", 72566, "TX", "Huoston"),
+        ("17", "DEM", 75266, "TX", "Huoston"),
+        ("22", "FES", 33468, "CA", "Los Angeles");
         

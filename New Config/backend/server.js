@@ -135,26 +135,36 @@ app.get('/setupDevDb', function(req,res){
   for(var i = 0; i < routes.length; i++){
     routes[i].createConnection(devConnect);
   }
-  fileReader.readdir("mysqlDev_init", function(err, filenames){
-    if(err){
-      res.send(err.message);
-      return;
-    }
-    filenames.forEach(function(filename){
-      fileReader.readFile("mysqlDev_init/" + filename, 'utf-8', function(err, contents) {
-      var query = "";
-      for(charCtr = 0; charCtr < contents.length; charCtr++){
-        query += contents[charCtr];
-        if(contents[charCtr] == ';'){
-          devConnect.query(query, function(err,rows,fields){
-            if(err){
-              logger.error(err.message);
-              }
-            });
+  var fileOrder= [];
+  fileReader.readFile("mysqlDev_init/order.txt",'utf-8', function(err, contents){
+    file = "";
+    for(char = 0; char < contents.length;char++){
+      if(contents[char] != '\n'){
+        file +=contents[char];
+      }
+      else {
+        console.log(file);
+        fileReader.readFile("mysqlDev_init/" + file, 'utf-8', function(err,contents){
           query = "";
-          }
-        }
-      })})}); 
+          
+          if(contents != undefined) for(char = 0; char < contents.length; char++){
+            //console.log(contents[char]);
+            if(contents[char] != ';'){
+              query+=contents[char];
+            }else {
+              devConnect.query(query,function(err,rows,fields){
+                if(err){
+                  logger.error(err.message);
+                }
+              });
+              query = "";
+            }
+          };
+        })
+        file = "";
+      }
+    }
+    });
   res.send("DevDataLoaded");
 });
 
@@ -249,6 +259,9 @@ app.get('/admin/session/getAdminLevel', login.isLoggedIn, admin.getAdminLevel);
 
 //Verifies a candidate
 app.get('/admin/session/verify/:ID',login.isLoggedIn,admin.isAdmin, admin.verifyCandidate);
+
+//adds an election
+app.get('/admin/session/addElection/:level/:location/:time/:name', login.isLoggedIn, admin.isAdmin, admin.addElection);
 
 
 //Candidate Routes

@@ -1,0 +1,12 @@
+_tables_init.sql
+initialUsers.sql
+initialParty.sql
+initialVoter.sql
+initialCandidates.sql
+initialAdmin.sql
+initialFavorite.sql
+initialQuestions.sql
+initialComments.sql
+initialElections.sql
+initialElectionCandidates.sql
+END

@@ -1,4 +1,6 @@
-INSERT INTO CANDIDATE_COMMENT VALUES
-("00001", "00001","2019-04-23" ,"23456789", "89891212", "some wood"),
-("00001", "00002", "2019-04-24" ,"54899458", "33445566", "the earth is flat, prove that its not lol"),
-("00003", "00003", "2019-03-03","19829878", "45453333", "idk");
+
+INSERT INTO CANDIDATE_COMMENT (questionID, commenterID,commenteeID,commentTime, comment)
+    VALUES
+    ("1", "3","7","2019-04-23", "some wood"),
+    ("2", "6","11", "2019-04-24", "the earth is flat, prove that its not lol"),
+    ("3", "7", "20", "2019-03-03", "idk");

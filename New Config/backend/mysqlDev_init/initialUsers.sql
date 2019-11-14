@@ -21,4 +21,5 @@ INSERT INTO USER (username,fname,lname,passhash,email)
     ("survivor", "Kelsier", "lowBorn", "eleventh", "kelsier@aol.com"),
     ("jMat68","Jared", "Matson", "KendallJenner123", "jdog@flatEarth.com"),
     ("mickysweets", "Maxwell", "Case", "yitties", "maxwellCase@gmail.com"),
-    ("Jumbo", "Juan", "Arias", "francis15", "jArias@hotmail.com");
+    ("Jumbo", "Juan", "Arias", "francis15", "jArias@hotmail.com"),
+    ("Cubert", "Carlos", "Arazoza", "pitterPatter", "balls@tugg.com");
