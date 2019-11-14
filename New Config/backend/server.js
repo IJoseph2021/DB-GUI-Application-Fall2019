@@ -243,6 +243,15 @@ app.get('/voter/session/getVoterListCity/:partyCode/:city', login.isLoggedIn, vo
 //Get zip code of current user
 app.get('/voter/session/getZipCodeSession', login.isLoggedIn, voter.getZipCodeSession);
 
+// Follow a Question
+app.get('/voter/session/followTopic/:question_ID', login.isLoggedIn, voter.followTopic);
+
+// Unfollow a question
+app.get('/voter/session/unfollowTopic/:question_ID', login.isLoggedIn, voter.unfollowTopic);
+
+// Get List of followed questions
+app.get('/voter/session/getFollowList', login.isLoggedIn, voter.getFollowList);
+
 
 //Party Routes
 
