@@ -9,7 +9,6 @@ class Nav extends Component {
       <div>
         <div className="navBar">
           <ul>
-            <Router>
               <li className = "right"><Link to="/"><img src={logo} alt="Logo"/></Link></li>
               <li className = "right"><Link to="/news">News</Link></li>
               <li className = "right"><Link to="/contact">Contact Us</Link></li>
@@ -18,7 +17,6 @@ class Nav extends Component {
               }
               <li className = "right"><Link to="/login">Login</Link></li>
               <li className = "right-border"><Link to="/registration">Sign up</Link></li>
-            </Router>
           </ul>
           <div className = "clear"></div>
         </div>

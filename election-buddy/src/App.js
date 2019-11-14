@@ -8,38 +8,53 @@ import Homepage from './Components/Homepage/Homepage';
 import Login from './Components/Login/Login';
 import Signup from './Components/Signup/Signup';
 import UserProfile from './Components/ProfilePage/UserProfile';
+class App extends React.Component {
+	constructor(props) {
+		super(props);
 
-var userLoggedIn = window.localStorage.getItem('token')
+		this.state = {
+			loginState: !!localStorage.getItem('token')
+		}
+		this.updateLoginState = this.updateLoginState.bind(this);
+	}
 
-function App() {
-  console.log(userLoggedIn)
-  return (
-    <div>
-    <Router>
+	updateLoginState = () => {
+		if(localStorage.getItem('token')){
+			this.setState({
+					loginState: true
+			});
+		}
+		else{
+			this.setState({
+				loginState: false
+			});
+		}
+	};
+
+	render() {
+		return (
+			<div>
+      <Router>
       <Nav/>
-        <Switch>
+				<Switch>
           <Route exact path="/" render={() => (
-            userLoggedIn ? (
+            this.state.loginState ? (
               <Homepage/>
             ) : (
               <Redirect to="/login"/>
             )
           )}/>
-          <Route path="/login" component={Login}/>
-          <Route path="/registration" component={Signup}/>
-
-          <Route exact path="/profile" render={() => (
-                      userLoggedIn ? (
-                        <UserProfile/>
-                      ) : (
-                        <Redirect to="/login"/>
-                      )
-                    )}/>
-        </Switch>
+					{this.state.loginState && <Route path="/" exact component={Homepage} />}
+					{/*{!this.state.loginState && <Route exact path="/login" render={(props) => <Login {...props} updateLoginState={this.updateLoginState}/>}/>}*/}
+					{!this.state.loginState && <Route exact path="/login" render={(props) => <Login {...props} updateLoginState={this.updateLoginState}/>}/>}
+					{!this.state.loginState && <Route exact path="/registration" exact component={Signup}/>}
+					{this.state.loginState && <Route path="/profile" exact component={UserProfile}/>}
+				</Switch>
+      </Router>
       <Footer/>
-    </Router>
-    </div>
-  );
+			</div>
+		);
+	}
 }
 
 export default App;

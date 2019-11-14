@@ -33,6 +33,11 @@ hr {
   width: 100%;
 }
 
+.invalid-signup{
+  text-align: center;
+  color: red;
+}
+
 input[type=password]{
   width: 100%;
   padding: 12px 20px;
@@ -53,7 +58,7 @@ input[type=text]{
   box-sizing: border-box;
 }
 
-button[type=submit] {
+button[type=button] {
   width: 100%;
   background-color: blue;
   color: white;

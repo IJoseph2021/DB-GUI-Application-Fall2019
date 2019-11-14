@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "./Login.css";
-import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
+
 import UserFunctions from '../../API/UserFunctions';
 
 class Login extends Component {
@@ -10,7 +10,8 @@ class Login extends Component {
 
 		this.state = {
 			username: '',
-			password: ''
+			password: '',
+			validLogin: true
 		};
 
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -20,37 +21,39 @@ class Login extends Component {
 		return this.state.username.length > 0 && this.state.password.length > 0;
 	}
 
-	async handleSubmit(event){
-		event.preventDefault();
-		const user = {
-			username: this.state.username,
-			pass: this.state.password
-		};
-		// this.setState({username: '', password: ''})
+	async handleSubmit(event) {
+	  event.preventDefault();
+			const user = {
+				username: this.state.username,
+				pass: this.state.password
+			};
+	  this.userFuncs.login(user).then(res => {
+				if (res.indexOf("login unsuccessful") > 0) {
+					this.setState({validLogin: false})
+					this.forceUpdate()
+				}
+				else{
+					localStorage.setItem('token', user.username);
+					this.props.updateLoginState();
+					this.props.history.push('/');
+				}
 
-		this.userFuncs.login(user).then(res => {
-			if (res) {
-				localStorage.setItem('token', user.username);
-				this.props.history.push("/");
-			}
-			return res.data;
-		}).catch(err => {
- 		//error caught here
-		});
-	}
+			}).catch(err => {
+	 		//error caught here
+			});
+
+		}
 
     render() {
-			//console.log(this.state.username);
-			//console.log(this.state.password);
-
-			// This causes stack overflow in react
-			// if (localStorage.getItem('token')) {
-			// 	return <Redirect to="/" />;
-			// }
-
+				// if (localStorage.getItem('token')) {
+				// 	this.props.history.push('/');
+				// }
       return (
         <div className="login-page">
           <div>
+					{
+						this.state.validLogin ? "" : <div className="invalid">Invalid Login. Please try again.</div>
+					}
             <h3 className = "login-heading">Sign in to your account</h3>
             <hr />
             <form>
