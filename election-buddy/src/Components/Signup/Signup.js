@@ -25,7 +25,7 @@ class Signup extends Component {
     validateForm() {
         return (
             this.state.username.length > 0 &&
-            this.state.password > 0 &&
+            this.state.password.length > 0 &&
             this.state.password == this.state.confirmPassword
         );
     }
