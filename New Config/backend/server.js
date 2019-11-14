@@ -19,10 +19,11 @@ const candidate = require('./candidate.js');
 const session = require('express-session');
 var fileReader = require('fs');
 const questions = require('./questions.js');
+const elections = require('./elections.js');
 
 
 //List of all potential route files.
-const routes = [login,voter,party,admin,candidate, questions];
+const routes = [login,voter,party,admin,candidate, questions, elections];
 
 //create the mysql connection object.  
 var connection = mysql.createConnection({
@@ -313,6 +314,9 @@ app.get('/questions/session/getQuestionTree/:question_ID', login.isLoggedIn, que
 
 // Outputs the comment replies to a comment
 app.get('/question/session/getCommentTree/:commentee_ID', login.isLoggedIn, questions.getCommentTree);
+
+//election routes
+app.get('/election/getElections/citiesWithElections', elections.getElectionsInCities);
 
 
 
