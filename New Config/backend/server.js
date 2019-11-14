@@ -231,8 +231,14 @@ app.get('/voter/session/getCountySession', login.isLoggedIn, voter.getCountySess
 //Updates the voter Party
 app.get('/voter/session/updateParty/:partyName', login.isLoggedIn, voter.sessionUpdateParty);
 
-//Gets voter list based on location
-app.get('/voter/session/getVoterList/:partyCode/:state/:city/:zipCode', login.isLoggedIn, voter.getVoterList);
+//Gets voter list based on zip Code
+app.get('/voter/session/getVoterListZipCode/:partyCode/:zipCode', login.isLoggedIn, voter.getVoterListZipCode);
+
+//Gets voter list based on state
+app.get('/voter/session/getVoterListState/:partyCode/:state', login.isLoggedIn, voter.getVoterListState);
+
+//Gets voter list based on city
+app.get('/voter/session/getVoterListCity/:partyCode/:city', login.isLoggedIn, voter.getVoterListCity);
 
 //Get zip code of current user
 app.get('/voter/session/getZipCodeSession', login.isLoggedIn, voter.getZipCodeSession);
