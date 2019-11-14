@@ -260,6 +260,9 @@ app.get('/admin/session/getAdminLevel', login.isLoggedIn, admin.getAdminLevel);
 //Verifies a candidate
 app.get('/admin/session/verify/:ID',login.isLoggedIn,admin.isAdmin, admin.verifyCandidate);
 
+//adds an election
+app.get('/admin/session/addElection/:level/:location/:time/:name', login.isLoggedIn, admin.isAdmin, admin.addElection);
+
 
 //Candidate Routes
 
