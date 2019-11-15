@@ -164,3 +164,53 @@ exports.getVoterListState = function(req,res){
     });
 }
 
+//follow, unfollow, get list of followed topics
+exports.followTopic = function(req,res){
+    qID = req.params.question_ID
+    user_ID = req.session.userId
+ 
+    console.log(`INSERT INTO electionBuddy.HOT_TOPIC (question_ID, user_ID) VALUES(${qID}, ${user_ID})`);
+    mysqlConnection.query(`INSERT INTO electionBuddy.HOT_TOPIC (question_ID, user_ID) VALUES(${qID}, ${user_ID})`, function(err, rows, fields){
+        if(err){
+            res.send("Follow Question Failed");
+            }
+        else {
+            res.send("Question Followed");
+        }
+    });
+}
+
+exports.unfollowTopic = function(req,res){
+    qID = req.params.question_ID
+    user_ID = req.session.userId
+ 
+    console.log(`DELETE FROM HOT_TOPIC WHERE question_ID = '${qID}' AND user_ID = '${user_ID}';`);
+
+    mysqlConnection.query(`DELETE FROM HOT_TOPIC WHERE question_ID = '${qID}' AND user_ID = '${user_ID}';`, function(err, rows, fields){
+        if(err){
+            res.send("Unable to Unfollow");
+            }
+        else {
+            res.send("Question Unfollowed");
+        }
+    });
+}
+
+exports.getFollowList = function(req, res){
+    user_ID = req.session.userId
+
+    console.log(`SELECT question FROM HOT_TOPIC INNER JOIN CANDIDATE_QUESTION ON HOT_TOPIC question_ID = CANDIDATE_QUESTION.question_ID WHERE user_ID = '${user_ID}';`);
+    mysqlConnection.query(`SELECT question
+        FROM HOT_TOPIC 
+        INNER JOIN CANDIDATE_QUESTION ON HOT_TOPIC.question_ID = CANDIDATE_QUESTION.question_ID
+        WHERE user_ID = '${user_ID}';`, function(err, rows, fields){
+        
+            if(err){
+            res.send("Unable to get follow list");
+            }
+        else {
+            res.send(rows);
+        }
+    });
+}
+

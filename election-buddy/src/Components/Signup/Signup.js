@@ -11,36 +11,79 @@ class Signup extends Component {
         this.state = {
             username: "",
             password: "",
-            comfirmPassword: "",
+            confirmPassword: "",
             fname: "",
             lname: "",
-            email: ""
+            email: "",
+            signUpSuccess: false,
+            validateForm: true
         };
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.validateForm = this.validateForm.bind(this);
     }
 
     validateForm() {
         return (
             this.state.username.length > 0 &&
-            this.state.password > 0 &&
-            this.state.password === this.state.confirmPassword
+            this.state.password.length > 0 &&
+            this.state.password == this.state.confirmPassword
         );
     }
 
-    handleSubmit(event) {
+    async handleSubmit(event) {
         event.preventDefault();
-        const user = {
-            user_name: this.state.username,
-            user_password: this.state.password,
-            user_fname: this.state.fname,
-            user_lname: this.state.lname,
-            user_email: this.state.email
-        };
+        if(this.validateForm()){
+          this.setState({validateForm: true})
+
+          const user = {
+              user: this.state.username,
+              pass: this.state.password,
+              fname: this.state.fname,
+              lname: this.state.lname,
+              email: this.state.email
+          };
+
+          this.setState({
+            username: "",
+            password: "",
+            confirmPassword: "",
+            fname: "",
+            lname: "",
+            email: ""
+          })
+
+          this.userFuncs.signUp(user).then(res => {
+              if (!!res.indexOf("made")) {
+                this.setState({signUpSuccess: false})
+                this.forceUpdate();
+                this.props.history.push('/login');
+
+              }
+              else{
+                this.forceUpdate();
+
+              }
+            }).catch(err => {
+            //error caught here
+
+            });
+        }
+        else{
+          this.setState({validateForm: false})
+        }
+
+
+
     }
+
 
     render() {
 
         return (
             <div className="signup-page">
+            { this.state.validateForm ?  "":<div className="invalid-signup">Password fields don't match. Please try again</div> }
+
+            { this.state.signUpSuccess ?  <div className="invalid-signup">Invalid Registration. Please try again.</div>:"" }
                 <div>
                     <h3 className="signup-heading">Create your Account</h3>
                     <hr />
@@ -48,6 +91,7 @@ class Signup extends Component {
                         <div className="form-group">
                             <label htmlFor="username">Username:</label>
                             <input
+                                value={this.state.username}
                                 id="username"
                                 className="form-control"
                                 type="text"
@@ -58,6 +102,7 @@ class Signup extends Component {
                         <div className="form-group">
                             <label htmlFor="password">Password:</label>
                             <input
+                                value={this.state.password}
                                 id="password"
                                 className="form-control"
                                 type="password"
@@ -68,6 +113,7 @@ class Signup extends Component {
                         <div className="form-group">
                             <label htmlFor="confirmPassword">Confirm Password:</label>
                             <input
+                                value={this.state.confirmPassword}
                                 id="confirmPassword"
                                 className="form-control"
                                 type="password"
@@ -78,6 +124,7 @@ class Signup extends Component {
                         <div className="form-group">
                             <label htmlFor="fname">First Name:</label>
                             <input
+                                value={this.state.fname}
                                 id="fname"
                                 className="form-control"
                                 type="text"
@@ -88,6 +135,8 @@ class Signup extends Component {
                         <div className="form-group">
                             <label htmlFor="lname">Last Name:</label>
                             <input
+                            value={this.state.lname}
+
                                 id="lname"
                                 className="form-control"
                                 type="text"
@@ -98,6 +147,8 @@ class Signup extends Component {
                         <div className="form-group">
                             <label htmlFor="email">Email:</label>
                             <input
+                            value={this.state.email}
+
                                 id="email"
                                 className="form-control"
                                 type="text"
@@ -106,7 +157,8 @@ class Signup extends Component {
                         </div>
 
                         <button
-                            type="submit"
+                            type="button"
+                            onClick={this.handleSubmit}
                             className="form-button"
                         >Sign Up</button>
                     </form>

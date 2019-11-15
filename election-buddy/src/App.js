@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import  { Redirect } from 'react-router-dom';
 import Nav from './Components/NavBar/Nav'
 import Footer from './Components/Footer/Footer';
@@ -8,31 +8,56 @@ import Homepage from './Components/Homepage/Homepage';
 import Login from './Components/Login/Login';
 import Signup from './Components/Signup/Signup';
 import UserProfile from './Components/ProfilePage/UserProfile';
+import Logout from './Components/Logout/Logout';
 
-var loggedIn = true;
-var signedUp = true;
+class App extends React.Component {
+	constructor(props) {
+		super(props);
 
-function App() {
-  return (
-    <div>
-    <Router>
-      <Nav/>
-        <Switch>
+		this.state = {
+			loginState: !!localStorage.getItem('token')
+		}
+		this.updateLoginState = this.updateLoginState.bind(this);
+	}
+
+	updateLoginState = () => {
+		if(localStorage.getItem('token')){
+			this.setState({
+					loginState: true
+			});
+		}
+		else{
+			this.setState({
+				loginState: false
+			});
+		}
+	};
+
+	render() {
+		return (
+			<div>
+      <Router>
+      <Nav loginState={this.state.loginState}/>
+				<Switch>
+				<Route exact path="/logout" render={(props) => <Logout {...props} loginState={this.state.loginState} updateLoginState={this.updateLoginState}/>}/>
           <Route exact path="/" render={() => (
-            loggedIn ? (
-              <Redirect to="/login"/>
-            ) : (
+            this.state.loginState ? (
               <Homepage/>
+            ) : (
+              <Redirect to="/login"/>
             )
           )}/>
-          <Route path="/login" component={Login}/>
-          <Route path="/registration" component={Signup}/>
-          <Route path="/profile" component={UserProfile}/>
-        </Switch>
+					{this.state.loginState && <Route path="/" exact component={Homepage} />}
+					{/*{!this.state.loginState && <Route exact path="/login" render={(props) => <Login {...props} updateLoginState={this.updateLoginState}/>}/>}*/}
+					{!this.state.loginState && <Route exact path="/login" render={(props) => <Login {...props} updateLoginState={this.updateLoginState}/>}/>}
+					{!this.state.loginState && <Route exact path="/registration" exact component={Signup}/>}
+					{this.state.loginState && <Route path="/profile" exact component={UserProfile}/>}
+				</Switch>
+      </Router>
       <Footer/>
-    </Router>
-    </div>
-  );
+			</div>
+		);
+	}
 }
 
 export default App;
