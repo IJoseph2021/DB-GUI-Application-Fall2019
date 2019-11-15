@@ -8,6 +8,8 @@ import Homepage from './Components/Homepage/Homepage';
 import Login from './Components/Login/Login';
 import Signup from './Components/Signup/Signup';
 import UserProfile from './Components/ProfilePage/UserProfile';
+import Logout from './Components/Logout/Logout';
+
 class App extends React.Component {
 	constructor(props) {
 		super(props);
@@ -35,8 +37,9 @@ class App extends React.Component {
 		return (
 			<div>
       <Router>
-      <Nav/>
+      <Nav loginState={this.state.loginState}/>
 				<Switch>
+				<Route exact path="/logout" render={(props) => <Logout {...props} loginState={this.state.loginState} updateLoginState={this.updateLoginState}/>}/>
           <Route exact path="/" render={() => (
             this.state.loginState ? (
               <Homepage/>
