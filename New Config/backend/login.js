@@ -80,20 +80,7 @@ exports.login = function(req,res){
     
 }
 
-//Steve Shoemaker
-//Update email in user table route
-exports.updateEmail = function(req,res){
-    
-    mysqlConnection.query("UPDATE USER SET USER.email = \'" + req.params.email + "\'  WHERE USER.username = \'" +  req.params.user + "\';",
-        function(err,rows, fields){
-            if(err){
-                logger.error(err.message);
-            }
-        });
 
-    res.send("Email Updated");
-
-}
 
 //Steve
 //Gets the user
@@ -137,6 +124,54 @@ exports.getSessionUserId = function(req,res){
     res.send(req.session.userId);
 }
 
+//Baohua Yu
+// get username
+exports.getUsername = function (req, res) {
+    mysqlConnection.query("SELECT USER.username FROM USER WHERE USER.username = \'" + req.params.user + "\';",
+        function (err, rows, fields) {
+            if (rows[0] == undefined) {
+                logger.error(err.message);
+            }
+            res.send(rows[0]);
+        });
+}
+
+//Baohua Yu
+//get fname
+exports.getFname = function (req, res) {
+    mysqlConnection.query("SELECT USER.fname FROM USER WHERE USER.username = \'" + req.params.user + "\';",
+        function (err, rows, fields) {
+            if (rows[0] == undefined) {
+                logger.error(err.message);
+            }
+            res.send(rows[0]);
+        });
+}
+
+//Baohua Yu
+//get lname
+exports.getLname = function (req, res) {
+    mysqlConnection.query("SELECT USER.lname FROM USER WHERE USER.username = \'" + req.params.user + "\';",
+        function (err, rows, fields) {
+            if (rows[0] == undefined) {
+                logger.error(err.message);
+            }
+            res.send(rows[0]);
+        });
+}
+
+//Baohua Yu
+//get password
+exports.getPassword = function (req, res) {
+    mysqlConnection.query("SELECT USESR.passhash FROM USER WHERE USER.username = \'" + req.params.user + "\';",
+        function (err, rows, fields) {
+            if (rows[0] == undefined) {
+                logger.error(err.message);
+            }
+            res.send(rows[0]);
+        });
+ 
+}
 //Stephen Shoemaker
 //Checks the session to see if the person is logged in
 exports.isLoggedIn = function(req,res,next){
@@ -148,6 +183,22 @@ exports.isLoggedIn = function(req,res,next){
 }
 
 //Steve Shoemaker
+//Update email in user table route
+exports.updateEmail = function (req, res) {
+
+    mysqlConnection.query("UPDATE USER SET USER.email = \'" + req.params.email + "\'  WHERE USER.username = \'" + req.params.user + "\';",
+        function (err, rows, fields) {
+            if (err) {
+                logger.error(err.message);
+            }
+        });
+
+    res.send("Email Updated");
+
+}
+
+
+//Steve Shoemaker
 //Changes the password
 exports.changePassword = function(req,res){
     mysqlConnection.query(`UPDATE USER SET passhash = '${req.params.newPass}' WHERE ID = '${req.session.userId}';`,function(err,rows,fields){
@@ -155,6 +206,31 @@ exports.changePassword = function(req,res){
             res.send("error");
         } else {
             res.send("password updated");
+        }
+    });
+}
+
+//Baohua Yu
+//changes the fname
+exports.changeFname = function (req, res) {
+    mysqlConnection.query("UPDATE USER SET USER.fname = \'" + req.params.fname + "\'  WHERE USER.username = \'" + req.params.user + "\';", function (err, rows, fields) {
+        if (err) {
+            res.send("error");
+        } else {
+            res.send("Fname update");
+        }
+
+    });
+}
+
+//Baohua Yu
+//change the lname
+exports.changeLname = function (req, res) {
+    mysqlConnection.query("UPDATE USER SET USER.lname = \'" + req.params.lname + "\'  WHERE USER.username = \'" + req.params.user + "\';", function (err, rows, fields) {
+        if (err) {
+            res.send("error");
+        } else {
+            res.send("Lname update");
         }
     });
 }

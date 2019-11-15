@@ -194,20 +194,39 @@ app.get('/login/create/:user/:fname/:lname/:pass/:email', login.createAccount);
 //login
 app.get('/login/login/:user/:pass', login.login);
 
-//updating Email
-app.get('/login/updateEmail/:user/:email', login.isLoggedIn, login.updateEmail);
-
 //Get Email
 app.get('/login/getEmail/:user', login.isLoggedIn, login.getEmail);
 
 //Get User ID
 app.get('/login/getUserId/:user', login.getUserID);
 
+//Get Username
+app.get('/login/getUsername/:user', login.isLoggedIn, login.getUsername);
+
+//Get Fname
+app.get('/login/getFname/:user', login.isLoggedIn, login.getFname);
+
+//Get Lname
+app.get('/login/getLname/:user', login.isLoggedIn, login.getLname);
+
+//Get password
+app.get('/login/getPassword/:user', login.isLoggedIn, login.getPassword);
+
 //Get User ID Session
 app.get('/login/session/getUserId', login.isLoggedIn, login.getSessionUserId);
 
 //Update Session Password
 app.get('/login/session/updatePassword/:newPass', login.isLoggedIn,login.changePassword);
+
+//updating Email
+app.get('/login/updateEmail/:user/:email', login.isLoggedIn, login.updateEmail);
+
+//Update fname
+app.get('/login/session/changeFname/:user/:fname', login.isLoggedIn, login.changeFname);
+
+//Update Lname
+app.get('/login/session/changeLname/:user/:lname', login.isLoggedIn, login.changeLname);
+
 
 
 
