@@ -31,7 +31,7 @@ exports.getcandidateFavorite = function (req, res) {
     });
 }
 
-
+//Baohua Yu
 // update the candidate favorite
 exports.updateCandidateFavorite = function (req, res) {
     mysqlConnection.query(`UPDATE CANDIDATE_FAVORITE SET candidateID = '${req.params.candidateID}' WHERE userID = '${req.session.userId}';`, function (err, rows, fields) {
