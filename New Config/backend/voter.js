@@ -3,11 +3,7 @@ Voter File
 This file manages all the routes for the voters
 */
 
-var mysqlConnection;
-
-exports.createConnection = function(newMysqlConnection){
-    mysqlConnection = newMysqlConnection;
-};
+const mysqlConnection = require('./oursql.js');
 
 //Steve Shoemaker
 //This function makes someone a voter
