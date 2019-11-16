@@ -1,7 +1,7 @@
 import React from 'react';
 
 export class CommentForm extends React.Component {
-    
+    /*
     constructor(props) {
         super(props);
         this.state = {
@@ -9,13 +9,18 @@ export class CommentForm extends React.Component {
             question: ''
         };
     }
+    */
+    state = {
+        userName: '',
+        comment: ''
+    };
 
-    handeSubmit = event => {
+    handleSubmit = event => {
         event.preventDefault();
         this.props.onQuestionSubmit(this.state);
         this.setState({
-            author: '',
-            question: ''
+            userName: '',
+            comment: ''
         });
     };
 
@@ -28,16 +33,16 @@ export class CommentForm extends React.Component {
                        name="name" 
                        placeholder="Your name"
                        className="form-control" 
-                       value={this.state.author} 
-                       onChange={ e => this.setState({ author: e.target.value }) } />
+                       value={this.state.userName} 
+                       onChange={ e => this.setState({ userName: e.target.value }) } />
 
                 <input type="text"
                        id="question"
                        name="question" 
                        placeholder="What's your question?"
                        className="form-control" 
-                       value={this.state.question} 
-                       onChange={ e => this.setState({ question: e.target.value }) } />
+                       value={this.state.comment} 
+                       onChange={ e => this.setState({ comment: e.target.value }) } />
                 <button type="submit"
                         className="btn btn-primary">
                     Post
