@@ -7,19 +7,6 @@ import { CommentList } from './CommentList';
 
 export class CandidatePage extends React.Component {
 
-    /*
-    constructor(props) {
-        super(props);
-    
-        this.state = {
-            candidateName: 'Donald Trump',
-            party: 'Republican',
-            candidateInfo: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Pretium aenean pharetra magna ac placerat vestibulum lectus. Arcu cursus euismod quis viverra nibh cras. Lacus suspendisse faucibus interdum posuere lorem ipsum dolor sit amet. Semper quis lectus nulla at volutpat diam ut venenatis. Amet tellus cras adipiscing enim eu turpis egestas. Sagittis id consectetur purus ut faucibus pulvinar. Volutpat lacus laoreet non curabitur. Velit ut tortor pretium viverra suspendisse. Cras ornare arcu dui vivamus. Quis lectus nulla at volutpat diam ut. Felis eget nunc lobortis mattis. Platea dictumst vestibulum rhoncus est. Turpis egestas integer eget aliquet nibh praesent tristique. At imperdiet dui accumsan sit amet nulla facilisi. Eu tincidunt tortor aliquam nulla facilisi. Amet volutpat consequat mauris nunc congue.',
-            candidateNews: ['This is a fun piece of news', 'Heres some more news',  'Wow! Even more news!', 'So much news this is crazy'],
-            questions: [new Comment('Jake', 'This is my question')]
-        };
-    }
-    */
     state = {
         candidateName: 'Donald Trump',
         party: 'Republican',
@@ -31,7 +18,7 @@ export class CandidatePage extends React.Component {
     handleQuestionSubmit(question) {
         console.log(question.userName);
         this.setState(prevState => {
-            prevState.questions.push(new Comment(question.userName, question.comment, '-1'));
+            prevState.questions.push(new Comment(question.userName, question.comment, ''));
             return prevState;
         });
     }
@@ -78,7 +65,7 @@ export class CandidatePage extends React.Component {
                     <h3 style={{padding: "0em 0.8em"}}>
                         Questions for {this.state.candidateName}
                     </h3>
-                    <CommentList questions={this.state.questions} handleResponse={response => this.handleResponse(response)}/>
+                    <CommentList questions={this.state.questions} handleResponse={response => this.handleResponse(response)} candidateName={this.state.candidateName}/>
                     <CommentForm onQuestionSubmit={question => this.handleQuestionSubmit(question)}/>
                 </div>
             </div>  
