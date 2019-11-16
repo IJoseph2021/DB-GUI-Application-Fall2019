@@ -10,17 +10,19 @@ export class CommentForm extends React.Component {
         };
     }
 
-    handleSubmit = () => {
-        //if (!this.state.author || !this.state.question) {
-        //    return;
-        //}
-        this.setState({author: '', question: ''});
-        this.props.onQuestionSubmit({author: this.state.author, question: this.state.question});
-    }
+    handeSubmit = event => {
+        event.preventDefault();
+        this.props.onQuestionSubmit(this.state);
+        this.setState({
+            author: '',
+            question: ''
+        });
+    };
 
     render () {
         return (
-            <form className="comment-form" onSubmit={this.handleSubmit}>
+            <form className="comment-form card" 
+                    onSubmit={this.handleSubmit}>
                 <input type="text"
                        id="name"
                        name="name" 
@@ -36,7 +38,10 @@ export class CommentForm extends React.Component {
                        className="form-control" 
                        value={this.state.question} 
                        onChange={ e => this.setState({ question: e.target.value }) } />
-                <input type="submit" value="Post" />
+                <button type="submit"
+                        className="btn btn-primary">
+                    Post
+                </button>
             </form>
         )
     }
