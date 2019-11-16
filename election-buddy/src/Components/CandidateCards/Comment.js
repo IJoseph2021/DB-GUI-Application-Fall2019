@@ -1,6 +1,7 @@
 export class Comment {
-    constructor(userName, comment) {
+    constructor(userName, comment, response) {
         this.userName = userName;
         this.comment = comment;
+        this.response = response;
     }
 }

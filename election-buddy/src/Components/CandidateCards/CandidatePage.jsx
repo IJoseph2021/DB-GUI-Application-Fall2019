@@ -31,10 +31,17 @@ export class CandidatePage extends React.Component {
     handleQuestionSubmit(question) {
         console.log(question.userName);
         this.setState(prevState => {
-            //prevState.questions.push(new Comment('Jake TACOCOCOC', 'This is my SECOND question'));
-            prevState.questions.push(new Comment(question.userName, question.comment));
+            prevState.questions.push(new Comment(question.userName, question.comment, '-1'));
             return prevState;
         });
+    }
+
+    handleResponse(response) {
+        console.log(response.response);
+        this.setState(prevState => {
+            prevState.questions[prevState.questions.length - 1].response = response.response;
+        });
+        console.log(this.state.questions[this.state.questions.length - 1].comment);
     }
 
     render () {
@@ -71,7 +78,7 @@ export class CandidatePage extends React.Component {
                     <h3 style={{padding: "0em 0.8em"}}>
                         Questions for {this.state.candidateName}
                     </h3>
-                    <CommentList questions={this.state.questions}/>
+                    <CommentList questions={this.state.questions} handleResponse={response => this.handleResponse(response)}/>
                     <CommentForm onQuestionSubmit={question => this.handleQuestionSubmit(question)}/>
                 </div>
             </div>  
