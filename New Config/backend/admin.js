@@ -26,6 +26,16 @@ exports.verifyCandidate = function(req,res){
     });
 }
 
+exports.addElection = function(req,res){
+    console.log(`INSERT INTO ELECTIONS (level,location,time,name) VALUES ('${req.params.level}','${req.params.location}','${req.params.time}', '${req.params.name}');`);
+    mysqlconnection.query(`INSERT INTO ELECTIONS (level,location,time,name) VALUES ('${req.params.level}','${req.params.location}','${req.params.time}', '${req.params.name}');`,function(err,rows,fields){
+        if(err){
+            console.log(err.message);
+            res.send(err.message);
+        }else res.send("succussful");
+    })
+}
+
 //This function stores the admin level to the session
 exports.isAdmin = function(req,res,next){
     userID = req.session.userId;

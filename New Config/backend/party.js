@@ -43,3 +43,20 @@ exports.getPartyCode = function(req,res){
         }
     });
 };
+
+//Isaac Joseph
+exports.createPartyAndCode = function(req,res){
+    partyCode = req.params.partyCode;
+    partyName = req.params.partyName;
+    query = "INSERT INTO PARTY (partyCode, partyName)" + " VALUES (\"" + partyCode + "\",\"" + partyName + "\");";
+    console.log(query);
+    mysqlConnection.query(query, 
+        function(err,rows,fields){
+            if(err){
+                res.send("Party Creation Failed");
+                }
+            else {
+                res.send("Party Created");
+            }
+        });
+}

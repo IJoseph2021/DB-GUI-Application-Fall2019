@@ -8,9 +8,7 @@ CREATE TABLE `electionBuddy`.`USER` (
   `passhash` VARCHAR(20) NOT NULL,
   `email` VARCHAR(30) NULL,
   PRIMARY KEY (`ID`),
-  UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE,
-  UNIQUE INDEX `fname_UNIQUE` (`fname` ASC) VISIBLE,
-  UNIQUE INDEX `lname_UNIQUE` (`lname` ASC) VISIBLE);
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE);
 
 
 CREATE TABLE `electionBuddy`.`PARTY` (
@@ -84,45 +82,54 @@ CREATE TABLE `electionBuddy`.`ADMIN` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
-CREATE TABLE `electionBuddy`.`CANDIDATE_QUESTION` (
-  `question_ID` INT NOT NULL AUTO_INCREMENT,
-  `question_Time` DATETIME NULL,
-  `asker_ID` INT(8) NULL,
-  `askee_ID` INT(8) NULL,
-  `question` VARCHAR(120) NULL,
+CREATE TABLE `CANDIDATE_QUESTION` (
+  `question_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `question_Time` datetime DEFAULT NULL,
+  `asker_ID` int(8) DEFAULT NULL,
+  `askee_ID` int(8) DEFAULT NULL,
+  `question` varchar(120) DEFAULT NULL,
   PRIMARY KEY (`question_ID`),
-  INDEX `asker_ID_idx` (`asker_ID` ASC) VISIBLE,
-  INDEX `askee_ID_idx` (`askee_ID` ASC) VISIBLE,
-  CONSTRAINT `asker_ID`
-    FOREIGN KEY (`asker_ID`)
-    REFERENCES `electionBuddy`.`USER` (`ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `askee_ID`
-    FOREIGN KEY (`askee_ID`)
-    REFERENCES `electionBuddy`.`CANDIDATE` (`userID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+  UNIQUE KEY `uniqueQuestion` (`question_Time`,`asker_ID`,`question`,`askee_ID`),
+  KEY `asker_ID_idx` (`asker_ID`),
+  KEY `askee_ID_idx` (`askee_ID`),
+  CONSTRAINT `askee_ID` FOREIGN KEY (`askee_ID`) REFERENCES `CANDIDATE` (`userID`),
+  CONSTRAINT `asker_ID` FOREIGN KEY (`asker_ID`) REFERENCES `USER` (`ID`)
+);
+
+CREATE TABLE `CANDIDATE_COMMENT` (
+  `commentID` int(11) NOT NULL AUTO_INCREMENT,
+  `questionID` int(11) DEFAULT NULL,
+  `commenterID` int(11) DEFAULT NULL,
+  `commenteeID` int(11) DEFAULT NULL,
+  `commentTime` datetime DEFAULT NULL,
+  `comment` varchar(140) DEFAULT NULL,
+  PRIMARY KEY (`commentID`),
+  UNIQUE KEY `commentUniqueness` (`commenterID`,`comment`,`commentTime`,`questionID`),
+  KEY `commenteeID_idx` (`commenteeID`),
+  KEY `questionID_idx` (`questionID`),
+  KEY `commenterID_idx` (`commenterID`),
+  CONSTRAINT `commenteeID` FOREIGN KEY (`commenteeID`) REFERENCES `USER` (`ID`),
+  CONSTRAINT `commenterID` FOREIGN KEY (`commenterID`) REFERENCES `USER` (`ID`),
+  CONSTRAINT `questionID` FOREIGN KEY (`questionID`) REFERENCES `CANDIDATE_QUESTION` (`question_ID`)
+);
 
 
-CREATE TABLE `electionBuddy`.`CANDIDATE_COMMENT` (
-  `root_ID` INT(8) NOT NULL,
-  `questionRoot` TINYINT NOT NULL,
-  `comment_ID` INT(8) NOT NULL AUTO_INCREMENT,
-  `comment_Time` DATETIME NOT NULL,
-  `commenter_ID` INT(8) NOT NULL,
-  `commentee_ID` INT(8) NOT NULL,
-  `comment` VARCHAR(140) NOT NULL,
-  PRIMARY KEY (`comment_ID`),
-  INDEX `commenterID_idx` (`commenter_ID` ASC) VISIBLE,
-  INDEX `commenteeID_idx` (`commentee_ID` ASC) VISIBLE,
-  CONSTRAINT `commenterID`
-    FOREIGN KEY (`commenter_ID`)
-    REFERENCES `electionBuddy`.`USER` (`ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `commenteeID`
-    FOREIGN KEY (`commentee_ID`)
-    REFERENCES `electionBuddy`.`USER` (`ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+CREATE TABLE `ELECTIONS` (
+  `electionID` int(11) NOT NULL AUTO_INCREMENT,
+  `level` varchar(30) NOT NULL,
+  `location` varchar(45) NOT NULL,
+  `time` datetime NOT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`electionID`),
+  UNIQUE KEY `Unique Election` (`name`,`time`,`level`,`location`)
+);
+
+CREATE TABLE `ELECTION_CANDIDATES` (
+  `electionID` int(11) NOT NULL,
+  `userID` int(11) NOT NULL,
+  UNIQUE KEY `uniqueElectionDandidates` (`electionID`,`userID`),
+  KEY `electionID_idx` (`electionID`),
+  KEY `electionCandidate_idx` (`userID`),
+  CONSTRAINT `electionCandidate` FOREIGN KEY (`userID`) REFERENCES `CANDIDATE` (`userID`),
+  CONSTRAINT `electionID` FOREIGN KEY (`electionID`) REFERENCES `ELECTIONS` (`electionID`)
+);

@@ -45,7 +45,7 @@ admin.setConnection(connection);
 
 candidate.setConnection(connection);
 
-questions.setConnection(connection)
+questions.createConnection(connection);
 
 //set up some configs for express. 
 const config = {

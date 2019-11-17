@@ -19,10 +19,11 @@ const candidate = require('./candidate.js');
 const session = require('express-session');
 var fileReader = require('fs');
 const questions = require('./questions.js');
+const elections = require('./elections.js');
 
 
 //List of all potential route files.
-const routes = [login,voter,party,admin,candidate, questions];
+const routes = [login,voter,party,admin,candidate, questions, elections];
 
 //create the mysql connection object.  
 var connection = mysql.createConnection({
@@ -135,22 +136,36 @@ app.get('/setupDevDb', function(req,res){
   for(var i = 0; i < routes.length; i++){
     routes[i].createConnection(devConnect);
   }
-  fileReader.readFile("mysqlDev_init/tables_init.sql","utf8", function(err,contents){
-    var query = "";
-    for(charCtr = 0; charCtr < contents.length; charCtr++){
-      query += contents[charCtr];
-      if(contents[charCtr] == ';'){
-        
-        
-        devConnect.query(query, function(err,rows,fields){
-          if(err){
-            logger.error(err.message);
-          }
+  var fileOrder= [];
+  fileReader.readFile("mysqlDev_init/order.txt",'utf-8', function(err, contents){
+    file = "";
+    for(char = 0; char < contents.length;char++){
+      if(contents[char] != '\n'){
+        file +=contents[char];
+      }
+      else {
+        console.log(file);
+        fileReader.readFile("mysqlDev_init/" + file, 'utf-8', function(err,contents){
+          query = "";
+          
+          if(contents != undefined) for(char = 0; char < contents.length; char++){
+            //console.log(contents[char]);
+            if(contents[char] != ';'){
+              query+=contents[char];
+            }else {
+              devConnect.query(query,function(err,rows,fields){
+                if(err){
+                  logger.error(err.message);
+                }
+              });
+              query = "";
+            }
+          };
         })
-        query = "";
+        file = "";
       }
     }
-  });
+    });
   res.send("DevDataLoaded");
 });
 
@@ -179,20 +194,39 @@ app.get('/login/create/:user/:fname/:lname/:pass/:email', login.createAccount);
 //login
 app.get('/login/login/:user/:pass', login.login);
 
-//updating Email
-app.get('/login/updateEmail/:user/:email', login.isLoggedIn, login.updateEmail);
-
 //Get Email
 app.get('/login/getEmail/:user', login.isLoggedIn, login.getEmail);
 
 //Get User ID
 app.get('/login/getUserId/:user', login.getUserID);
 
+//Get Username
+app.get('/login/getUsername/:user', login.isLoggedIn, login.getUsername);
+
+//Get Fname
+app.get('/login/getFname/:user', login.isLoggedIn, login.getFname);
+
+//Get Lname
+app.get('/login/getLname/:user', login.isLoggedIn, login.getLname);
+
+//Get password
+app.get('/login/getPassword/:user', login.isLoggedIn, login.getPassword);
+
 //Get User ID Session
 app.get('/login/session/getUserId', login.isLoggedIn, login.getSessionUserId);
 
 //Update Session Password
 app.get('/login/session/updatePassword/:newPass', login.isLoggedIn,login.changePassword);
+
+//updating Email
+app.get('/login/updateEmail/:user/:email', login.isLoggedIn, login.updateEmail);
+
+//Update fname
+app.get('/login/session/changeFname/:user/:fname', login.isLoggedIn, login.changeFname);
+
+//Update Lname
+app.get('/login/session/changeLname/:user/:lname', login.isLoggedIn, login.changeLname);
+
 
 
 
@@ -216,17 +250,35 @@ app.get('/voter/session/getCountySession', login.isLoggedIn, voter.getCountySess
 //Updates the voter Party
 app.get('/voter/session/updateParty/:partyName', login.isLoggedIn, voter.sessionUpdateParty);
 
-//Gets voter list based on location
-app.get('/voter/session/getVoterList/:partyCode/:state/:city/:zipCode', login.isLoggedIn, voter.getVoterList);
+//Gets voter list based on zip Code
+app.get('/voter/session/getVoterListZipCode/:partyCode/:zipCode', login.isLoggedIn, voter.getVoterListZipCode);
+
+//Gets voter list based on state
+app.get('/voter/session/getVoterListState/:partyCode/:state', login.isLoggedIn, voter.getVoterListState);
+
+//Gets voter list based on city
+app.get('/voter/session/getVoterListCity/:partyCode/:city', login.isLoggedIn, voter.getVoterListCity);
 
 //Get zip code of current user
 app.get('/voter/session/getZipCodeSession', login.isLoggedIn, voter.getZipCodeSession);
+
+// Follow a Question
+app.get('/voter/session/followTopic/:question_ID', login.isLoggedIn, voter.followTopic);
+
+// Unfollow a question
+app.get('/voter/session/unfollowTopic/:question_ID', login.isLoggedIn, voter.unfollowTopic);
+
+// Get List of followed questions
+app.get('/voter/session/getFollowList', login.isLoggedIn, voter.getFollowList);
 
 
 //Party Routes
 
 //Creates a party
 app.get('/party/createParty/:party', login.isLoggedIn, party.createParty);
+
+//Create party and code
+app.get('/party/createPartyAndCode/:partyCode/:partyName', login.isLoggedIn, party.createPartyAndCode);
 
 //Gets a party name
 app.get('/party/getPartyName/:partyCode', party.getPartyName);
@@ -243,16 +295,34 @@ app.get('/admin/session/getAdminLevel', login.isLoggedIn, admin.getAdminLevel);
 //Verifies a candidate
 app.get('/admin/session/verify/:ID',login.isLoggedIn,admin.isAdmin, admin.verifyCandidate);
 
+//adds an election
+app.get('/admin/session/addElection/:level/:location/:time/:name', login.isLoggedIn, admin.isAdmin, admin.addElection);
+
 
 //Candidate Routes
 
 //Allows a user to become a candidate
-app.get('/candidate/session/becomeCandidate',login.isLoggedIn, candidate.becomeCandidate);
+app.get('/candidate/session/becomeCandidate', login.isLoggedIn, candidate.becomeCandidate);
+
+//Getting the candidate favorite
+app.get('/candidate/session/getcandidateFavorite', login.isLoggedIn, candidate.getcandidateFavorite);
+
+//Update the canidate favorite
+app.get('/candidate/session/updateCandidateFavorite/:candidateID', login.isLoggedIn, candidate.updateCandidateFavorite);
+
+//Get candidate by state
+app.get('/candidate/session/getcandidateList/:state/:zipCode/:city/:partyCode', login.isLoggedIn, candidate.getCandidateList);
+
+app.get('/candidate/session/enterElection/:electionID/:level/:location', login.isLoggedIn, candidate.enterElection);
+
+
+
+
 
 //Questions Routes
 
 //Creates a questsion
-app.get('/questions/session/createQuestion/:question_ID/:question_Time/:asker_ID/:askee_ID/:question',login.isLoggedIn, questions.createQuestion);
+app.get('/questions/session/createQuestion/:asker_ID/:askee_ID/:question',login.isLoggedIn, questions.createQuestion);
 
 //Gets a question on ID
 app.get('/questions/session/getQuestion/:question_ID', login.isLoggedIn, questions.getQuestion);
@@ -261,10 +331,10 @@ app.get('/questions/session/getQuestion/:question_ID', login.isLoggedIn, questio
 app.get('/questions/session/removeQuestion/:question_ID', login.isLoggedIn, questions.removeQuestion);
 
 //Updates a question Time
-app.get('/questions/session/updateQuestion/:question_ID/:update_Time/:question2', login.isLoggedIn, questions.updateQuestion);
+app.get('/questions/session/updateQuestion/:question_ID/:question2', login.isLoggedIn, questions.updateQuestion);
 
 // Creates a comment
-app.get('/questions/session/createComment/:comment_Time/:commenter_ID/:commentee_ID/:user_ID/:comment', login.isLoggedIn, questions.createComment);
+app.get('/questions/session/createComment/:commenter_ID/:user_ID/:comment', login.isLoggedIn, questions.createComment);
 
 // Gets comment based on the comment ID
 app.get('/questions/session/getComment/:commenter_ID', login.isLoggedIn, questions.getComment);
@@ -273,13 +343,16 @@ app.get('/questions/session/getComment/:commenter_ID', login.isLoggedIn, questio
 app.get('/questions/session/removeQuestion/:commenter_ID', login.isLoggedIn, questions.removeComment);
 
 // Updates a comment with new text and new time stamp
-app.get('/questions/session/updateComment/:commenter_ID/:update_Time/:comment2', login.isLoggedIn, questions.updateComment);
+app.get('/questions/session/updateComment/:commenter_ID/:comment2', login.isLoggedIn, questions.updateComment);
 
 // Outputs the tree of comments for a question
 app.get('/questions/session/getQuestionTree/:question_ID', login.isLoggedIn, questions.getQuestionTree);
 
 // Outputs the comment replies to a comment
 app.get('/question/session/getCommentTree/:commentee_ID', login.isLoggedIn, questions.getCommentTree);
+
+//election routes
+app.get('/election/getElections/citiesWithElections', elections.getElectionsInCities);
 
 
 
