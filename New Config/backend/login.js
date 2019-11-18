@@ -127,7 +127,7 @@ exports.getSessionUserId = function(req,res){
 //Skyler
 //Get user Info
 exports.getUserInfo = function (req, res) {
-    mysqlConnection.query("SELECT * FROM USER WHERE USER.ID = \'" + req.params.userId + "\';",
+    mysqlConnection.query("SELECT * FROM USER WHERE USER.username = \'" + req.params.user + "\';",
         function (err, rows, fields) {
             if (rows[0] == undefined) {
                 logger.error(err.message);
