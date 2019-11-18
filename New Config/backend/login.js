@@ -126,25 +126,14 @@ exports.getSessionUserId = function(req,res){
 
 //Skyler
 //Get user Info
-exports.getUserInfo = function(req,res){
-    query = 'SELECT * FROM USER WHERE USER.ID = \'' + req.params.userId + '\';';
-    console.log(query);
-    mysqlConnection.query('USE electionBuddy;',
-                    function(err,rows,fields){});
-    mysqlConnection.query('SELECT * FROM USER WHERE USER.ID = \'' + req.params.userId + '\';',
-                            function(err,rows,fields){
-                                if(!err){
-                                    if(rows[0]!= undefined){
-                                        res.send(rows);
-                                    }
-                                    else{
-                                        res.send("<p1> Not Found </p1>")
-                                    }
-                                }
-                                else{
-                                    res.send("<p1>Not Found <p1>");
-                                }
-                            });
+exports.getUserInfo = function (req, res) {
+    mysqlConnection.query("SELECT USER.ID FROM USER WHERE USER.ID = \'" + req.params.user + "\';",
+        function (err, rows, fields) {
+            if (rows[0] == undefined) {
+                logger.error(err.message);
+            }
+            res.send(rows);
+        });
 }
 
 //Baohua Yu
