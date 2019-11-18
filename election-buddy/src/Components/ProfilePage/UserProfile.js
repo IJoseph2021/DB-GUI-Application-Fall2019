@@ -9,46 +9,48 @@ export default class UserProfile extends React.Component {
 		super(props);
 
 		this.state = {
-			userId: this.props.username,
-			username: ("" || localStorage.getItem("token")),
+			username: this.props.username || localStorage.getItem('token'),
       firstName: "",
-      lastName: "",
+      lastname: "",
       us_state: "",
       city: "",
       zip: "",
       party: ""
 		};
-		this.getUserInfo = this.getUserInfo.bind(this)
-	}
-
-
-	getUserInfo = async (event) => {
 
 		const user = {
 			userId: this.state.userId,
 			username: this.state.username,
 			// pass: this.state.password,
 			firstname: this.state.firstName,
-			lastName: this.state.lastName,
+			lastname: this.state.lastname,
+			email: this.state.email,
 			us_state: this.state.us_state,
 			city: this.state.city,
 			zip: this.state.zip,
 			party: this.state.party
 		};
 
-		this.userFuncs.getUserId(user).then(res => {
-			user.userId = res.ID;
-			this.setState({userId: res.ID})
-		})
-
 
 		this.userFuncs.getUserInfo(user).then(res => {
-			console.log("userInfo here", res.data, res)
+			console.log("userInfo here", res[0])
+			this.setState({
+				firstname: res[0].fname,
+				lastname: res[0].lname,
+				email: res[0].email
 
-	}).catch(err => {
-	//error caught here
+			})
+		}).catch(err => {
+		//error caught here
 
-	})
+		})
+
+		this.getUserInfo = this.getUserInfo.bind(this)
+	}
+
+
+	getUserInfo = async (event) => {
+
 };
 
 	saveUserInfo = async (event) =>{
@@ -103,7 +105,18 @@ export default class UserProfile extends React.Component {
                 id="lastName"
                 className="form-control"
                 type="text"
-                onChange={event => this.setState({ lastName: event.target.value })}
+                onChange={event => this.setState({ lastname: event.target.value })}
+                ></input>
+              </div>
+
+							<div className="form-group">
+                <label htmlFor="email">Email:</label>
+                <input
+								value={this.state.email}
+                id="email"
+                className="form-control"
+                type="text"
+                onChange={event => this.setState({ email: event.target.value })}
                 ></input>
               </div>
 
