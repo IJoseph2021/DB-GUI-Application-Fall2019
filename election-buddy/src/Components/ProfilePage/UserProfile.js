@@ -1,25 +1,39 @@
 import React from 'react';
 import './UserProfile.css';
+import UserFunctions from '../../API/UserFunctions';
 
 export default class UserProfile extends React.Component {
+	userFuncs = new UserFunctions();
+
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			username: "John",
+			username: "skylerlt",
       firstName: "",
       lastName: "",
-      us_state: "",
-      city: "",
-      zip: "",
-      party: ""
+      us_state: "TX",
+      city: "Dallas",
+      zip: "75068",
+      party: "IND"
 		};
+		this.getUserInfo = this.getUserInfo.bind(this)
 	}
 
 
 	getUserInfo = async (event) => {
+		const user = {
+				userId: 1
+		};
 
-	}
+		this.userFuncs.getUserInfo(user).then(res => {
+			console.log("userInfo here", res.data, res)
+
+	}).catch(err => {
+	//error caught here
+
+	})
+};
 
 	handleSubmit = async (event) =>{
 		event.preventDefault();
@@ -181,7 +195,8 @@ export default class UserProfile extends React.Component {
               </div>
 
               <button
-							type="submit"
+							onClick={this.getUserInfo}
+							type="button"
 							className="form-button"
 							>Save Your Profile</button>
             </form>

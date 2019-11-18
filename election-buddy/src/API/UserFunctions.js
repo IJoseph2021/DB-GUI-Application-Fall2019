@@ -49,8 +49,13 @@ class UserFunctions {
       })
     }
 
-    getUser(user){
-
+    getUserInfo(userIdOrName){
+      return new Promise((resolve, reject) => {
+          return axios.get(this.URL + '/login/getUserInfo/' +
+          userIdOrName.userId
+          ).then(resp => resolve(resp.data))
+              .catch(resp => reject(resp));
+      })
     }
 
     getUserEmail(username) {

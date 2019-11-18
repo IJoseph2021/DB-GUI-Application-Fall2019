@@ -1,7 +1,7 @@
 
 
-/**A simple node/express server that include communication with a 
- * mysql db instance. 
+/**A simple node/express server that include communication with a
+ * mysql db instance.
 */
 
 //create main objects
@@ -25,9 +25,9 @@ const elections = require('./elections.js');
 //List of all potential route files.
 const routes = [login,voter,party,admin,candidate, questions, elections];
 
-//create the mysql connection object.  
+//create the mysql connection object.
 var connection = mysql.createConnection({
-  //db is the host and that name is assigned based on the 
+  //db is the host and that name is assigned based on the
   //container name given in the docker-compose file
   host: '34.67.95.217',
   port: '3306',
@@ -46,7 +46,7 @@ var devConnect = mysql.createConnection({
   password: 'password'
 });
 
-//set up some configs for express. 
+//set up some configs for express.
 const config = {
   name: 'sample-express-app',
   port: 8000,
@@ -56,7 +56,7 @@ const config = {
 //create the express.js object
 const app = express();
 
-//create a logger object.  Using logger is preferable to simply writing to the console. 
+//create a logger object.  Using logger is preferable to simply writing to the console.
 const logger = log({ console: true, file: false, label: config.name });
 
 app.use(bodyParser.json());
@@ -116,13 +116,13 @@ app.get('/setupdb', (req, res) => {
 
 //GET /checkdb
 app.get('/checkdb', (req, res) => {
-  //execute a query to select * from table named data. 
+  //execute a query to select * from table named data.
   connection.query('SELECT * from USER', function (err, rows, fields) {
     if (err) {
       logger.error("Error while executing Query");
     };
     logger.info(rows[0].name + ' ' + rows[0].id);
- 
+
     //writing to the response object
     res.type('text/html');
     res.status(200);
@@ -147,7 +147,7 @@ app.get('/setupDevDb', function(req,res){
         console.log(file);
         fileReader.readFile("mysqlDev_init/" + file, 'utf-8', function(err,contents){
           query = "";
-          
+
           if(contents != undefined) for(char = 0; char < contents.length; char++){
             //console.log(contents[char]);
             if(contents[char] != ';'){
@@ -199,6 +199,9 @@ app.get('/login/getEmail/:user', login.isLoggedIn, login.getEmail);
 
 //Get User ID
 app.get('/login/getUserId/:user', login.getUserID);
+
+//Get User Info
+app.get('/login/getUserInfo/:user', login.getUserInfo);
 
 //Get Username
 app.get('/login/getUsername/:user', login.isLoggedIn, login.getUsername);
@@ -356,11 +359,10 @@ app.get('/election/getElections/citiesWithElections', elections.getElectionsInCi
 
 
 
-//connecting the express object to listen on a particular port as defined in the config object. 
+//connecting the express object to listen on a particular port as defined in the config object.
 app.listen(config.port, config.host, (e) => {
   if (e) {
     throw new Error('Internal Server Error');
   }
   logger.info(`${config.name} running on ${config.host}:${config.port}`);
 });
-
