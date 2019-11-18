@@ -123,11 +123,11 @@ exports.getUserID = function(req,res){
 }
 
 exports.getUserInfo = function(req,res){
-    query = 'SELECT * FROM USER WHERE USER.USERID = \'' + req.params.userId + '\';';
+    query = 'SELECT * FROM USER WHERE USER.ID = \'' + req.params.userId + '\';';
     console.log(query);
     mysqlConnection.query('USE electionBuddy;',
                     function(err,rows,fields){});
-    mysqlConnection.query('SELECT * FROM USER WHERE USER.USERID = \'' + req.params.userId + '\';',
+    mysqlConnection.query('SELECT * FROM USER WHERE USER.ID = \'' + req.params.userId + '\';',
                             function(err,rows,fields){
                                 if(!err){
                                     if(rows[0]!= undefined){
