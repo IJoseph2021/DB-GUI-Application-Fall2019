@@ -131,7 +131,9 @@ app.get('/login/getEmail/:user', login.isLoggedIn, login.getEmail);
 
 app.get('/login/getUserId/:user', login.isLoggedIn, login.getUserID);
 
-app.get('/login/getUserInfo/:userId', login.getUserInfo);
+app.get('/login/getUserInfo/:user', login.getUserInfo);
+
+app.get('/login/updateUserInfo/:fname/:lname/:state/:city/:zip/:party', login.updateUserInfo)
 
 app.get('/login/session/getUserId', login.isLoggedIn, login.getSessionUserId);
 

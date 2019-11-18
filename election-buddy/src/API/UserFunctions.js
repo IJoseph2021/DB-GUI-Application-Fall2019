@@ -49,10 +49,20 @@ class UserFunctions {
       })
     }
 
+    getUserId(user){
+      return new Promise((resolve, reject) => {
+          return axios.get(this.URL + '/login/getUserId/' +
+          user.username
+          ).then(resp => resolve(resp.data))
+              .catch(resp => reject(resp));
+      })
+    }
+
+
     getUserInfo(userIdOrName){
       return new Promise((resolve, reject) => {
           return axios.get(this.URL + '/login/getUserInfo/' +
-          userIdOrName.userId
+          userIdOrName.username
           ).then(resp => resolve(resp.data))
               .catch(resp => reject(resp));
       })

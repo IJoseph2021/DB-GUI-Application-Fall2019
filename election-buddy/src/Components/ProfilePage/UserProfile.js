@@ -9,22 +9,38 @@ export default class UserProfile extends React.Component {
 		super(props);
 
 		this.state = {
-			username: "skylerlt",
+			userId: this.props.username,
+			username: ("" || localStorage.getItem("token")),
       firstName: "",
       lastName: "",
-      us_state: "TX",
-      city: "Dallas",
-      zip: "75068",
-      party: "IND"
+      us_state: "",
+      city: "",
+      zip: "",
+      party: ""
 		};
 		this.getUserInfo = this.getUserInfo.bind(this)
 	}
 
 
 	getUserInfo = async (event) => {
+
 		const user = {
-				userId: 1
+			userId: this.state.userId,
+			username: this.state.username,
+			// pass: this.state.password,
+			firstname: this.state.firstName,
+			lastName: this.state.lastName,
+			us_state: this.state.us_state,
+			city: this.state.city,
+			zip: this.state.zip,
+			party: this.state.party
 		};
+
+		this.userFuncs.getUserId(user).then(res => {
+			user.userId = res.ID;
+			this.setState({userId: res.ID})
+		})
+
 
 		this.userFuncs.getUserInfo(user).then(res => {
 			console.log("userInfo here", res.data, res)
@@ -35,12 +51,12 @@ export default class UserProfile extends React.Component {
 	})
 };
 
-	handleSubmit = async (event) =>{
+	saveUserInfo = async (event) =>{
 		event.preventDefault();
 
 		const userInfo = {
-			username: this.state.username,
-			pass: this.state.password,
+			// username: this.state.username,
+			// pass: this.state.password,
 			firstname: this.state.firstName,
 			lastName: this.state.lastName,
 			us_state: this.state.us_state,
@@ -60,6 +76,7 @@ export default class UserProfile extends React.Component {
               <div className="form-group">
                 <label htmlFor="username">Username:</label>
                 <input
+								disabled
 								value={this.state.username}
 								id="username"
 								className="form-control"
