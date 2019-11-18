@@ -19,13 +19,16 @@ class Nav extends Component {
               {
                 this.props.loginState ?
                 (
-                  <li className = "right-border"><Link to="/logout">Logout</Link></li>
+                  <ul>
+                    <li className = "right"><Link to="/profile">Your Profile</Link></li>
+                    <li className = "right-border"><Link to="/logout">Logout</Link></li>
+                  </ul>
                 )
                 : (
-                  <div>
+                  <ul>
                   <li className = "right"><Link to="/login">Login</Link></li>
                   <li className = "right-border"><Link to="/registration">Sign up</Link></li>
-                  </div>
+                  </ul>
                   )
               }
 

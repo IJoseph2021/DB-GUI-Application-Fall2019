@@ -49,7 +49,7 @@ class UserFunctions {
       })
     }
 
-    getUser(user){
+    getUserInfo(userIdOrName){
 
     }
 

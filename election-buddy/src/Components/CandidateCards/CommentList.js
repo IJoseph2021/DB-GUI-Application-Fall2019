@@ -1,14 +1,20 @@
 import React from 'react';
 import { Comment } from './Comment';
 
-export class CommentList extends React.Component {
+export default class CommentList extends React.Component {
 
-    state = {
+  constructor(props){
+    super(props);
+
+    this.state = {
         candidateName: '',
         response: ''
     };
+  }
 
-    handleResponse = event => {
+
+
+    handleResponse = (event) => {
         event.preventDefault();
         this.props.handleResponse(this.state);
         this.setState({
@@ -31,7 +37,7 @@ export class CommentList extends React.Component {
                         <li key={i} className="list-group-item">
                             <div className="card">
 
-                            
+
                             <div className="card-header">
                                 <p>{x.userName}</p>
                             </div>
@@ -47,7 +53,7 @@ export class CommentList extends React.Component {
 
                                 <p className="card-body">{x.response}</p>
                             </div>
-                            
+
                             <div style={{ "display": x.response.length == 0 ? 'block' : 'none' }}>
                                 <form className="candidate_response card"
                                       onSubmit={this.handleResponse}>
@@ -56,7 +62,7 @@ export class CommentList extends React.Component {
                                         name="name"
                                         placeholder="Candidate Name"
                                         className="form-control"
-                                        value={this.state.candidateName} 
+                                        value={this.state.candidateName}
                                         onChange={ e => this.setState({ candidateName: e.target.value }) } />
 
                                     <input type="text"
@@ -64,7 +70,7 @@ export class CommentList extends React.Component {
                                         name="question"
                                         placeholder="What's your response?"
                                         className="form-control"
-                                        value={this.state.response} 
+                                        value={this.state.response}
                                         onChange={ e => this.setState({ response: e.target.value }) } />
                                     <button type="submit"
                                         className="btn btn-primary">

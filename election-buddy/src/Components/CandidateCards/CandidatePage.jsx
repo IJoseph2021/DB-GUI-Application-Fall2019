@@ -1,11 +1,11 @@
 import React from 'react';
 import './CandidatePage.css';
-import { Candidate } from './Candidate';
-import { Comment } from './Comment';
-import { CommentForm } from './CommentForm';
-import { CommentList } from './CommentList';
+import Candidate  from './Candidate';
+import Comment from './Comment';
+import CommentForm from './CommentForm';
+import CommentList from './CommentList';
 
-export class CandidatePage extends React.Component {
+export default class CandidatePage extends React.Component {
 
     state = {
         candidateName: 'Donald Trump',
@@ -32,7 +32,7 @@ export class CandidatePage extends React.Component {
     }
 
     render () {
-        return ( 
+        return (
             <div>
                 <div className="header-republican container-fluid">
                     <h1 style={{color: 'black'}}>
@@ -68,7 +68,7 @@ export class CandidatePage extends React.Component {
                     <CommentList questions={this.state.questions} handleResponse={response => this.handleResponse(response)} candidateName={this.state.candidateName}/>
                     <CommentForm onQuestionSubmit={question => this.handleQuestionSubmit(question)}/>
                 </div>
-            </div>  
+            </div>
         )
     }
 }

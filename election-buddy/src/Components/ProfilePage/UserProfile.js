@@ -6,13 +6,13 @@ export default class UserProfile extends React.Component {
 		super(props);
 
 		this.state = {
-			username: "John",
+			username: "skylerlt",
       firstName: "",
       lastName: "",
-      us_state: "",
-      city: "",
-      zip: "",
-      party: ""
+      us_state: "TX",
+      city: "Dallas",
+      zip: "75068",
+      party: "IND"
 		};
 	}
 
