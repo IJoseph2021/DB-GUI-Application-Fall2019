@@ -201,7 +201,7 @@ app.get('/login/getEmail/:user', login.isLoggedIn, login.getEmail);
 app.get('/login/getUserId/:user', login.getUserID);
 
 //Get User Info
-app.get('/login/getUserInfo/:userId', login.getUserInfo);
+app.get('/login/getUserInfo/:user', login.getUserInfo);
 
 //Get Username
 app.get('/login/getUsername/:user', login.isLoggedIn, login.getUsername);
