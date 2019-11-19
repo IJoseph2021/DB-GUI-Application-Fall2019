@@ -127,7 +127,7 @@ exports.getSessionUserId = function(req,res){
 //Skyler
 //Get user Info
 exports.getUserInfo = function (req, res) {
-    mysqlConnection.query("SELECT * FROM USER WHERE USER.username = \'" + req.params.user + "\';",
+    mysqlConnection.query("SELECT * FROM USER WHERE USER.username = \'" + req.params.user+ "\';",
         function (err, rows, fields) {
             if (rows[0] == undefined) {
                 logger.error(err.message);
@@ -139,38 +139,51 @@ exports.getUserInfo = function (req, res) {
 //Baohua Yu
 // get username
 exports.getUsername = function (req, res) {
-    mysqlConnection.query("SELECT USER.username FROM USER WHERE USER.username = \'" + req.params.user + "\';",
+    userID = req.params.ID;
+    console.log(`SELECT USER.username FROM USER WHERE USER.ID = '${userID}';`);
+    mysqlConnection.query(`SELECT USER.username FROM USER WHERE USER.ID = '${userID}';`,
         function (err, rows, fields) {
-            if (rows[0] == undefined) {
-                logger.error(err.message);
+            if (rows[0] != undefined) {
+                res.send(rows);
+
+            } else {
+                res.send("username not found");
             }
-            res.send(rows[0]);
+            
         });
 }
 
 //Baohua Yu
 //get fname
 exports.getFname = function (req, res) {
-    mysqlConnection.query("SELECT USER.fname FROM USER WHERE USER.username = \'" + req.params.user + "\';",
+    userID = req.params.ID;
+    console.log(`SELECT USER.fname FROM USER WHERE ID = '${userID}';`);
+    mysqlConnection.query(`SELECT USER.fname FROM USER WHERE ID = '${userID}';`,
         function (err, rows, fields) {
-            if (rows[0] == undefined) {
-                logger.error(err.message);
+            if (rows[0] != undefined) {
+                res.send(rows);
+
+            } else {
+                res.send("fname not found");
             }
-            res.send(rows[0]);
+
         });
-}
+}     
 
 //Baohua Yu
 //get lname
 exports.getLname = function (req, res) {
-    mysqlConnection.query("SELECT USER.lname FROM USER WHERE USER.username = \'" + req.params.user + "\';",
+    mysqlConnection.query("SELECT USER.lname FROM USER WHERE USER.ID = \'" + req.params.ID+ "\';",
         function (err, rows, fields) {
-            if (rows[0] == undefined) {
-                logger.error(err.message);
+            if(rows[0] != undefined) {
+                res.send(rows);
+
+            } else {
+                res.send("lname not found");
             }
-            res.send(rows[0]);
+
         });
-}
+}     
 
 //Baohua Yu
 //get password

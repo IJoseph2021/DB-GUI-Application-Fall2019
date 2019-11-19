@@ -247,6 +247,9 @@ app.get('/voter/session/getCitySession', login.isLoggedIn, voter.getCitySession)
 //Updates the voter county
 app.get('/voter/session/updateCounty/:county', login.isLoggedIn, voter.updateCountySession);
 
+//Updates zipcode
+app.get('/voter/session/updateZipCodeSession/:zipCode', login.isLoggedIn, voter.updateZipCodeSession);
+
 //Gets the voter county
 app.get('/voter/session/getCountySession', login.isLoggedIn, voter.getCountySession);
 
@@ -314,7 +317,16 @@ app.get('/candidate/session/getcandidateFavorite', login.isLoggedIn, candidate.g
 app.get('/candidate/session/updateCandidateFavorite/:candidateID', login.isLoggedIn, candidate.updateCandidateFavorite);
 
 //Get candidate by state
-app.get('/candidate/session/getcandidateList/:state/:zipCode/:city/:partyCode', login.isLoggedIn, candidate.getCandidateList);
+app.get('/candidate/session/getCandidatebyState/:state', login.isLoggedIn, candidate.getCandidatebyState);
+
+//Get candidate by zipcode
+app.get('/candidate/session/getCandidatebyzipCode/:zipCode', login.isLoggedIn, candidate.getCandidatebyzipCode);
+
+//Get candidate by city
+app.get('/candidate/session/getCandidatebyCity/:city', login.isLoggedIn, candidate.getCandidatebyCity);
+
+//Get candidate by partycode
+app.get('/candidate/session/getCandidatebypartyCode/:partyCode', login.isLoggedIn, candidate.getCandidatebypartyCode);
 
 app.get('/candidate/session/enterElection/:electionID/:level/:location', login.isLoggedIn, candidate.enterElection);
 
