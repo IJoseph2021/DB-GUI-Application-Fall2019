@@ -1,13 +1,7 @@
 //This package is to handle all logins for the application
 
-//storing the mysql query
-var mysqlConnection;
-var sessionCreater;
-//Linking the mysql connection
-exports.createConnection = function(newMysqlConnection){
-    mysqlConnection = newMysqlConnection;
+const mysqlConnection = require('./oursql.js');
 
-};
 
 exports.setSessionCreater = function(session){
     sessionCreater = session;

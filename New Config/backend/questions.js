@@ -1,8 +1,5 @@
-var mysqlConnection;
 
-exports.createConnection = function(newMysqlConnection){
-    mysqlConnection = newMysqlConnection;
-};
+const mysqlConnection = require('./oursql.js');
 
 //Creates a question
 

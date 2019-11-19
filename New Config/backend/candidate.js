@@ -1,12 +1,7 @@
 /*
 This file stores all the candidate routes
 */
-var mysqlConnection;
-
-exports.createConnection = function(newConnect){
-    mysqlConnection = newConnect;
-}
-
+const mysqlConnection = require('./oursql.js');
 //Steve
 //This function adds a user to the candidate table
 exports.becomeCandidate = function(req,res){

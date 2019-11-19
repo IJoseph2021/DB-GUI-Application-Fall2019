@@ -3,11 +3,7 @@ This file handles the admin routes
 
 
 */
-var mysqlconnection;
-
-exports.createConnection = function(input){
-    mysqlconnection = input;
-}
+const mysqlconnection = require('./oursql.js');
 
 //Steve
 //Gets the admin level of the current user

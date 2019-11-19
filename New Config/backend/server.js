@@ -10,7 +10,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
-const mysql = require('mysql');
 const login = require('./login.js');
 const voter = require('./voter.js');
 const party = require('./party.js');
@@ -21,30 +20,8 @@ var fileReader = require('fs');
 const questions = require('./questions.js');
 const elections = require('./elections.js');
 
+const mysql = require('./oursql.js');
 
-//List of all potential route files.
-const routes = [login,voter,party,admin,candidate, questions, elections];
-
-//create the mysql connection object.
-var connection = mysql.createConnection({
-  //db is the host and that name is assigned based on the
-  //container name given in the docker-compose file
-  host: '34.67.95.217',
-  port: '3306',
-  user: 'root',
-  password: 'dbpassword',
-  database: 'electionBuddy'
-});
-
-//Setup for connecting to the dev mysql connection
-//Made by Steve Shoemaker
-var devConnect = mysql.createConnection({
-  host: 'backend-db',
-  database: 'electionBuddy',
-  port: '3306',
-  user: 'user',
-  password: 'password'
-});
 
 //set up some configs for express.
 const config = {
@@ -63,25 +40,6 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(ExpressAPILogMiddleware(logger, { request: true }));
 
-//Attempting to connect to the database.
-connection.connect(function (err) {
-  if (err)
-    logger.error("Cannot connect to DB!");
-  logger.info("Connected to the DB!");
-  for(var i = 0; i < routes.length; i++){
-    routes[i].createConnection(connection);
-  }
-});
-
-//Made by Steve
-//Dev Connection
-devConnect.connect(function(err){
-  if(err){
-    logger.error(err.message);
-    logger.error("can't connect to dev DB!");
-  }
-});
-
 //using session
 app.use(session({
   secret: '2C44-4D44-WppQ38S',
@@ -91,98 +49,48 @@ app.use(session({
 
 /**     REQUEST HANDLERS        */
 
-//GET /
-app.get('/', (req, res) => {
-  res.status(200).send('Go to localhost:3000/setupdb first. Then Go to localhost:3000/checkdb');
-});
-
-
-//GET /setupdb
-app.get('/setupdb', (req, res) => {
-  connection.query('drop table if exists data2', function (err, rows, fields) {
-    if (err)
-      logger.error("Can't drop table");
-  });
-  connection.query('create table data2(id int, name varchar(50))', function (err, rows, fields) {
-    if (err)
-      logger.error("Problem creating the table data2");
-  });
-  connection.query('insert into data2 values(1, \'mark\')', function(err, rows, fields) {
-      if(err)
-        logger.error('adding row to table failed');
-  });
-  res.status(200).send('created the table');
-});
-
-//GET /checkdb
-app.get('/checkdb', (req, res) => {
-  //execute a query to select * from table named data.
-  connection.query('SELECT * from USER', function (err, rows, fields) {
-    if (err) {
-      logger.error("Error while executing Query");
-    };
-    logger.info(rows[0].name + ' ' + rows[0].id);
-
-    //writing to the response object
-    res.type('text/html');
-    res.status(200);
-    res.send('<h1>' + rows[0].id + ' ' + rows[0].name + '</h1>');
-  })
-});
-
 
 //Loads the Dev mysql DB
 app.get('/setupDevDb', function(req,res){
-  for(var i = 0; i < routes.length; i++){
-    routes[i].createConnection(devConnect);
-  }
-  var fileOrder= [];
+  
+  mysql.useDevDB();
+
   fileReader.readFile("mysqlDev_init/order.txt",'utf-8', function(err, contents){
-    file = "";
+    file = '';
     for(char = 0; char < contents.length;char++){
       if(contents[char] != '\n'){
         file +=contents[char];
       }
       else {
-        console.log(file);
-        fileReader.readFile("mysqlDev_init/" + file, 'utf-8', function(err,contents){
-          query = "";
+        path = `./mysqlDev_init/` + file;
+        fileReader.readFile(`${file}`, 'utf-8', function(err,fileContents){
+          query = "";         
+          if(fileContents != undefined) {
+            for(char = 0; char < fileContents.length; char++){
+            //console.log(fileContents[char]);
+            if(fileContents[char] != ';'){
+              query+=fileContents[char];
 
-          if(contents != undefined) for(char = 0; char < contents.length; char++){
-            //console.log(contents[char]);
-            if(contents[char] != ';'){
-              query+=contents[char];
             }else {
-              devConnect.query(query,function(err,rows,fields){
+              mysql.connection.query(query, function(err,rows,fields){
                 if(err){
                   logger.error(err.message);
                 }
               });
-              query = "";
+              query = '';
             }
-          };
+          }};
         })
-        file = "";
+        file = '';
       }
     }
     });
   res.send("DevDataLoaded");
 });
 
-//Connect to Dev DB
-//Made by Steve Shoemaker
-app.get('/useDevDB', function(req,res){
-  for(var i = 0; i < routes.length; i++){
-    routes[i].createConnection(devConnect);
-  }
-  res.send("using dev db");
-});
-
 //Route to use prod db
 app.get('/useProdDB', function(req,res){
-  for(var i = 0; i < routes.length; i++){
-    routes[i].createConnection(connection);
-  }
+  mysql.useProdDB();
   res.send("using prodDB");
 });
 
