@@ -114,3 +114,19 @@ returns the comments on question_ID
 
 /question/session/getCommentTree/:commentee_ID
 returns the comment tree for a comment
+
+ISSUE ROUTES
+/issues/createIssue/:name
+Creates an issue with a specific name
+
+/issues/markIssue/:user/:issue
+allows a user to mark an issue as important to them
+
+/issues/getUserIssues/:user
+gets all issues a user has marked
+
+/issues/addElectionIssue/:election/:issue
+Adds a specific issue to an election
+
+/issues/getELectionIssues/:election
+gets all issues relevant to an election
