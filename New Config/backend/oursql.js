@@ -32,4 +32,8 @@ exports.useProdDB = function(){
     currentConnection = connection;
 }
 
+exports.query = function(query, queryFunction){
+  currentConnection.query(query,queryFunction);
+}
+
 exports.connection = currentConnection;

@@ -59,22 +59,17 @@ app.get('/setupDevDb', function(req,res){
         file +=contents[char];
       }
       else {
-        path = 'mysqlDev_init/' + file;
-        console.log(file);
-        console.log(path);
-        fileReader.readFile(path, 'utf-8', function(err,fileContents){
+        path = `./mysqlDev_init/` + file;
+        fileReader.readFile(`${file}`, 'utf-8', function(err,fileContents){
           query = "";
-          console.log(err.message);
-          console.log(fileContents);
+         
           if(fileContents != undefined) {
             for(char = 0; char < fileContents.length; char++){
             //console.log(fileContents[char]);
             if(fileContents[char] != ';'){
               query+=fileContents[char];
             }else {
-              console.log(query);
               mysql.connection.query(query, function(err,rows,fields){
-                console.log(yo);
                 if(err){
                   logger.error(err.message);
                 }
@@ -90,20 +85,9 @@ app.get('/setupDevDb', function(req,res){
   res.send("DevDataLoaded");
 });
 
-//Connect to Dev DB
-//Made by Steve Shoemaker
-app.get('/useDevDB', function(req,res){
-  for(var i = 0; i < routes.length; i++){
-    routes[i].createConnection(devConnect);
-  }
-  res.send("using dev db");
-});
-
 //Route to use prod db
 app.get('/useProdDB', function(req,res){
-  for(var i = 0; i < routes.length; i++){
-    routes[i].createConnection(connection);
-  }
+  mysql.useProdDB();
   res.send("using prodDB");
 });
 
