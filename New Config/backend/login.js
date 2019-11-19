@@ -188,15 +188,17 @@ exports.getLname = function (req, res) {
 //Baohua Yu
 //get password
 exports.getPassword = function (req, res) {
-    mysqlConnection.query("SELECT USESR.passhash FROM USER WHERE USER.username = \'" + req.params.user + "\';",
+    mysqlConnection.query("SELECT USESR.passhash FROM USER WHERE USER.ID = \'" + req.params.ID + "\';",
         function (err, rows, fields) {
-            if (rows[0] == undefined) {
-                logger.error(err.message);
-            }
-            res.send(rows[0]);
-        });
+            if (rows[0] != undefined) {
+                res.send(rows);
 
-}
+            } else {
+                res.send("password not found");
+            }
+
+        });
+}     
 //Stephen Shoemaker
 //Checks the session to see if the person is logged in
 exports.isLoggedIn = function(req,res,next){
