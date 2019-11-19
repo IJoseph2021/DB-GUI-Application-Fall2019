@@ -1,7 +1,7 @@
 
 
-/**A simple node/express server that include communication with a 
- * mysql db instance. 
+/**A simple node/express server that include communication with a
+ * mysql db instance.
 */
 
 //create main objects
@@ -19,9 +19,9 @@ const candidate = require('./candidate.js');
 const session = require('express-session');
 const questions = require('./questions.js');
 
-//create the mysql connection object.  
+//create the mysql connection object.
 var connection = mysql.createConnection({
-  //db is the host and that name is assigned based on the 
+  //db is the host and that name is assigned based on the
   //container name given in the docker-compose file
   host: '34.67.95.217',
   port: '3306',
@@ -47,7 +47,7 @@ candidate.setConnection(connection);
 
 questions.createConnection(connection);
 
-//set up some configs for express. 
+//set up some configs for express.
 const config = {
   name: 'sample-express-app',
   port: 3000,
@@ -57,7 +57,7 @@ const config = {
 //create the express.js object
 const app = express();
 
-//create a logger object.  Using logger is preferable to simply writing to the console. 
+//create a logger object.  Using logger is preferable to simply writing to the console.
 const logger = log({ console: true, file: false, label: config.name });
 
 app.use(bodyParser.json());
@@ -105,13 +105,13 @@ app.get('/setupdb', (req, res) => {
 
 //GET /checkdb
 app.get('/checkdb', (req, res) => {
-  //execute a query to select * from table named data. 
+  //execute a query to select * from table named data.
   connection.query('SELECT * from USER', function (err, rows, fields) {
     if (err) {
       logger.error("Error while executing Query");
     };
     logger.info(rows[0].name + ' ' + rows[0].id);
- 
+
     //writing to the response object
     res.type('text/html');
     res.status(200);
@@ -130,6 +130,8 @@ app.get('/login/updateEmail/:user/:email', login.isLoggedIn, login.updateEmail);
 app.get('/login/getEmail/:user', login.isLoggedIn, login.getEmail);
 
 app.get('/login/getUserId/:user', login.isLoggedIn, login.getUserID);
+
+app.get('/login/getUserInfo/:userId', login.getUserInfo);
 
 app.get('/login/session/getUserId', login.isLoggedIn, login.getSessionUserId);
 
@@ -172,11 +174,10 @@ app.get('/candidate/session/getcandidateFavorite/:userID', login.isLoggedIn, can
 app.get('/candidate/session/updateCandidateFavorite/:candidateID', login.isLoggedIn, candidate.updateCandidateFavorite);
 app.get('/candidate/session/getcandidatebyState/:state', login.isLoggedIn, candidate.getcandidatebyState);
 
-//connecting the express object to listen on a particular port as defined in the config object. 
+//connecting the express object to listen on a particular port as defined in the config object.
 app.listen(config.port, config.host, (e) => {
   if (e) {
     throw new Error('Internal Server Error');
   }
   logger.info(`${config.name} running on ${config.host}:${config.port}`);
 });
-

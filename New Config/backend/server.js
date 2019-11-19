@@ -1,7 +1,7 @@
 
 
-/**A simple node/express server that include communication with a 
- * mysql db instance. 
+/**A simple node/express server that include communication with a
+ * mysql db instance.
 */
 
 //create main objects
@@ -19,9 +19,11 @@ const session = require('express-session');
 var fileReader = require('fs');
 const questions = require('./questions.js');
 const elections = require('./elections.js');
+
 const mysql = require('./oursql.js');
 
-//set up some configs for express. 
+
+//set up some configs for express.
 const config = {
   name: 'sample-express-app',
   port: 8000,
@@ -31,7 +33,7 @@ const config = {
 //create the express.js object
 const app = express();
 
-//create a logger object.  Using logger is preferable to simply writing to the console. 
+//create a logger object.  Using logger is preferable to simply writing to the console.
 const logger = log({ console: true, file: false, label: config.name });
 
 app.use(bodyParser.json());
@@ -47,6 +49,7 @@ app.use(session({
 
 /**     REQUEST HANDLERS        */
 
+
 //Loads the Dev mysql DB
 app.get('/setupDevDb', function(req,res){
   
@@ -61,13 +64,13 @@ app.get('/setupDevDb', function(req,res){
       else {
         path = `./mysqlDev_init/` + file;
         fileReader.readFile(`${file}`, 'utf-8', function(err,fileContents){
-          query = "";
-         
+          query = "";         
           if(fileContents != undefined) {
             for(char = 0; char < fileContents.length; char++){
             //console.log(fileContents[char]);
             if(fileContents[char] != ';'){
               query+=fileContents[char];
+
             }else {
               mysql.connection.query(query, function(err,rows,fields){
                 if(err){
@@ -99,20 +102,42 @@ app.get('/login/create/:user/:fname/:lname/:pass/:email', login.createAccount);
 //login
 app.get('/login/login/:user/:pass', login.login);
 
-//updating Email
-app.get('/login/updateEmail/:user/:email', login.isLoggedIn, login.updateEmail);
-
 //Get Email
 app.get('/login/getEmail/:user', login.isLoggedIn, login.getEmail);
 
 //Get User ID
 app.get('/login/getUserId/:user', login.getUserID);
 
+//Get User Info
+app.get('/login/getUserInfo/:user', login.getUserInfo);
+
+//Get Username
+app.get('/login/getUsername/:user', login.isLoggedIn, login.getUsername);
+
+//Get Fname
+app.get('/login/getFname/:user', login.isLoggedIn, login.getFname);
+
+//Get Lname
+app.get('/login/getLname/:user', login.isLoggedIn, login.getLname);
+
+//Get password
+app.get('/login/getPassword/:user', login.isLoggedIn, login.getPassword);
+
 //Get User ID Session
 app.get('/login/session/getUserId', login.isLoggedIn, login.getSessionUserId);
 
 //Update Session Password
 app.get('/login/session/updatePassword/:newPass', login.isLoggedIn,login.changePassword);
+
+//updating Email
+app.get('/login/updateEmail/:user/:email', login.isLoggedIn, login.updateEmail);
+
+//Update fname
+app.get('/login/session/changeFname/:user/:fname', login.isLoggedIn, login.changeFname);
+
+//Update Lname
+app.get('/login/session/changeLname/:user/:lname', login.isLoggedIn, login.changeLname);
+
 
 
 
@@ -129,6 +154,9 @@ app.get('/voter/session/getCitySession', login.isLoggedIn, voter.getCitySession)
 
 //Updates the voter county
 app.get('/voter/session/updateCounty/:county', login.isLoggedIn, voter.updateCountySession);
+
+//Updates zipcode
+app.get('/voter/session/updateZipCodeSession/:zipCode', login.isLoggedIn, voter.updateZipCodeSession);
 
 //Gets the voter county
 app.get('/voter/session/getCountySession', login.isLoggedIn, voter.getCountySession);
@@ -197,7 +225,16 @@ app.get('/candidate/session/getcandidateFavorite', login.isLoggedIn, candidate.g
 app.get('/candidate/session/updateCandidateFavorite/:candidateID', login.isLoggedIn, candidate.updateCandidateFavorite);
 
 //Get candidate by state
-app.get('/candidate/session/getcandidateList/:state/:zipCode/:city/:partyCode', login.isLoggedIn, candidate.getCandidateList);
+app.get('/candidate/session/getCandidatebyState/:state', login.isLoggedIn, candidate.getCandidatebyState);
+
+//Get candidate by zipcode
+app.get('/candidate/session/getCandidatebyzipCode/:zipCode', login.isLoggedIn, candidate.getCandidatebyzipCode);
+
+//Get candidate by city
+app.get('/candidate/session/getCandidatebyCity/:city', login.isLoggedIn, candidate.getCandidatebyCity);
+
+//Get candidate by partycode
+app.get('/candidate/session/getCandidatebypartyCode/:partyCode', login.isLoggedIn, candidate.getCandidatebypartyCode);
 
 app.get('/candidate/session/enterElection/:electionID/:level/:location', login.isLoggedIn, candidate.enterElection);
 
@@ -242,11 +279,10 @@ app.get('/election/getElections/citiesWithElections', elections.getElectionsInCi
 
 
 
-//connecting the express object to listen on a particular port as defined in the config object. 
+//connecting the express object to listen on a particular port as defined in the config object.
 app.listen(config.port, config.host, (e) => {
   if (e) {
     throw new Error('Internal Server Error');
   }
   logger.info(`${config.name} running on ${config.host}:${config.port}`);
 });
-
