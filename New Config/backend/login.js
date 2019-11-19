@@ -238,11 +238,11 @@ exports.changePassword = function(req,res){
 //Baohua Yu
 //changes the fname
 exports.changeFname = function (req, res) {
-    mysqlConnection.query("UPDATE USER SET USER.fname = \'" + req.params.fname + "\'  WHERE USER.username = \'" + req.params.user + "\';", function (err, rows, fields) {
+    mysqlConnection.query("UPDATE USER SET USER.fname = \'" + req.params.fname + "\'  WHERE USER.username = \'" + req.session.userId + "\';", function (err, rows, fields) {
         if (err) {
             res.send("error");
         } else {
-            res.send("Fname update");
+            res.send("fname update");
         }
 
     });
@@ -251,11 +251,11 @@ exports.changeFname = function (req, res) {
 //Baohua Yu
 //change the lname
 exports.changeLname = function (req, res) {
-    mysqlConnection.query("UPDATE USER SET USER.lname = \'" + req.params.lname + "\'  WHERE USER.username = \'" + req.params.user + "\';", function (err, rows, fields) {
+    mysqlConnection.query("UPDATE USER SET USER.lname = \'" + req.params.lname + "\'  WHERE USER.username = \'" + req.session.userId + "\';", function (err, rows, fields) {
         if (err) {
             res.send("error");
         } else {
-            res.send("Lname update");
+            res.send("lname update");
         }
     });
 }
