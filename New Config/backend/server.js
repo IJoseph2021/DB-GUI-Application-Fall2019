@@ -19,6 +19,7 @@ const session = require('express-session');
 var fileReader = require('fs');
 const questions = require('./questions.js');
 const elections = require('./elections.js');
+const issues = require('./issues.js');
 
 const mysql = require('./oursql.js');
 
@@ -277,7 +278,22 @@ app.get('/question/session/getCommentTree/:commentee_ID', login.isLoggedIn, ques
 //election routes
 app.get('/election/getElections/citiesWithElections', elections.getElectionsInCities);
 
+//issueRoutes
 
+//This function creates an issue
+app.get('/issues/createIssue/:name', issues.createIssue);
+
+//This function marks an issue as important to a user
+app.get('/issues/markIssue/:user/:issue', issues.markIssue);
+
+//this function gets a list of all important issues to an user
+app.get('/issues/getUserIssues/:user', issues.getUserIssues);
+
+//adds an issue to an election
+app.get('/issues/addElectionIssue/:election/:issue', issues.addElectionIssue);
+
+//gets all issues connected to an election
+app.get('/issues/getElectionIssues/:election', issues.getElectionIssues);
 
 //connecting the express object to listen on a particular port as defined in the config object.
 app.listen(config.port, config.host, (e) => {
