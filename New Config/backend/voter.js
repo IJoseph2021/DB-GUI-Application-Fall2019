@@ -228,9 +228,41 @@ exports.getFollowList = function(req, res){
             if(err){
             res.send("Unable to get follow list");
             }
-        else {
+            else {
             res.send(rows);
         }
     });
 }
 
+//searches based on a given party
+exports.getCandidatesInElections = function(req, res){
+    partyCode = req.params.partyCode
+    location = req.params.location
+
+    console.log(
+        `SELECT USER.fname, USER.lname
+        FROM USER
+        INNER JOIN CANDIDATE ON USER.ID = CANDIDATE.userID
+        INNER JOIN ELECTION_CANDIDATE ON CANDIDATE.userID = ELECTION_CANDIDATE.userID
+        INNER JOIN ELECTIONS ON ELECTION_CANDIDATE.electionID = ELECTIONS.electionID
+        WHERE CANDIDATE.partyCode = '${partyCode}' AND ELECTIONS.location = '${location}';`);
+
+    mysqlConnection.query(
+        `SELECT USER.fname, USER.lname
+        FROM USER
+        INNER JOIN CANDIDATE ON USER.ID = CANDIDATE.userID
+        INNER JOIN ELECTION_CANDIDATES ON CANDIDATE.userID = ELECTION_CANDIDATES.userID
+        INNER JOIN ELECTIONS ON ELECTION_CANDIDATES.electionID = ELECTIONS.electionID
+        WHERE CANDIDATE.partyCode = '${partyCode}' AND ELECTIONS.location = '${location}';`, function(err, rows, fields){
+
+            if(err){
+                res.send("Unable to complete search to find candidates");
+                console.log(err.message)
+            }
+
+            else{
+                res.send(rows)
+            }
+
+        });
+}
