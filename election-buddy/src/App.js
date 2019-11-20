@@ -13,6 +13,7 @@ import Candidate from './Components/CandidateCards/Candidate';
 import CandidatePage from './Components/CandidateCards/CandidatePage';
 import CommentForm from './Components/CandidateCards/CommentForm';
 import CommentList from './Components/CandidateCards/CommentList';
+import HotTopic from './Components/HotTopics/HotTopic'
 
 
 
@@ -55,6 +56,7 @@ class App extends React.Component {
 	            )
 	          )}/>
 						{!this.state.loginState && <Route path="/candidate" exact component={CandidatePage} />}
+						{!this.state.loginState && <Route path="/hottopics" exact component={HotTopic} />}
 						{this.state.loginState && <Route path="/" exact component={Homepage} />}
 						{!this.state.loginState && <Route exact path="/login" render={(props) => <Login {...props} updateLoginState={this.updateLoginState}/>}/>}
 						{/*!this.state.loginState && <Route exact path="/login" render={(props) => <Login {...props} updateLoginState={this.updateLoginState}/>}/>*/}
