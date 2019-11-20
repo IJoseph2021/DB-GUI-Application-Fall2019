@@ -1,4 +1,6 @@
 
+use electionBuddy;
+
 ALTER TABLE CANDIDATE_QUESTION AUTO_INCREMENT = 1;
 
 INSERT INTO CANDIDATE_QUESTION(question_Time,asker_ID, askee_ID, question)

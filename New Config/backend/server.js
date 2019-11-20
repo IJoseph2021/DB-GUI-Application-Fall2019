@@ -55,37 +55,27 @@ app.use(session({
 app.get('/setupDevDb', function(req,res){
   
   mysql.useDevDB();
-
-  fileReader.readFile("mysqlDev_init/order.txt",'utf-8', function(err, contents){
-    file = '';
-    for(char = 0; char < contents.length;char++){
-      if(contents[char] != '\n'){
-        file +=contents[char];
-      }
-      else {
-        path = `./mysqlDev_init/` + file;
-        fileReader.readFile(`${file}`, 'utf-8', function(err,fileContents){
-          query = "";         
-          if(fileContents != undefined) {
-            for(char = 0; char < fileContents.length; char++){
-            //console.log(fileContents[char]);
-            if(fileContents[char] != ';'){
-              query+=fileContents[char];
-
-            }else {
-              mysql.connection.query(query, function(err,rows,fields){
-                if(err){
-                  logger.error(err.message);
-                }
-              });
-              query = '';
+  const files= [];
+  filesCount = 0;
+  console.log(process.cwd());
+  fileReader.readFile("mysqlDev_init/SampleElectionBuddyData.sql",'utf-8', function(err, contents){
+    if(err){
+      console.log(err.message);
+    } else {
+      query = '';
+      for(char = 0; char < contents.length; char++){
+        if(contents[char] == ';'){
+          mysql.query(query,function(err,rows,fields){
+            if(err){
+              console.log(err.message);
             }
-          }};
-        })
-        file = '';
+          });}
+        else {
+          query += contents[char];
+        }
       }
     }
-    });
+  });
   res.send("DevDataLoaded");
 });
 
@@ -94,6 +84,11 @@ app.get('/useProdDB', function(req,res){
   mysql.useProdDB();
   res.send("using prodDB");
 });
+
+app.get('/useDevDB', function(req,res){
+  mysql.useDevDB();
+  res.send(200);
+})
 
 //Login Routes
 
