@@ -255,3 +255,48 @@ exports.changeLname = function (req, res) {
         }
     });
 }
+
+//Stephen Shoemaker
+//change Lname without session
+exports.updateLName = function (req, res) {
+    mysqlConnection.query("UPDATE USER SET USER.lname = \'" + req.params.lname + "\'  WHERE USER.username = \'" + req.params.user + "\';", function (err, rows, fields) {
+        if (err) {
+            res.send(404);
+        } else {
+            res.send(200);
+        }
+    });
+}
+
+
+//Stephen Shoemaker
+//change Fname without session
+exports.updateFName = function (req, res) {
+    mysqlConnection.query("UPDATE USER SET USER.lname = \'" + req.params.fname + "\'  WHERE USER.username = \'" + req.params.user + "\';", function (err, rows, fields) {
+        if (err) {
+            res.send(404);
+        } else {
+            res.send(200);
+        }
+    });
+}
+
+exports.getRoles = function(req,res){
+    //res.json(null);
+    mysqlConnection.query(`SELECT * FROM VOTER WHERE userID = '${req.params.user}';`,function(err,rows,fields){
+        if(rows.length != 0){
+            res.json({voter : 'true'});
+        }
+    });
+    mysqlConnection.query(`SELECT * FROM CANDIDATE WHERE userID = '${req.params.user}';`,function(err,rows,fields){
+        if(rows.length != 0){
+            res.json({candidate : 'true'});
+        }
+    });
+    mysqlConnection.query(`SELECT * FROM ADMIN WHERE userID = '${req.params.user}';`,function(err,rows,fields){
+        if(rows.length != 0){
+            res.json({admin : 'true'});
+        }
+    });
+    
+}

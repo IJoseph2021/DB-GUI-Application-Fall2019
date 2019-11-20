@@ -25,6 +25,30 @@ exports.setVoter = function(req,res){
 }
 
 //Steve Shoemaker
+//This function makes a specific user a voter
+exports.userBecomeVoter = function(req,res){
+    mysqlConnection.query(`INSERT INTO VOTER(userID) VALUES ('${req.params.user}');`, function(err,rows,fields){
+        if (err){
+            res.send(404);
+        } else {
+            res.send(200);
+        }
+    })
+}
+
+//Steve Shoemaker
+//This function gets all of a voters info
+exports.getVoterInfo = function(req,res){
+    mysqlConnection.query(`SELECT * FROM VOTER WHERE userID = '${req.params.voter}';`, function(err,rows,fields){
+        if(err){
+            res.send(404);
+        } else {
+            res.send(rows);
+        }
+    });
+}
+
+//Steve Shoemaker
 //Updates the city of the session voter
 exports.updateCitySession = function(req,res){
     userID = req.session.userId;
