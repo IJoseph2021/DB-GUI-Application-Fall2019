@@ -181,6 +181,9 @@ app.get('/voter/session/unfollowTopic/:question_ID', login.isLoggedIn, voter.unf
 // Get List of followed questions
 app.get('/voter/session/getFollowList', login.isLoggedIn, voter.getFollowList);
 
+// Get List of electorates in elections based on location and party code
+app.get('/voter/session/getCandidatesInElections/:partyCode/:location', login.isLoggedIn, voter.getCandidatesInElections);
+
 
 //Party Routes
 
