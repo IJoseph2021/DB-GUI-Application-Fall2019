@@ -10,7 +10,7 @@ export default class HotTopic extends Component {
   render() {
     return (
       <div>
-        <h1>Hot Topic Here</h1>
+        <h1>Questions and Answers</h1>
         <div className="jumbotron">
           <h1 className="display-4">Topic to dicuss here</h1>
           <button type="button" class="btn btn-primary">Primary</button>

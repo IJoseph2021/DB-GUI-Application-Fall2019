@@ -24,6 +24,10 @@ body {
   height: 40vmin;
 }
 
+.main-content{
+  margin: 0 5%;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

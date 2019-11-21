@@ -113,9 +113,6 @@ export default class CandidatePage extends React.Component {
                 </div>
 
                 <div className="questions">
-                    <h3 style={{padding: "0em 0.8em"}}>
-                        Questions for {this.state.candidateName}
-                    </h3>
                     <CommentList questions={this.state.questions} handleResponse={response => this.handleResponse(response)} candidateName={this.state.candidateName}/>
                     <CommentForm onQuestionSubmit={question => this.handleQuestionSubmit(question)}/>
                 </div>

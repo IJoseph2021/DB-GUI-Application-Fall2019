@@ -1,6 +1,6 @@
 .outside-wrapper {
     height: 100%;
-    margin-top: 766px;
+    margin-top: auto;
     display: flex;
 }
 
@@ -21,8 +21,8 @@
 }
 
 
-hr {
-  border-color: gray;
+.outside-wrapper hr {
+  border-color: white;
   max-width: 1400px;
   margin: auto;
 }
