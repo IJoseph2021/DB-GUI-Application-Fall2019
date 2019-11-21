@@ -151,8 +151,8 @@ exports.getUsername = function (req, res) {
 //get fname
 exports.getFname = function (req, res) {
     userID = req.params.ID;
-    console.log(`SELECT USER.fname FROM USER WHERE ID = '${userID}';`);
-    mysqlConnection.query(`SELECT USER.fname FROM USER WHERE ID = '${userID}';`,
+    console.log(`SELECT USER.fname FROM USER WHERE USER.ID = '${userID}';`);
+    mysqlConnection.query(`SELECT USER.fname FROM USER WHERE USER.ID = '${userID}';`,
         function (err, rows, fields) {
             if (rows[0] != undefined) {
                 res.send(rows);
@@ -167,9 +167,11 @@ exports.getFname = function (req, res) {
 //Baohua Yu
 //get lname
 exports.getLname = function (req, res) {
-    mysqlConnection.query("SELECT USER.lname FROM USER WHERE USER.ID = \'" + req.params.ID+ "\';",
+    userID = req.params.ID;
+    console.log(`SELECT USER.lname FROM USER WHERE USER.ID = '${userID}';`);
+    mysqlConnection.query(`SELECT USER.lname FROM USER WHERE USER.ID = '${userID}';`,
         function (err, rows, fields) {
-            if(rows[0] != undefined) {
+            if (rows[0] != undefined) {
                 res.send(rows);
 
             } else {
@@ -177,12 +179,15 @@ exports.getLname = function (req, res) {
             }
 
         });
-}     
+}
+ 
 
 //Baohua Yu
 //get password
 exports.getPassword = function (req, res) {
-    mysqlConnection.query("SELECT USESR.passhash FROM USER WHERE USER.ID = \'" + req.params.ID + "\';",
+    userID = req.params.ID;
+    console.log(`SELECT USER.passhash FROM USER WHERE USER.ID = '${userID}';`);
+    mysqlConnection.query(`SELECT USER.passhash FROM USER WHERE USER.ID = '${userID}';`,
         function (err, rows, fields) {
             if (rows[0] != undefined) {
                 res.send(rows);
@@ -192,7 +197,7 @@ exports.getPassword = function (req, res) {
             }
 
         });
-}     
+}   
 //Stephen Shoemaker
 //Checks the session to see if the person is logged in
 exports.isLoggedIn = function(req,res,next){
