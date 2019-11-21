@@ -280,12 +280,13 @@ exports.getEligibility = function(req,res){
     console.log(
         `SELECT ELECTIONS.electionID
         FROM ELECTIONS
-        WHERE ELECTIONS.location IN(SELECT VOTER.location FROM VOTER WHERE VOTER.userID = '${userID}') AND ELECTIONS.time>= '${time}';`);
+        WHERE ELECTIONS.location IN(SELECT VOTER.city FROM VOTER WHERE VOTER.userID = '${userID}');`); //AND ELECTIONS.time >= '${time}';`);
 
     mysqlConnection.query(
         `SELECT ELECTIONS.electionID
         FROM ELECTIONS
-        WHERE ELECTIONS.location IN(SELECT VOTER.location FROM VOTER WHERE VOTER.userID = '${userID}') AND ELECTIONS.time>= '${time}';`, function(err, rows, fields){
+        WHERE ELECTIONS.location IN(SELECT VOTER.city FROM VOTER WHERE VOTER.userID = '${userID}');`, function(err, rows, fields){
+       // AND ELECTIONS.time >= '${time}';`, function(err, rows, fields){
 
             if(err){
                 res.send("Unable to complete search to find eligible elections");
