@@ -99,6 +99,28 @@ exports.getCandidatebyState = function (req, res) {
         });
     }
 
+exports.candidateEnterElection = function(req,res){
+    mysqlConnection.query(`SELECT LEVEL, LOCATION FROM ELECTIONS WHERE '${req.params.electionID}' = ELECTIONS.electionID;`, function(ferr, frows,ffield){
+        queryLocation = '';
+        if(frows[0].LEVEL == 'city') queryLocation = 'city';
+        if(frows[0].LEVEL == 'zipCode') queryLocation = 'zipCode';
+        if(frows[0].LEVEL == 'state') queryLocation = 'state';
+        
+        mysqlConnection.query(`SELECT ${queryLocation} FROM CANDIDATE WHERE CANDIDATE.userID = ${req.params.candidate};`,function(serr, srows, sfields){
+            if(srows != undefined){
+                 mysqlConnection.query(`INSERT INTO ELECTION_CANDIDATES(electionID,userID) VALUES (${req.params.electionID}, ${req.params.candidate});`, function(err,rows,fields){
+                     if(err){
+                        res.sendStatus(404);
+                     } else {
+                         res.sendStatus(200);
+                     }
+                 });
+             } else {
+                 res.sendStatus(400);
+             }
+        });
+    })
+}
 
 //Isaac Joseph
 exports.enterElection = function(req,res){

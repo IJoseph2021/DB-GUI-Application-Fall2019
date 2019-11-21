@@ -123,6 +123,7 @@ app.get('/voter/session/setVoter', login.isLoggedIn, voter.setVoter);
 //makes a specific user become a voter
 app.get('/voter/becomeVoter/:user', voter.userBecomeVoter);
 
+//returns everything a voter does
 app.get('/voter/getVoterInfo/:voter', voter.getVoterInfo);
 
 //Updates the city of the voter
@@ -220,6 +221,8 @@ app.get('/candidate/session/getCandidatebypartyCode/:partyCode', login.isLoggedI
 
 app.get('/candidate/session/enterElection/:electionID/:level/:location', login.isLoggedIn, candidate.enterElection);
 
+//candidate enter election
+app.get('/candidate/enterElection/:candidate/:electionID', candidate.candidateEnterElection);
 
 
 
