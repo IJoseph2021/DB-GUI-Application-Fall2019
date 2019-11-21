@@ -266,3 +266,41 @@ exports.getCandidatesInElections = function(req, res){
 
         });
 }
+
+//Isaac J.
+exports.getEligibility = function(req,res){
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+
+    userID = req.params.userID;
+    time = dateTime;
+ 
+    console.log(
+        `SELECT ELECTIONS.electionID
+        FROM ELECTIONS
+        WHERE ELECTIONS.location IN(SELECT VOTER.city FROM VOTER WHERE VOTER.userID = '${userID}')
+        OR ELECTIONS.location IN(SELECT VOTER.state FROM VOTER WHERE VOTER.userID = '${userID}')
+        OR ELECTIONS.location IN(SELECT VOTER.zipCode FROM VOTER WHERE VOTER.userID = '${userID}')
+        AND ELECTIONS.time >= '${time}';`);
+
+    mysqlConnection.query(
+        `SELECT ELECTIONS.electionID
+        FROM ELECTIONS
+        WHERE ELECTIONS.location IN(SELECT VOTER.city FROM VOTER WHERE VOTER.userID = '${userID}')
+        OR ELECTIONS.location IN(SELECT VOTER.state FROM VOTER WHERE VOTER.userID = '${userID}')
+        OR ELECTIONS.location IN(SELECT VOTER.zipCode FROM VOTER WHERE VOTER.userID = '${userID}')
+        AND ELECTIONS.time >= '${time}';`, function(err, rows, fields){
+
+            if(err){
+                res.send("Unable to complete search to find eligible elections");
+                console.log(err.message)
+            }
+
+            else{
+                res.send(rows)
+            }
+
+        });
+}
