@@ -51,49 +51,16 @@ app.use(session({
 /**     REQUEST HANDLERS        */
 
 
-//Loads the Dev mysql DB
-app.get('/setupDevDb', function(req,res){
-  
-  mysql.useDevDB();
-
-  fileReader.readFile("mysqlDev_init/order.txt",'utf-8', function(err, contents){
-    file = '';
-    for(char = 0; char < contents.length;char++){
-      if(contents[char] != '\n'){
-        file +=contents[char];
-      }
-      else {
-        path = `./mysqlDev_init/` + file;
-        fileReader.readFile(`${file}`, 'utf-8', function(err,fileContents){
-          query = "";         
-          if(fileContents != undefined) {
-            for(char = 0; char < fileContents.length; char++){
-            //console.log(fileContents[char]);
-            if(fileContents[char] != ';'){
-              query+=fileContents[char];
-
-            }else {
-              mysql.connection.query(query, function(err,rows,fields){
-                if(err){
-                  logger.error(err.message);
-                }
-              });
-              query = '';
-            }
-          }};
-        })
-        file = '';
-      }
-    }
-    });
-  res.send("DevDataLoaded");
-});
-
 //Route to use prod db
 app.get('/useProdDB', function(req,res){
   mysql.useProdDB();
   res.send("using prodDB");
 });
+
+app.get('/useDevDB', function(req,res){
+  mysql.useDevDB();
+  res.send(200);
+})
 
 //Login Routes
 
@@ -104,7 +71,7 @@ app.get('/login/create/:user/:fname/:lname/:pass/:email', login.createAccount);
 app.get('/login/login/:user/:pass', login.login);
 
 //Get Email
-app.get('/login/getEmail/:user', login.isLoggedIn, login.getEmail);
+app.get('/login/getEmail/:user', login.getEmail);
 
 //Get User ID
 app.get('/login/getUserId/:user', login.getUserID);
@@ -113,16 +80,16 @@ app.get('/login/getUserId/:user', login.getUserID);
 app.get('/login/getUserInfo/:user', login.getUserInfo);
 
 //Get Username
-app.get('/login/getUsername/:user', login.isLoggedIn, login.getUsername);
+app.get('/login/getUsername/:user', login.getUsername);
 
 //Get Fname
-app.get('/login/getFname/:user', login.isLoggedIn, login.getFname);
+app.get('/login/getFname/:user', login.getFname);
 
 //Get Lname
-app.get('/login/getLname/:user', login.isLoggedIn, login.getLname);
+app.get('/login/getLname/:user', login.getLname);
 
 //Get password
-app.get('/login/getPassword/:user', login.isLoggedIn, login.getPassword);
+app.get('/login/getPassword/:user', login.getPassword);
 
 //Get User ID Session
 app.get('/login/session/getUserId', login.isLoggedIn, login.getSessionUserId);
@@ -131,7 +98,7 @@ app.get('/login/session/getUserId', login.isLoggedIn, login.getSessionUserId);
 app.get('/login/session/updatePassword/:newPass', login.isLoggedIn,login.changePassword);
 
 //updating Email
-app.get('/login/updateEmail/:user/:email', login.isLoggedIn, login.updateEmail);
+app.get('/login/updateEmail/:user/:email', login.updateEmail);
 
 //Update fname
 app.get('/login/session/changeFname/:user/:fname', login.isLoggedIn, login.changeFname);
@@ -139,13 +106,24 @@ app.get('/login/session/changeFname/:user/:fname', login.isLoggedIn, login.chang
 //Update Lname
 app.get('/login/session/changeLname/:user/:lname', login.isLoggedIn, login.changeLname);
 
+//update fname
+app.get('/login/updateLName/:user/:lname', login.updateLName);
 
+//update lname
+app.get('/login/updateLName/:user/:fname', login.updateFName);
 
+//getAllRoles
+app.get('/login/getAllRoles/:user', login.getRoles);
 
 //Voter Routes
 
 //Making the current session a voter
 app.get('/voter/session/setVoter', login.isLoggedIn, voter.setVoter);
+
+//makes a specific user become a voter
+app.get('/voter/becomeVoter/:user', voter.userBecomeVoter);
+
+app.get('/voter/getVoterInfo/:voter', voter.getVoterInfo);
 
 //Updates the city of the voter
 app.get('/voter/session/updateCity/:city', login.isLoggedIn, voter.updateCitySession);
@@ -185,6 +163,9 @@ app.get('/voter/session/unfollowTopic/:question_ID', login.isLoggedIn, voter.unf
 
 // Get List of followed questions
 app.get('/voter/session/getFollowList', login.isLoggedIn, voter.getFollowList);
+
+// Get List of electorates in elections based on location and party code
+app.get('/voter/session/getCandidatesInElections/:partyCode/:location', login.isLoggedIn, voter.getCandidatesInElections);
 
 
 //Party Routes

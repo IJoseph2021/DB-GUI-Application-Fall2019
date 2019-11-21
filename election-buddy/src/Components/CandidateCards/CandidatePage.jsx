@@ -98,9 +98,9 @@ export default class CandidatePage extends React.Component {
                                          <img class="card-img-top" src={article.urlToImage}/>
                                           <h5 className="card-title">{article.title}</h5>
                                           <h6 className="card-subtitle mb-2 text-muted">
-                                                <Link to={article.url}>
-                                                <button type="button" variant = "success" className="btn btn-info">Learn More</button>
-                                                </Link>
+                                                <button type="button" variant = "success" className="btn btn-info">
+                                                <a target="_blank" href={article.url}>Learn More</a>
+                                                </button>
                                           </h6>
                                         </div>
                                       </div>

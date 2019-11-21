@@ -25,6 +25,30 @@ exports.setVoter = function(req,res){
 }
 
 //Steve Shoemaker
+//This function makes a specific user a voter
+exports.userBecomeVoter = function(req,res){
+    mysqlConnection.query(`INSERT INTO VOTER(userID) VALUES ('${req.params.user}');`, function(err,rows,fields){
+        if (err){
+            res.send(404);
+        } else {
+            res.send(200);
+        }
+    })
+}
+
+//Steve Shoemaker
+//This function gets all of a voters info
+exports.getVoterInfo = function(req,res){
+    mysqlConnection.query(`SELECT * FROM VOTER WHERE userID = '${req.params.voter}';`, function(err,rows,fields){
+        if(err){
+            res.send(404);
+        } else {
+            res.send(rows);
+        }
+    });
+}
+
+//Steve Shoemaker
 //Updates the city of the session voter
 exports.updateCitySession = function(req,res){
     userID = req.session.userId;
@@ -204,9 +228,41 @@ exports.getFollowList = function(req, res){
             if(err){
             res.send("Unable to get follow list");
             }
-        else {
+            else {
             res.send(rows);
         }
     });
 }
 
+//searches based on a given party
+exports.getCandidatesInElections = function(req, res){
+    partyCode = req.params.partyCode
+    location = req.params.location
+
+    console.log(
+        `SELECT USER.fname, USER.lname
+        FROM USER
+        INNER JOIN CANDIDATE ON USER.ID = CANDIDATE.userID
+        INNER JOIN ELECTION_CANDIDATE ON CANDIDATE.userID = ELECTION_CANDIDATE.userID
+        INNER JOIN ELECTIONS ON ELECTION_CANDIDATE.electionID = ELECTIONS.electionID
+        WHERE CANDIDATE.partyCode = '${partyCode}' AND ELECTIONS.location = '${location}';`);
+
+    mysqlConnection.query(
+        `SELECT USER.fname, USER.lname
+        FROM USER
+        INNER JOIN CANDIDATE ON USER.ID = CANDIDATE.userID
+        INNER JOIN ELECTION_CANDIDATES ON CANDIDATE.userID = ELECTION_CANDIDATES.userID
+        INNER JOIN ELECTIONS ON ELECTION_CANDIDATES.electionID = ELECTIONS.electionID
+        WHERE CANDIDATE.partyCode = '${partyCode}' AND ELECTIONS.location = '${location}';`, function(err, rows, fields){
+
+            if(err){
+                res.send("Unable to complete search to find candidates");
+                console.log(err.message)
+            }
+
+            else{
+                res.send(rows)
+            }
+
+        });
+}
