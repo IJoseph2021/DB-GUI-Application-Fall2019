@@ -167,6 +167,7 @@ app.get('/voter/session/getFollowList', login.isLoggedIn, voter.getFollowList);
 // Get List of electorates in elections based on location and party code
 app.get('/voter/session/getCandidatesInElections/:partyCode/:location', login.isLoggedIn, voter.getCandidatesInElections);
 
+//Get list of eligible elections for voter
 app.get('/voter/session/getEligibility/:userID', login.isLoggedIn, voter.getEligibility);
 
 
