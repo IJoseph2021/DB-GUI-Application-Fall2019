@@ -1,12 +1,7 @@
 /*
 This file stores all the candidate routes
 */
-var mysqlConnection;
-
-exports.createConnection = function(newConnect){
-    mysqlConnection = newConnect;
-}
-
+const mysqlConnection = require('./oursql.js');
 //Steve
 //This function adds a user to the candidate table
 exports.becomeCandidate = function(req,res){
@@ -22,11 +17,13 @@ exports.becomeCandidate = function(req,res){
 //Baohua Yu
 // user can have more than one favorite candiates
 exports.getcandidateFavorite = function (req, res) {
-    mysqlConnection.query(`SELECT candidateID FROM CANDIDATE_FAVORITE WHERE userID = '${req.session.userId}'`, function (err, rows, fields) {
-        if (rows[0] == undefined) {
-            res.send("Not Found");
+    
+    console.log(`SELECT candidate_ID FROM CANDIDATE_FAVORITE WHERE user_ID = '${req.params.user_ID}';`);
+    mysqlConnection.query(`SELECT candidate_ID FROM CANDIDATE_FAVORITE WHERE user_ID = '${req.params.user_ID}'`, function (err, rows, fields) {
+        if (rows[0] != undefined) {
+            res.send(rows);
         } else {
-            res.send(rows[0].candidateID);
+            res.send("candidate favorite not found");
         }
     });
 }
@@ -34,7 +31,7 @@ exports.getcandidateFavorite = function (req, res) {
 //Baohua Yu
 // update the candidate favorite
 exports.updateCandidateFavorite = function (req, res) {
-    mysqlConnection.query(`UPDATE CANDIDATE_FAVORITE SET candidateID = '${req.params.candidateID}' WHERE userID = '${req.session.userId}';`, function (err, rows, fields) {
+    mysqlConnection.query(`UPDATE CANDIDATE_FAVORITE SET candidate_ID = '${req.params.candidate_ID}' WHERE user_ID = '${req.params.user_ID}';`, function (err, rows, fields) {
         if (err) {
             res.send("err");
 
@@ -44,28 +41,26 @@ exports.updateCandidateFavorite = function (req, res) {
     });
 }
 // Baohua Yu
-//Isaac J.
-// get candidate by state/zipcode/city/partyCode
-exports.getCandidateList = function (req, res) {
-    state = req.params.state
-    zipCode = req.params.zipCode
-    partyCode = req.params.partyCode
-    city = req.params.city
+//Isaac Joseph
+//get candidate by state
+exports.getCandidatebyState = function (req, res) {
+    console.log(`SELECT CANDIDATE.userID FROM CANDIDATE WHERE state = '${req.params.state}';`);
+    mysqlConnection.query(`SELECT CANDIDATE.userID FROM CANDIDATE WHERE state = '${req.params.state}';`, function (err, rows, fields) {
 
-    if (state != "0") {
-        console.log(`SELECT USERID FROM CANDIDATE WHERE state = '${state}';`);
-        mysqlConnection.query(`SELECT USERID FROM CANDIDATE WHERE state = '${state}';`, function (err, rows, fields) {
-            
-            if (rows[0] != undefined) {
+        if (rows[0] != undefined) {
                 res.send(rows);
             } else {
                 res.send("No candidate found base on the state reference");
             }
         });
-    }
-    else if (zipCode != "0") {
-        console.log(`SELECT USERID FROM CANDIDATE WHERE zipCode = '${zipCode}';`);
-        mysqlConnection.query(`SELECT USERID FROM CANDIDATE WHERE zipCode = '${zipCode}';`, function (err, rows, fields) {
+}  
+
+//Baohua Yu
+//get candidate by zipcode
+    exports.getCandidatebyzipCode = function (req, res) {
+        zipCode = req.params.zipCode;
+        console.log(`SELECT userID FROM CANDIDATE WHERE zipCode = '${zipCode}';`);
+        mysqlConnection.query(`SELECT userID FROM CANDIDATE WHERE zipCode = '${zipCode}';`, function (err, rows, fields) {
             if (rows[0] != undefined) {
                 res.send(rows);
 
@@ -73,22 +68,28 @@ exports.getCandidateList = function (req, res) {
                 res.send("No candidate found base on the zipCode reference");
             }
         });
-    }
+}
 
-    else if (city != "0") {
-        console.log(`SELECT USERID FROM CANDIDATE WHERE city = '${city}';`);
-        mysqlConnection.query(`SELECT USERID FROM CANDIDATE WHERE city = '${city}';`, function (err, rows, fields) {
+//Baohua Yu
+//getcandidate by city
+    exports.getCandidatebyCity = function (req, res) {
+        city = req.params.city;
+        console.log(`SELECT userID FROM CANDIDATE WHERE city = '${city}';`);
+        mysqlConnection.query(`SELECT userID FROM CANDIDATE WHERE city = '${city}';`, function (err, rows, fields) {
             if (rows[0] != undefined) {
                 res.send(rows);
             } else {
                 res.send("No candidate found base on the city reference");
             }
         });
-    }
-    else
-    {
-        console.log(`SELECT USERID FROM CANDIDATE WHERE partyCode = '${partyCode}';`);
-        mysqlConnection.query(`SELECT USERID FROM CANDIDATE WHERE partyCode = '${partyCode}';`, function (err, rows, field) {
+}
+
+ //Baohua Yu  
+//getcandidate by partycode
+    exports.getCandidatebypartyCode = function (req, res) {
+        partyCode = req.params.partyCode;
+        console.log(`SELECT userID FROM CANDIDATE WHERE partyCode = '${partyCode}';`);
+        mysqlConnection.query(`SELECT userID FROM CANDIDATE WHERE partyCode = '${partyCode}';`, function (err, rows, field) {
             if (rows[0] != undefined) {
                 res.send(rows);
             } else {
@@ -96,6 +97,28 @@ exports.getCandidateList = function (req, res) {
             }
         });
     }
+
+exports.candidateEnterElection = function(req,res){
+    mysqlConnection.query(`SELECT LEVEL, LOCATION FROM ELECTIONS WHERE '${req.params.electionID}' = ELECTIONS.electionID;`, function(ferr, frows,ffield){
+        queryLocation = '';
+        if(frows[0].LEVEL == 'city') queryLocation = 'city';
+        if(frows[0].LEVEL == 'zipCode') queryLocation = 'zipCode';
+        if(frows[0].LEVEL == 'state') queryLocation = 'state';
+        
+        mysqlConnection.query(`SELECT ${queryLocation} FROM CANDIDATE WHERE CANDIDATE.userID = ${req.params.candidate};`,function(serr, srows, sfields){
+            if(srows != undefined){
+                 mysqlConnection.query(`INSERT INTO ELECTION_CANDIDATES(electionID,userID) VALUES (${req.params.electionID}, ${req.params.candidate});`, function(err,rows,fields){
+                     if(err){
+                        res.sendStatus(404);
+                     } else {
+                         res.sendStatus(200);
+                     }
+                 });
+             } else {
+                 res.sendStatus(400);
+             }
+        });
+    })
 }
 
 //Isaac Joseph
@@ -120,7 +143,7 @@ exports.enterElection = function(req,res){
                 res.send("Candidate addition to election Failed");
                 }
             else {
-                res.send("Candidate addition to election Created");
+                res.send("Candidate addition to election Created");w
             }
         });
 }

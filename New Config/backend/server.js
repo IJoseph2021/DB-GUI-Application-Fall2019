@@ -10,7 +10,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
-const mysql = require('mysql');
 const login = require('./login.js');
 const voter = require('./voter.js');
 const party = require('./party.js');
@@ -20,31 +19,10 @@ const session = require('express-session');
 var fileReader = require('fs');
 const questions = require('./questions.js');
 const elections = require('./elections.js');
+const issues = require('./issues.js');
 
+const mysql = require('./oursql.js');
 
-//List of all potential route files.
-const routes = [login,voter,party,admin,candidate, questions, elections];
-
-//create the mysql connection object.
-var connection = mysql.createConnection({
-  //db is the host and that name is assigned based on the
-  //container name given in the docker-compose file
-  host: '34.67.95.217',
-  port: '3306',
-  user: 'root',
-  password: 'dbpassword',
-  database: 'electionBuddy'
-});
-
-//Setup for connecting to the dev mysql connection
-//Made by Steve Shoemaker
-var devConnect = mysql.createConnection({
-  host: 'backend-db',
-  database: 'electionBuddy',
-  port: '3306',
-  user: 'user',
-  password: 'password'
-});
 
 //set up some configs for express.
 const config = {
@@ -63,25 +41,6 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(ExpressAPILogMiddleware(logger, { request: true }));
 
-//Attempting to connect to the database.
-connection.connect(function (err) {
-  if (err)
-    logger.error("Cannot connect to DB!");
-  logger.info("Connected to the DB!");
-  for(var i = 0; i < routes.length; i++){
-    routes[i].createConnection(connection);
-  }
-});
-
-//Made by Steve
-//Dev Connection
-devConnect.connect(function(err){
-  if(err){
-    logger.error(err.message);
-    logger.error("can't connect to dev DB!");
-  }
-});
-
 //using session
 app.use(session({
   secret: '2C44-4D44-WppQ38S',
@@ -91,100 +50,17 @@ app.use(session({
 
 /**     REQUEST HANDLERS        */
 
-//GET /
-app.get('/', (req, res) => {
-  res.status(200).send('Go to localhost:3000/setupdb first. Then Go to localhost:3000/checkdb');
-});
-
-
-//GET /setupdb
-app.get('/setupdb', (req, res) => {
-  connection.query('drop table if exists data2', function (err, rows, fields) {
-    if (err)
-      logger.error("Can't drop table");
-  });
-  connection.query('create table data2(id int, name varchar(50))', function (err, rows, fields) {
-    if (err)
-      logger.error("Problem creating the table data2");
-  });
-  connection.query('insert into data2 values(1, \'mark\')', function(err, rows, fields) {
-      if(err)
-        logger.error('adding row to table failed');
-  });
-  res.status(200).send('created the table');
-});
-
-//GET /checkdb
-app.get('/checkdb', (req, res) => {
-  //execute a query to select * from table named data.
-  connection.query('SELECT * from USER', function (err, rows, fields) {
-    if (err) {
-      logger.error("Error while executing Query");
-    };
-    logger.info(rows[0].name + ' ' + rows[0].id);
-
-    //writing to the response object
-    res.type('text/html');
-    res.status(200);
-    res.send('<h1>' + rows[0].id + ' ' + rows[0].name + '</h1>');
-  })
-});
-
-
-//Loads the Dev mysql DB
-app.get('/setupDevDb', function(req,res){
-  for(var i = 0; i < routes.length; i++){
-    routes[i].createConnection(devConnect);
-  }
-  var fileOrder= [];
-  fileReader.readFile("mysqlDev_init/order.txt",'utf-8', function(err, contents){
-    file = "";
-    for(char = 0; char < contents.length;char++){
-      if(contents[char] != '\n'){
-        file +=contents[char];
-      }
-      else {
-        console.log(file);
-        fileReader.readFile("mysqlDev_init/" + file, 'utf-8', function(err,contents){
-          query = "";
-
-          if(contents != undefined) for(char = 0; char < contents.length; char++){
-            //console.log(contents[char]);
-            if(contents[char] != ';'){
-              query+=contents[char];
-            }else {
-              devConnect.query(query,function(err,rows,fields){
-                if(err){
-                  logger.error(err.message);
-                }
-              });
-              query = "";
-            }
-          };
-        })
-        file = "";
-      }
-    }
-    });
-  res.send("DevDataLoaded");
-});
-
-//Connect to Dev DB
-//Made by Steve Shoemaker
-app.get('/useDevDB', function(req,res){
-  for(var i = 0; i < routes.length; i++){
-    routes[i].createConnection(devConnect);
-  }
-  res.send("using dev db");
-});
 
 //Route to use prod db
 app.get('/useProdDB', function(req,res){
-  for(var i = 0; i < routes.length; i++){
-    routes[i].createConnection(connection);
-  }
+  mysql.useProdDB();
   res.send("using prodDB");
 });
+
+app.get('/useDevDB', function(req,res){
+  mysql.useDevDB();
+  res.send(200);
+})
 
 //Login Routes
 
@@ -195,25 +71,25 @@ app.get('/login/create/:user/:fname/:lname/:pass/:email', login.createAccount);
 app.get('/login/login/:user/:pass', login.login);
 
 //Get Email
-app.get('/login/getEmail/:user', login.isLoggedIn, login.getEmail);
+app.get('/login/getEmail/:user', login.getEmail);
 
 //Get User ID
 app.get('/login/getUserId/:user', login.getUserID);
 
 //Get User Info
-app.get('/login/getUserInfo/:userId', login.getUserInfo);
+app.get('/login/getUserInfo/:user', login.getUserInfo);
 
 //Get Username
-app.get('/login/getUsername/:user', login.isLoggedIn, login.getUsername);
+app.get('/login/getUsername/:ID', login.getUsername);
 
 //Get Fname
-app.get('/login/getFname/:user', login.isLoggedIn, login.getFname);
+app.get('/login/getFname/:ID', login.getFname);
 
 //Get Lname
-app.get('/login/getLname/:user', login.isLoggedIn, login.getLname);
+app.get('/login/getLname/:ID', login.getLname);
 
 //Get password
-app.get('/login/getPassword/:user', login.isLoggedIn, login.getPassword);
+app.get('/login/getPassword/:ID', login.getPassword);
 
 //Get User ID Session
 app.get('/login/session/getUserId', login.isLoggedIn, login.getSessionUserId);
@@ -222,7 +98,7 @@ app.get('/login/session/getUserId', login.isLoggedIn, login.getSessionUserId);
 app.get('/login/session/updatePassword/:newPass', login.isLoggedIn,login.changePassword);
 
 //updating Email
-app.get('/login/updateEmail/:user/:email', login.isLoggedIn, login.updateEmail);
+app.get('/login/updateEmail/:user/:email', login.updateEmail);
 
 //Update fname
 app.get('/login/session/changeFname/:user/:fname', login.isLoggedIn, login.changeFname);
@@ -230,13 +106,25 @@ app.get('/login/session/changeFname/:user/:fname', login.isLoggedIn, login.chang
 //Update Lname
 app.get('/login/session/changeLname/:user/:lname', login.isLoggedIn, login.changeLname);
 
+//update fname
+app.get('/login/updateLName/:user/:lname', login.updateLName);
 
+//update lname
+app.get('/login/updateLName/:user/:fname', login.updateFName);
 
+//getAllRoles
+app.get('/login/getAllRoles/:user', login.getRoles);
 
 //Voter Routes
 
 //Making the current session a voter
 app.get('/voter/session/setVoter', login.isLoggedIn, voter.setVoter);
+
+//makes a specific user become a voter
+app.get('/voter/becomeVoter/:user', voter.userBecomeVoter);
+
+//returns everything a voter does
+app.get('/voter/getVoterInfo/:voter', voter.getVoterInfo);
 
 //Updates the city of the voter
 app.get('/voter/session/updateCity/:city', login.isLoggedIn, voter.updateCitySession);
@@ -246,6 +134,9 @@ app.get('/voter/session/getCitySession', login.isLoggedIn, voter.getCitySession)
 
 //Updates the voter county
 app.get('/voter/session/updateCounty/:county', login.isLoggedIn, voter.updateCountySession);
+
+//Updates zipcode
+app.get('/voter/session/updateZipCodeSession/:zipCode', login.isLoggedIn, voter.updateZipCodeSession);
 
 //Gets the voter county
 app.get('/voter/session/getCountySession', login.isLoggedIn, voter.getCountySession);
@@ -273,6 +164,12 @@ app.get('/voter/session/unfollowTopic/:question_ID', login.isLoggedIn, voter.unf
 
 // Get List of followed questions
 app.get('/voter/session/getFollowList', login.isLoggedIn, voter.getFollowList);
+
+// Get List of electorates in elections based on location and party code
+app.get('/voter/session/getCandidatesInElections/:partyCode/:location', login.isLoggedIn, voter.getCandidatesInElections);
+
+//Get list of eligible elections for voter
+app.get('/voter/session/getEligibility/:userID', login.isLoggedIn, voter.getEligibility);
 
 
 //Party Routes
@@ -308,16 +205,27 @@ app.get('/admin/session/addElection/:level/:location/:time/:name', login.isLogge
 app.get('/candidate/session/becomeCandidate', login.isLoggedIn, candidate.becomeCandidate);
 
 //Getting the candidate favorite
-app.get('/candidate/session/getcandidateFavorite', login.isLoggedIn, candidate.getcandidateFavorite);
+app.get('/candidate/session/getcandidateFavorite/:user_ID', login.isLoggedIn, candidate.getcandidateFavorite);
 
 //Update the canidate favorite
-app.get('/candidate/session/updateCandidateFavorite/:candidateID', login.isLoggedIn, candidate.updateCandidateFavorite);
+app.get('/candidate/session/updateCandidateFavorite//:user_ID/:candidate_ID', login.isLoggedIn, candidate.updateCandidateFavorite);
 
 //Get candidate by state
-app.get('/candidate/session/getcandidateList/:state/:zipCode/:city/:partyCode', login.isLoggedIn, candidate.getCandidateList);
+app.get('/candidate/session/getCandidatebyState/:state', login.isLoggedIn, candidate.getCandidatebyState);
+
+//Get candidate by zipcode
+app.get('/candidate/session/getCandidatebyzipCode/:zipCode', login.isLoggedIn, candidate.getCandidatebyzipCode);
+
+//Get candidate by city
+app.get('/candidate/session/getCandidatebyCity/:city', login.isLoggedIn, candidate.getCandidatebyCity);
+
+//Get candidate by partycode
+app.get('/candidate/session/getCandidatebypartyCode/:partyCode', login.isLoggedIn, candidate.getCandidatebypartyCode);
 
 app.get('/candidate/session/enterElection/:electionID/:level/:location', login.isLoggedIn, candidate.enterElection);
 
+//candidate enter election
+app.get('/candidate/enterElection/:candidate/:electionID', candidate.candidateEnterElection);
 
 
 
@@ -357,7 +265,22 @@ app.get('/question/session/getCommentTree/:commentee_ID', login.isLoggedIn, ques
 //election routes
 app.get('/election/getElections/citiesWithElections', elections.getElectionsInCities);
 
+//issueRoutes
 
+//This function creates an issue
+app.get('/issues/createIssue/:name', issues.createIssue);
+
+//This function marks an issue as important to a user
+app.get('/issues/markIssue/:user/:issue', issues.markIssue);
+
+//this function gets a list of all important issues to an user
+app.get('/issues/getUserIssues/:user', issues.getUserIssues);
+
+//adds an issue to an election
+app.get('/issues/addElectionIssue/:election/:issue', issues.addElectionIssue);
+
+//gets all issues connected to an election
+app.get('/issues/getElectionIssues/:election', issues.getElectionIssues);
 
 //connecting the express object to listen on a particular port as defined in the config object.
 app.listen(config.port, config.host, (e) => {

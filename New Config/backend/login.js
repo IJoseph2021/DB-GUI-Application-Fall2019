@@ -1,13 +1,7 @@
 //This package is to handle all logins for the application
 
-//storing the mysql query
-var mysqlConnection;
-var sessionCreater;
-//Linking the mysql connection
-exports.createConnection = function(newMysqlConnection){
-    mysqlConnection = newMysqlConnection;
+const mysqlConnection = require('./oursql.js');
 
-};
 
 exports.setSessionCreater = function(session){
     sessionCreater = session;
@@ -127,7 +121,7 @@ exports.getSessionUserId = function(req,res){
 //Skyler
 //Get user Info
 exports.getUserInfo = function (req, res) {
-    mysqlConnection.query("SELECT USER.ID FROM USER WHERE USER.ID = \'" + req.params.user + "\';",
+    mysqlConnection.query("SELECT * FROM USER WHERE USER.username = \'" + req.params.user+ "\';",
         function (err, rows, fields) {
             if (rows[0] == undefined) {
                 logger.error(err.message);
@@ -139,51 +133,71 @@ exports.getUserInfo = function (req, res) {
 //Baohua Yu
 // get username
 exports.getUsername = function (req, res) {
-    mysqlConnection.query("SELECT USER.username FROM USER WHERE USER.username = \'" + req.params.user + "\';",
+    userID = req.params.ID;
+    console.log(`SELECT USER.username FROM USER WHERE USER.ID = '${userID}';`);
+    mysqlConnection.query(`SELECT USER.username FROM USER WHERE USER.ID = '${userID}';`,
         function (err, rows, fields) {
-            if (rows[0] == undefined) {
-                logger.error(err.message);
+            if (rows[0] != undefined) {
+                res.send(rows);
+
+            } else {
+                res.send("username not found");
             }
-            res.send(rows[0]);
+            
         });
 }
 
 //Baohua Yu
 //get fname
 exports.getFname = function (req, res) {
-    mysqlConnection.query("SELECT USER.fname FROM USER WHERE USER.username = \'" + req.params.user + "\';",
+    userID = req.params.ID;
+    console.log(`SELECT USER.fname FROM USER WHERE USER.ID = '${userID}';`);
+    mysqlConnection.query(`SELECT USER.fname FROM USER WHERE USER.ID = '${userID}';`,
         function (err, rows, fields) {
-            if (rows[0] == undefined) {
-                logger.error(err.message);
+            if (rows[0] != undefined) {
+                res.send(rows);
+
+            } else {
+                res.send("fname not found");
             }
-            res.send(rows[0]);
+
         });
-}
+}     
 
 //Baohua Yu
 //get lname
 exports.getLname = function (req, res) {
-    mysqlConnection.query("SELECT USER.lname FROM USER WHERE USER.username = \'" + req.params.user + "\';",
+    userID = req.params.ID;
+    console.log(`SELECT USER.lname FROM USER WHERE USER.ID = '${userID}';`);
+    mysqlConnection.query(`SELECT USER.lname FROM USER WHERE USER.ID = '${userID}';`,
         function (err, rows, fields) {
-            if (rows[0] == undefined) {
-                logger.error(err.message);
+            if (rows[0] != undefined) {
+                res.send(rows);
+
+            } else {
+                res.send("lname not found");
             }
-            res.send(rows[0]);
+
         });
 }
+ 
 
 //Baohua Yu
 //get password
 exports.getPassword = function (req, res) {
-    mysqlConnection.query("SELECT USESR.passhash FROM USER WHERE USER.username = \'" + req.params.user + "\';",
+    userID = req.params.ID;
+    console.log(`SELECT USER.passhash FROM USER WHERE USER.ID = '${userID}';`);
+    mysqlConnection.query(`SELECT USER.passhash FROM USER WHERE USER.ID = '${userID}';`,
         function (err, rows, fields) {
-            if (rows[0] == undefined) {
-                logger.error(err.message);
-            }
-            res.send(rows[0]);
-        });
+            if (rows[0] != undefined) {
+                res.send(rows);
 
-}
+            } else {
+                res.send("password not found");
+            }
+
+        });
+}   
 //Stephen Shoemaker
 //Checks the session to see if the person is logged in
 exports.isLoggedIn = function(req,res,next){
@@ -225,11 +239,11 @@ exports.changePassword = function(req,res){
 //Baohua Yu
 //changes the fname
 exports.changeFname = function (req, res) {
-    mysqlConnection.query("UPDATE USER SET USER.fname = \'" + req.params.fname + "\'  WHERE USER.username = \'" + req.params.user + "\';", function (err, rows, fields) {
+    mysqlConnection.query("UPDATE USER SET USER.fname = \'" + req.params.fname + "\'  WHERE USER.username = \'" + req.session.userId + "\';", function (err, rows, fields) {
         if (err) {
             res.send("error");
         } else {
-            res.send("Fname update");
+            res.send("fname update");
         }
 
     });
@@ -238,11 +252,56 @@ exports.changeFname = function (req, res) {
 //Baohua Yu
 //change the lname
 exports.changeLname = function (req, res) {
-    mysqlConnection.query("UPDATE USER SET USER.lname = \'" + req.params.lname + "\'  WHERE USER.username = \'" + req.params.user + "\';", function (err, rows, fields) {
+    mysqlConnection.query("UPDATE USER SET USER.lname = \'" + req.params.lname + "\'  WHERE USER.username = \'" + req.session.userId + "\';", function (err, rows, fields) {
         if (err) {
             res.send("error");
         } else {
-            res.send("Lname update");
+            res.send("lname update");
         }
     });
+}
+
+//Stephen Shoemaker
+//change Lname without session
+exports.updateLName = function (req, res) {
+    mysqlConnection.query("UPDATE USER SET USER.lname = \'" + req.params.lname + "\'  WHERE USER.username = \'" + req.params.user + "\';", function (err, rows, fields) {
+        if (err) {
+            res.send(404);
+        } else {
+            res.send(200);
+        }
+    });
+}
+
+
+//Stephen Shoemaker
+//change Fname without session
+exports.updateFName = function (req, res) {
+    mysqlConnection.query("UPDATE USER SET USER.lname = \'" + req.params.fname + "\'  WHERE USER.username = \'" + req.params.user + "\';", function (err, rows, fields) {
+        if (err) {
+            res.send(404);
+        } else {
+            res.send(200);
+        }
+    });
+}
+
+exports.getRoles = function(req,res){
+    //res.json(null);
+    mysqlConnection.query(`SELECT * FROM VOTER WHERE userID = '${req.params.user}';`,function(err,rows,fields){
+        if(rows.length != 0){
+            res.json({voter : 'true'});
+        }
+    });
+    mysqlConnection.query(`SELECT * FROM CANDIDATE WHERE userID = '${req.params.user}';`,function(err,rows,fields){
+        if(rows.length != 0){
+            res.json({candidate : 'true'});
+        }
+    });
+    mysqlConnection.query(`SELECT * FROM ADMIN WHERE userID = '${req.params.user}';`,function(err,rows,fields){
+        if(rows.length != 0){
+            res.json({admin : 'true'});
+        }
+    });
+    
 }

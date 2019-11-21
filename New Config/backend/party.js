@@ -3,11 +3,7 @@ Functions for party routes
 
 */
 
-var mysqlConnection;
-
-exports.createConnection = function(newMysqlConnection){
-    mysqlConnection = newMysqlConnection;
-};
+const mysqlConnection = require('./oursql.js');
 
 //Steve Shoemaker
 //Creates a party
