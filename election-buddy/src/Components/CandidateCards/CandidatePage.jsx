@@ -109,14 +109,13 @@ export default class CandidatePage extends React.Component {
                                          <img class="card-img-top" src={article.urlToImage}/>
                                           <h5 className="card-title">{article.title}</h5>
                                         </div>
-                                        <h6 className="card-subtitle mb-2 text-muted">
-
-                                                  <button type="submit"
-                                                          className="btn btn-primary">
-                                                      <a href={article.url} id="article_link">Learn More</a>
-                                                  </button>
-
+                                        <h6 className="card-subtitle">
+                                                From {article.source.name}
                                         </h6>
+                                        <button type="submit"
+                                                className="btn btn-primary">
+                                            <a href={article.url} id="article_link">Learn More</a>
+                                        </button>
                                       </div>
                                     </div>
                                 )}
