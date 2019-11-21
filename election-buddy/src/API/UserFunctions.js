@@ -8,7 +8,7 @@ class UserFunctions {
         return new Promise((resolve, reject) => {
             return axios.get(this.URL + '/login/login/' + user.username + '/' + user.pass)
                 .then(resp => {
-                  // console.log(resp.data);
+                  console.log(resp.data);
                   resolve(resp.data)})
                 .catch(resp => reject(resp));
         })

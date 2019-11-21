@@ -15,9 +15,12 @@ class Signup extends Component {
             fname: "",
             lname: "",
             email: "",
+            role: "",
             signUpSuccess: false,
             validateForm: true
         };
+
+
         this.handleSubmit = this.handleSubmit.bind(this);
         this.validateForm = this.validateForm.bind(this);
     }
@@ -78,6 +81,7 @@ class Signup extends Component {
 
 
     render() {
+        var roles = ["","Not Applicable", "Voter", "Candidate"];
 
         return (
             <div className="signup-page">
@@ -156,6 +160,26 @@ class Signup extends Component {
                             ></input>
                         </div>
 
+                        <div>
+                          <label htmlFor="role">What is your role?</label>
+                          <select
+                          name="role"
+                          id="role"
+                          onChange={event => this.setState({role: event.target.value})}
+                          >
+                          {
+                              roles.map(x => (
+                                <option
+                                key={x}
+                                id="role"
+                                value={x}
+                                > {x}
+                                </option>
+                            )
+                          )
+                          }
+                          </select>
+                        </div>
                         <button
                             type="button"
                             onClick={this.handleSubmit}

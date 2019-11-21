@@ -14,18 +14,21 @@ class Nav extends Component {
         <div className="navBar">
           <ul>
               <li className = "right"><Link to="/"><img src={logo} alt="Logo"/></Link></li>
-              <li className = "right"><Link to="/news">News</Link></li>
-              <li className = "right"><Link to="/contact">Contact Us</Link></li>
               {
                 this.props.loginState ?
                 (
                   <ul>
+                    <li className = "right"><Link to="/">Home</Link></li>
+                    <li className = "right"><Link to="/news">News</Link></li>
+                    <li className = "right"><Link to="/hottopics">Hot Topics</Link></li>
                     <li className = "right"><Link to="/profile">Your Profile</Link></li>
+                    <li className = "right"><Link to="/search">Place Holder For Search</Link></li>
                     <li className = "right-border"><Link to="/logout">Logout</Link></li>
                   </ul>
                 )
                 : (
                   <ul>
+                  <li className = "right"><Link to="/contact">Contact Us</Link></li>
                   <li className = "right"><Link to="/login">Login</Link></li>
                   <li className = "right-border"><Link to="/registration">Sign up</Link></li>
                   </ul>
