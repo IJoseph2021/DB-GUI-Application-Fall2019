@@ -20,7 +20,6 @@ class Nav extends Component {
                   <ul>
                     <li className = "right"><Link to="/">Home</Link></li>
                     <li className = "right"><Link to="/news">News</Link></li>
-                    <li className = "right"><Link to="/hottopics">Hot Topics</Link></li>
                     <li className = "right"><Link to="/profile">Your Profile</Link></li>
                     <li className = "right"><Link to="/search">Place Holder For Search</Link></li>
                     <li className = "right-border"><Link to="/logout">Logout</Link></li>
