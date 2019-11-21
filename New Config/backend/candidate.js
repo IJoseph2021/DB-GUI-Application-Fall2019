@@ -17,9 +17,9 @@ exports.becomeCandidate = function(req,res){
 //Baohua Yu
 // user can have more than one favorite candiates
 exports.getcandidateFavorite = function (req, res) {
-    userID = req.session.userId;
-    console.log(`SELECT candidateID FROM CANDIDATE_FAVORITE WHERE userID = '${userID}';`);
-    mysqlConnection.query(`SELECT candidateID FROM CANDIDATE_FAVORITE WHERE userID = '${userID}'`, function (err, rows, fields) {
+    
+    console.log(`SELECT candidate_ID FROM CANDIDATE_FAVORITE WHERE user_ID = '${req.params.user_ID}';`);
+    mysqlConnection.query(`SELECT candidate_ID FROM CANDIDATE_FAVORITE WHERE user_ID = '${req.params.user_ID}'`, function (err, rows, fields) {
         if (rows[0] != undefined) {
             res.send(rows);
         } else {
@@ -31,7 +31,7 @@ exports.getcandidateFavorite = function (req, res) {
 //Baohua Yu
 // update the candidate favorite
 exports.updateCandidateFavorite = function (req, res) {
-    mysqlConnection.query(`UPDATE CANDIDATE_FAVORITE SET candidateID = '${req.params.candidateID}' WHERE userID = '${req.session.userId}';`, function (err, rows, fields) {
+    mysqlConnection.query(`UPDATE CANDIDATE_FAVORITE SET candidate_ID = '${req.params.candidate_ID}' WHERE user_ID = '${req.params.user_ID}';`, function (err, rows, fields) {
         if (err) {
             res.send("err");
 
@@ -45,8 +45,8 @@ exports.updateCandidateFavorite = function (req, res) {
 //get candidate by state
 exports.getCandidatebyState = function (req, res) {
     state = req.params.state;
-    console.log(`SELECT userID FROM CANDIDATE WHERE state = '${state}';`);
-    mysqlConnection.query(`SELECT userID FROM CANDIDATE WHERE state = '${state}';`, function (err, rows, fields) {
+    console.log(`SELECT user_ID FROM CANDIDATE WHERE state = '${state}';`);
+    mysqlConnection.query(`SELECT user_ID FROM CANDIDATE WHERE state = '${state}';`, function (err, rows, fields) {
 
         if (rows[0] != undefined) {
                 res.send(rows);
@@ -60,8 +60,8 @@ exports.getCandidatebyState = function (req, res) {
 //get candidate by zipcode
     exports.getCandidatebyzipCode = function (req, res) {
         zipCode = req.params.zipCode;
-        console.log(`SELECT userID FROM CANDIDATE WHERE zipCode = '${zipCode}';`);
-        mysqlConnection.query(`SELECT userID FROM CANDIDATE WHERE zipCode = '${zipCode}';`, function (err, rows, fields) {
+        console.log(`SELECT user_ID FROM CANDIDATE WHERE zipCode = '${zipCode}';`);
+        mysqlConnection.query(`SELECT user_ID FROM CANDIDATE WHERE zipCode = '${zipCode}';`, function (err, rows, fields) {
             if (rows[0] != undefined) {
                 res.send(rows);
 
@@ -75,8 +75,8 @@ exports.getCandidatebyState = function (req, res) {
 //getcandidate by city
     exports.getCandidatebyCity = function (req, res) {
         city = req.params.city;
-        console.log(`SELECT userID FROM CANDIDATE WHERE city = '${city}';`);
-        mysqlConnection.query(`SELECT userID FROM CANDIDATE WHERE city = '${city}';`, function (err, rows, fields) {
+        console.log(`SELECT user_ID FROM CANDIDATE WHERE city = '${city}';`);
+        mysqlConnection.query(`SELECT user_ID FROM CANDIDATE WHERE city = '${city}';`, function (err, rows, fields) {
             if (rows[0] != undefined) {
                 res.send(rows);
             } else {
@@ -89,8 +89,8 @@ exports.getCandidatebyState = function (req, res) {
 //getcandidate by partycode
     exports.getCandidatebypartyCode = function (req, res) {
         partyCode = req.params.partyCode;
-        console.log(`SELECT userID FROM CANDIDATE WHERE partyCode = '${partyCode}';`);
-        mysqlConnection.query(`SELECT userID FROM CANDIDATE WHERE partyCode = '${partyCode}';`, function (err, rows, field) {
+        console.log(`SELECT user_ID FROM CANDIDATE WHERE partyCode = '${partyCode}';`);
+        mysqlConnection.query(`SELECT user_ID FROM CANDIDATE WHERE partyCode = '${partyCode}';`, function (err, rows, field) {
             if (rows[0] != undefined) {
                 res.send(rows);
             } else {

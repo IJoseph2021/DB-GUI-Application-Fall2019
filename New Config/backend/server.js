@@ -80,16 +80,16 @@ app.get('/login/getUserId/:user', login.getUserID);
 app.get('/login/getUserInfo/:user', login.getUserInfo);
 
 //Get Username
-app.get('/login/getUsername/:user', login.getUsername);
+app.get('/login/getUsername/:ID', login.getUsername);
 
 //Get Fname
-app.get('/login/getFname/:user', login.getFname);
+app.get('/login/getFname/:ID', login.getFname);
 
 //Get Lname
-app.get('/login/getLname/:user', login.getLname);
+app.get('/login/getLname/:ID', login.getLname);
 
 //Get password
-app.get('/login/getPassword/:user', login.getPassword);
+app.get('/login/getPassword/:ID', login.getPassword);
 
 //Get User ID Session
 app.get('/login/session/getUserId', login.isLoggedIn, login.getSessionUserId);
@@ -168,6 +168,9 @@ app.get('/voter/session/getFollowList', login.isLoggedIn, voter.getFollowList);
 // Get List of electorates in elections based on location and party code
 app.get('/voter/session/getCandidatesInElections/:partyCode/:location', login.isLoggedIn, voter.getCandidatesInElections);
 
+//Get list of eligible elections for voter
+app.get('/voter/session/getEligibility/:userID', login.isLoggedIn, voter.getEligibility);
+
 
 //Party Routes
 
@@ -202,10 +205,10 @@ app.get('/admin/session/addElection/:level/:location/:time/:name', login.isLogge
 app.get('/candidate/session/becomeCandidate', login.isLoggedIn, candidate.becomeCandidate);
 
 //Getting the candidate favorite
-app.get('/candidate/session/getcandidateFavorite', login.isLoggedIn, candidate.getcandidateFavorite);
+app.get('/candidate/session/getcandidateFavorite/:user_ID', login.isLoggedIn, candidate.getcandidateFavorite);
 
 //Update the canidate favorite
-app.get('/candidate/session/updateCandidateFavorite/:candidateID', login.isLoggedIn, candidate.updateCandidateFavorite);
+app.get('/candidate/session/updateCandidateFavorite//:user_ID/:candidate_ID', login.isLoggedIn, candidate.updateCandidateFavorite);
 
 //Get candidate by state
 app.get('/candidate/session/getCandidatebyState/:state', login.isLoggedIn, candidate.getCandidatebyState);
