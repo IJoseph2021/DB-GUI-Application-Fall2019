@@ -24,7 +24,7 @@ exports.markIssue = function(req,res){
 }
 
 exports.getUserIssues = function(req,res){
-    mysqlConnection.query(`SELECT DISTINCT issueName FROM USERISSUES INNER JOIN ISSUES ON ISSUES.idISSUES = ELECTIONISSUES.issueId WHERE userId = '${req.params.user};'`,function(err,rows,fields){
+    mysqlConnection.query(`SELECT DISTINCT issueName FROM USERISSUES INNER JOIN ISSUES ON ISSUES.idISSUES = USERISSUES.issueId WHERE userId = '${req.params.user};'`,function(err,rows,fields){
         if(err){
             console.log(err.message);
             res.send(404);
