@@ -20,7 +20,7 @@ class Nav extends Component {
         {
           this.props.loginState ?
           (
-            <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <nav style={{"margin": "0 auto"}} className="navbar navbar-expand-lg navbar-light bg-light">
               <Link to="/"><img src={logo} alt="Logo"/></Link>
               <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
@@ -56,7 +56,7 @@ class Nav extends Component {
             </nav>
           )
           : (
-            <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <nav style={{"margin": "0 auto"}} className="navbar navbar-expand-lg navbar-light bg-light">
               <Link to="/"><img src={logo} alt="Logo"/></Link>
               <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>

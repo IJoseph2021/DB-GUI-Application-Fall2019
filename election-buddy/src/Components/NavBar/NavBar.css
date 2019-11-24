@@ -1,6 +1,6 @@
 
 .navBar {
-  margin: 0;
+  margin: 0 auto;
   width: 100%;
   /* max-width: 2000px; */
   display:flex;
@@ -55,7 +55,3 @@
 .clear{
   clear: both;
 }
-
-/* .nav button{
-  padding: .2em;
-} */

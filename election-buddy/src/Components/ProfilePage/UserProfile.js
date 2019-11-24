@@ -47,6 +47,7 @@ export default class UserProfile extends React.Component {
 
 		})
 
+		this.onChange = this.onChange.bind(this);
 		this.getUserInfo = this.getUserInfo.bind(this);
 		this.toggleForm = this.toggleForm.bind(this);
 	}
@@ -57,6 +58,10 @@ export default class UserProfile extends React.Component {
 		})
 	}
 
+
+	onChange = event => {
+		this.setState({[event.target.name]: event.target.value})
+	}
 
 	getUserInfo = async (event) => {
 
@@ -79,48 +84,69 @@ export default class UserProfile extends React.Component {
 
     render() {
       return (
-				<div>
-						<div class="form-group row">
-							<label htmlFor="username" class="col-sm-2 col-form-label">Username:</label>
-							<div class="col-sm-10">
+				<div className="user-profile">
+						<div className="form-group row">
+							<label htmlFor="username" className="col-sm-2 col-form-label">Username:</label>
+							<div className="col-sm-10">
 								<input
+								name="username"
+								value={this.state.username}
 								disabled
 								type="text"
-								class="form-control"
+								className="form-control"
 								id="username"
-								onChange={event => this.setState({ username: event.target.value })}/>
+								onChange={this.onChange}/>
 							</div>
 						</div>
 
-						<div class="form-group row">
-							<label htmlFor="firstName" class="col-sm-2 col-form-label">First Name:</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" id="firstName"/>
+						<div className="form-group row">
+							<label htmlFor="firstName" className="col-sm-2 col-form-label">First Name:</label>
+							<div className="col-sm-10">
+								<input
+								name="firstName"
+								onChange={this.onChange}
+								type="text"
+								value={this.state.firstname}
+								className="form-control"
+								id="firstName"/>
 							</div>
 						</div>
 
-						<div class="form-group row">
-							<label htmlFor="lastName" class="col-sm-2 col-form-label">Last Name:</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" id="lastName"/>
+						<div className="form-group row">
+							<label htmlFor="lastName" className="col-sm-2 col-form-label">Last Name:</label>
+							<div className="col-sm-10">
+								<input
+								onChange={this.onChange}
+								name="lastName"
+								value={this.state.lastname}
+								type="text"
+								className="form-control"
+								id="lastName"/>
 							</div>
 						</div>
 
-						<div class="form-group row">
-							<label htmlFor="email" class="col-sm-2 col-form-label">Email:</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" id="email" />
+						<div className="form-group row">
+							<label htmlFor="email" className="col-sm-2 col-form-label">Email:</label>
+							<div className="col-sm-10">
+								<input
+								onChange={this.onChange}
+								name="email"
+								value={this.state.email}
+								type="text"
+								className="form-control"
+								id="email" />
 							</div>
 						</div>
 
-						<div className="form-group">
-							<label htmlFor="state">State:</label>
+						<div className="form-group row">
+							<label htmlFor="state" className="col-sm-2 col-form-label">State:</label>
+							<div className ="col-sm-10">
 								<select
 								value={this.state.us_state}
-								className ="form-control"
+								className="custom-select"
 								id="state"
 								name="state"
-								onChange={event => this.setState({ us_state: event.target.value })}>
+								onChange={this.onChange}>
 									<option value="">N/A</option>
 									<option value="AK">Alaska</option>
 									<option value="AL">Alabama</option>
@@ -175,61 +201,66 @@ export default class UserProfile extends React.Component {
 									<option value="WV">West Virginia</option>
 									<option value="WY">Wyoming</option>
 								</select>
-						</div>
-
-
-						<div class="form-group row">
-							<label htmlFor="city" class="col-sm-2 col-form-label">City:</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" id="city" />
 							</div>
 						</div>
 
 
-						<div className="form-group">
-							<label htmlFor="party">Party:</label>
+						<div className="form-group row">
+							<label htmlFor="city" className="col-sm-2 col-form-label">City:</label>
+							<div className="col-sm-10">
+								<input type="text" className="form-control" id="city" />
+							</div>
+						</div>
+
+
+						<div className="form-group row">
+							<label htmlFor="party" className="col-sm-2 col-form-label">Party:</label>
+							<div className ="col-sm-10">
 								<select
 								value={this.state.party}
-								className ="form-control"
+								className ="custom-select"
 								id="party"
 								name="party"
-								onChange={event => this.setState({ party: event.target.value })}>
+								onChange={this.onChange}>
 									<option value="">N/A</option>
 									<option value="IND">Independent</option>
 									<option value="GREEN">Green Party</option>
 									<option value="REP">Republican Party</option>
 									<option value="DEM">Democratic Party</option>
+									<option value="FES">Social Democratic Party</option>
 								</select>
+							</div>
 						</div>
 
-					  <fieldset class="form-group">
-					    <div class="row">
-					      <legend class="col-form-label col-sm-2 pt-0">Role</legend>
-					      <div class="col-sm-10">
-					        <div class="form-check">
-					          <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" disabled/>
-					          <label class="form-check-label" htmlFor="gridRadios1">
+						{/*Remember to put this info later*/}
+					  <fieldset className="form-group">
+					    <div className="row">
+					      <legend className="col-form-label col-sm-2 pt-0">Role:</legend>
+					      <div className="col-sm-10">
+					        <div className="form-check">
+					          <input className="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" disabled/>
+					          <label className="form-check-label" htmlFor="gridRadios1">
 											Not Applicable
 					          </label>
 					        </div>
 
-									<div class="form-check">
-										<input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2" disabled/>
-										<label class="form-check-label" htmlFor="gridRadios2">
+									<div className="form-check">
+										<input className="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2" disabled/>
+										<label className="form-check-label" htmlFor="gridRadios2">
 										 Voter
 										</label>
 									</div>
 
 
-					        <div class="form-check">
-					          <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3" disabled/>
-					          <label class="form-check-label" htmlFor="gridRadios3">
+					        <div className="form-check">
+					          <input className="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3" disabled/>
+					          <label className="form-check-label" htmlFor="gridRadios3">
 											Candidate
 										</label>
 					        </div>
-					        <div class="form-check disabled">
-					          <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios4" value="option4" disabled/>
-					          <label class="form-check-label" htmlFor="gridRadios4">
+					        <div className="form-check disabled">
+					          <input className="form-check-input" type="radio" name="gridRadios" id="gridRadios4" value="option4" disabled/>
+					          <label className="form-check-label" htmlFor="gridRadios4">
 					            Election Official
 					          </label>
 					        </div>
@@ -237,9 +268,9 @@ export default class UserProfile extends React.Component {
 					    </div>
 					  </fieldset>
 
-					  <div class="form-group row">
-					    <div class="col-sm-10">
-					      <button onClick = {this.saveProfile} type="button" class="btn btn-primary">Save Your Profile</button>
+					  <div className="form-group row">
+					    <div className="col-sm-10">
+					      <button onClick = {this.saveProfile} type="button" className="btn btn-primary">Save Your Profile</button>
 					    </div>
 					  </div>
         </div>
