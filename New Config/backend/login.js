@@ -198,6 +198,7 @@ exports.getPassword = function (req, res) {
 
         });
 }   
+
 //Stephen Shoemaker
 //Checks the session to see if the person is logged in
 exports.isLoggedIn = function(req,res,next){
