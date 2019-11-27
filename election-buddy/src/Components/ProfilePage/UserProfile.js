@@ -85,6 +85,7 @@ export default class UserProfile extends React.Component {
     render() {
       return (
 				<div className="user-profile">
+				<h1 class="display-4">Your Profile</h1>
 						<div className="form-group row">
 							<label htmlFor="username" className="col-sm-2 col-form-label">Username:</label>
 							<div className="col-sm-10">
