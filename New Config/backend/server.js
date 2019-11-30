@@ -91,26 +91,17 @@ app.get('/login/getLname/:ID', login.getLname);
 //Get password
 app.get('/login/getPassword/:ID', login.getPassword);
 
-//Get User ID Session
-app.get('/login/session/getUserId', login.isLoggedIn, login.getSessionUserId);
-
-//Update Session Password
-app.get('/login/session/updatePassword/:newPass', login.isLoggedIn,login.changePassword);
+//Update Password
+app.get('/login/updatePassword/:user/:newpass', login.changePassword);
 
 //updating Email
 app.get('/login/updateEmail/:user/:email', login.updateEmail);
 
-//Update fname
-app.get('/login/session/changeFname/:user/:fname', login.isLoggedIn, login.changeFname);
-
-//Update Lname
-app.get('/login/session/changeLname/:user/:lname', login.isLoggedIn, login.changeLname);
-
 //update fname
-app.get('/login/updateLName/:user/:lname', login.updateLName);
+app.get('/login/updateFName/:user/:fname', login.updateFName);
 
 //update lname
-app.get('/login/updateLName/:user/:fname', login.updateFName);
+app.get('/login/updateLName/:user/:lname', login.updateLName);
 
 //getAllRoles
 app.get('/login/getAllRoles/:user', login.getRoles);
@@ -197,6 +188,8 @@ app.get('/admin/session/verify/:ID',login.isLoggedIn,admin.isAdmin, admin.verify
 //adds an election
 app.get('/admin/session/addElection/:level/:location/:time/:name', login.isLoggedIn, admin.isAdmin, admin.addElection);
 
+//makes a user an admin
+app.get('/admin/addAdmin/:userAddingAdmin/:newAdmin/:adminLevel', admin.addAdmin);
 
 //Candidate Routes
 
