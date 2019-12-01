@@ -217,8 +217,9 @@ exports.updateEmail = function (req, res) {
 //Steve Shoemaker
 //Changes the password
 exports.changePassword = function(req,res){
-    mysqlConnection.query(`UPDATE USER SET passhash = '${req.params.newpass}' WHERE USER.id = '${req.params.user}';`,function(err,rows,fields){
+    mysqlConnection.query(`UPDATE USER SET USER.passhash = '${req.params.newpass}' WHERE USER.id = '${req.params.user}';`,function(err,rows,fields){
         if(err){
+            console.log(err)
             res.send(404);
         } else {
             res.send(200);
