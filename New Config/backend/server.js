@@ -74,7 +74,7 @@ app.get('/login/login/:user/:pass', login.login);
 app.get('/login/getEmail/:user', login.getEmail);
 
 //Get User ID
-app.get('/login/getUserId/:user', login.getUserID);
+app.get('/getUserId/:user', login.getUserID);
 
 //Get User Info
 app.get('/login/getUserInfo/:user', login.getUserInfo);
