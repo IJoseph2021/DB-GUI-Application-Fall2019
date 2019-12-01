@@ -105,7 +105,7 @@ exports.getUserID = function(req,res){
                         //If something was returned, getUserID
                         else{
                             if(rows.length == 1){
-                                res.status(200).send(rows[0].ID)
+                                res.status(200).json({userId: rows[0].ID})
                             }
                             else res.send(404);
                         }
