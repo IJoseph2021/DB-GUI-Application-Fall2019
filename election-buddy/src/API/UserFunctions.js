@@ -40,10 +40,23 @@ class UserFunctions {
         })
     }
 
-    updatePassword(user){
+    getUserCurrentPassword(userId){
+      //app.get('/login/getPassword/:ID', login.getPassword);
+
       return new Promise((resolve, reject) => {
-          return axios.get(this.URL + '/login/session/updatePasword/' +
-          user.newPass
+          return axios.get(this.URL + '/login/getPassword/' +
+          userId
+          ).then(resp => resolve(resp.data))
+              .catch(resp => reject(resp));
+      })
+    }
+
+    updatePassword(user){
+      //app.get('/login/updatePassword/:user/:newpass', login.changePassword);
+
+      return new Promise((resolve, reject) => {
+          return axios.get(this.URL + '/updatePassword/' +
+          + user.userId + "/" + user.newPass
           ).then(resp => resolve(resp.data))
               .catch(resp => reject(resp));
       })
@@ -51,9 +64,13 @@ class UserFunctions {
 
     getUserId(user){
       return new Promise((resolve, reject) => {
-          return axios.get(this.URL + '/login/getUserId/' +
+          return axios.get(this.URL + '/getUserId/' +
           user.username
-          ).then(resp => resolve(resp.data))
+          ).then(resp =>
+            {
+              console.log(resp)
+              resolve(resp.data)
+            })
               .catch(resp => reject(resp));
       })
     }
@@ -62,15 +79,15 @@ class UserFunctions {
     getUserInfo(userIdOrName){
       return new Promise((resolve, reject) => {
           return axios.get(this.URL + '/login/getUserInfo/' +
-          userIdOrName.username
+          userIdOrName.userId
           ).then(resp => resolve(resp.data))
               .catch(resp => reject(resp));
       })
     }
 
-    getUserEmail(username) {
+    getUserEmail(userId) {
         return new Promise((resolve, reject) => {
-            return axios.get(this.URL + '/login/getEmail/' + username)
+            return axios.get(this.URL + '/login/getEmail/' + userId)
                 .then(resp => resolve(resp.data))
                 .catch(resp => reject(resp));
         })

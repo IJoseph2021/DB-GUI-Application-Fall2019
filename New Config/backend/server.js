@@ -5,7 +5,9 @@
 */
 
 //create main objects
-
+var nodemailer = require('nodemailer');
+const https = require('https');
+const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -272,10 +274,63 @@ app.get('/issues/addElectionIssue/:election/:issue', issues.addElectionIssue);
 //gets all issues connected to an election
 app.get('/issues/getElectionIssues/:election', issues.getElectionIssues);
 
-//connecting the express object to listen on a particular port as defined in the config object.
-app.listen(config.port, config.host, (e) => {
-  if (e) {
-    throw new Error('Internal Server Error');
-  }
-  logger.info(`${config.name} running on ${config.host}:${config.port}`);
+/* --------- This sends an email to local authority ---------*/
+app.post('/sendEmail', (req, res) => {
+  //receive body.sender and body.content
+	console.log(req.body)
+	console.log(req.params)
+	let transporter = nodemailer.createTransport({
+	    host: 'smtp.gmail.com',
+	    port: 587,
+	    secure: false,
+	    requireTLS: true,
+	    // auth: {
+	    //     user: 'skyler.linhtran@gmail.com',
+	    //     pass: 'skyler1996'
+	    // }
+			auth: {
+				user: 'electionbuddy.fa2019@gmail.com',
+				pass: 'electionbuddy2019'
+			}
+	});
+
+
+  // var mailOptions = {
+  //   from: `${JSON.stringify(req.body.sender)} <electionbuddy.fa2019@gmail.com>`,
+  //   to: 'mfonten@lyle.smu.edu',
+  //   subject: `${JSON.stringify(req.body.sender)} + from Election Buddy Sent You A Messsage`,
+  //   text: JSON.stringify(req.body.content)
+  // };
+
+	var mailOptions = {
+	  from: `${JSON.stringify(req.body.sender)} <electionbuddy.fa2019@gmail.com>`,
+	  to: 'skylert@smu.edu',
+	  subject: `${JSON.stringify(req.body.sender)} + from Election Buddy Sent You A Messsage`,
+	  text: JSON.stringify(req.body.content)
+	};
+
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+			res.status(200).send('Email sent.');
+    }
+  });
 });
+
+//---------------------------------------------------------------------------------
+https.createServer({
+	key: fs.readFileSync('./ssl_electionbuddy/private.key'),
+	cert: fs.readFileSync('./ssl_electionbuddy/certificate.crt'),
+	ca: fs.readFileSync('./ssl_electionbuddy/ca_bundle.crt')
+},app).listen(config.port, config.host);
+
+
+// //connecting the express object to listen on a particular port as defined in the config object.
+// app.listen(config.port, config.host, (e) => {
+//   if (e) {
+//     throw new Error('Internal Server Error');
+//   }
+//   logger.info(`${config.name} running on ${config.host}:${config.port}`);
+// });

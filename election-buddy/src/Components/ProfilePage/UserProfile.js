@@ -9,7 +9,8 @@ export default class UserProfile extends React.Component {
 		super(props);
 
 		this.state = {
-			username: this.props.username || localStorage.getItem('token'),
+			userId: this.props.userId || localStorage.getItem('token'),
+			username: this.props.username || "",
       firstName: "",
       lastname: "",
 			passhash: "",
@@ -37,6 +38,7 @@ export default class UserProfile extends React.Component {
 		this.userFuncs.getUserInfo(user).then(res => {
 			console.log("userInfo here", res[0])
 			this.setState({
+				username: res[0].username,
 				firstname: res[0].fname,
 				lastname: res[0].lname,
 				email: res[0].email,
@@ -85,7 +87,7 @@ export default class UserProfile extends React.Component {
     render() {
       return (
 				<div className="user-profile">
-				<h1 class="display-4">Your Profile</h1>
+				<h1 className="display-4">Your Profile</h1>
 						<div className="form-group row">
 							<label htmlFor="username" className="col-sm-2 col-form-label">Username:</label>
 							<div className="col-sm-10">
@@ -224,11 +226,11 @@ export default class UserProfile extends React.Component {
 								name="party"
 								onChange={this.onChange}>
 									<option value="">N/A</option>
-									<option value="IND">Independent</option>
+									<option value="LBRT">Libertarian</option>
 									<option value="GREEN">Green Party</option>
 									<option value="REP">Republican Party</option>
 									<option value="DEM">Democratic Party</option>
-									<option value="FES">Social Democratic Party</option>
+									<option value="FES">Flat Earth Society</option>
 								</select>
 							</div>
 						</div>

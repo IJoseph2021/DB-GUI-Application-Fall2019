@@ -12,14 +12,14 @@ import Logout from './Components/Logout/Logout';
 import Candidate from './Components/CandidateCards/Candidate';
 import CandidatePage from './Components/CandidateCards/CandidatePage';
 import HotTopic from './Components/HotTopic/HotTopic';
-
+import ChangePassword from './Components/ProfilePage/ChangePassword';
 
 class App extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			username: "",
+			userId: "",
 			loginState: !!localStorage.getItem('token')
 		}
 		this.updateLoginState = this.updateLoginState.bind(this);
@@ -29,7 +29,7 @@ class App extends React.Component {
 		if(localStorage.getItem('token')){
 			this.setState({
 					loginState: true,
-					username: localStorage.getItem('token')
+					userId: localStorage.getItem('token')
 			});
 		}
 		else{
@@ -59,7 +59,9 @@ class App extends React.Component {
 						{!this.state.loginState && <Route exact path="/login" render={(props) => <Login {...props} updateLoginState={this.updateLoginState}/>}/>}
 						{/*!this.state.loginState && <Route exact path="/login" render={(props) => <Login {...props} updateLoginState={this.updateLoginState}/>}/>*/}
 						{!this.state.loginState && <Route exact path="/registration" exact component={Signup}/>}
-						{this.state.loginState && <Route path="/profile" exact component={(props) => <UserProfile {...props} userId={this.state.username}/>}/>}/>}
+						{this.state.loginState && <Route path="/profile" exact component={(props) => <UserProfile {...props} userId={this.state.userId}/>}/>}/>}
+						{this.state.loginState && <Route path="/changepwd" exact component={(props) => <ChangePassword {...props} userId={this.state.userId}/>}/>}/>}
+
 					</Switch>
 				</div>
       </Router>
