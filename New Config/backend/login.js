@@ -70,7 +70,7 @@ exports.login = function(req,res){
                 else{
 
                     if(rows.length == 1){
-                        res.send(rows[0].ID);
+                        res.send("Success");
                     }
                     else res.send(404);
                 }
@@ -101,18 +101,16 @@ exports.getUserID = function(req,res){
                     function(err,rows,fields){});
     mysqlConnection.query('SELECT USER.ID FROM USER WHERE USER.username = \'' + req.params.user + '\';',
                             function(err,rows,fields){
-                                if(!err){
-                                    if(rows[0]!= undefined){
-                                        res.send(rows[0]);
-                                    }
-                                    else{
-                                        res.send(404);
-                                    }
-                                }
-                                else{
-                                    res.send(404);
-                                }
-                            });
+                        if(err)
+                        res.send("<p1> login unsuccessful <\p1>");
+                        //If something was returned, login was successful
+                        else{
+                            if(rows.length == 1){
+                                res.send("<p1> login successful <\p1>");
+                            }
+                            else res.send("<p1> login unsuccessful <\p1>");
+                        }
+                    });
 }
 
 //Skyler
