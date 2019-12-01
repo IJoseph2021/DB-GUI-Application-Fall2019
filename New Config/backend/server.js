@@ -92,7 +92,7 @@ app.get('/login/getLname/:ID', login.getLname);
 app.get('/login/getPassword/:ID', login.getPassword);
 
 //Update Password
-app.get('/login/updatePassword/:user/:newpass', login.changePassword);
+app.get('/updatePassword/:user/:newpass', login.changePassword);
 
 //updating Email
 app.get('/login/updateEmail/:user/:email', login.updateEmail);
