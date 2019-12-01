@@ -91,26 +91,17 @@ app.get('/login/getLname/:ID', login.getLname);
 //Get password
 app.get('/login/getPassword/:ID', login.getPassword);
 
-//Get User ID Session
-app.get('/login/session/getUserId', login.isLoggedIn, login.getSessionUserId);
-
-//Update Session Password
-app.get('/login/session/updatePassword/:newPass', login.isLoggedIn,login.changePassword);
+//Update Password
+app.get('/login/updatePassword/:user/:newpass', login.changePassword);
 
 //updating Email
 app.get('/login/updateEmail/:user/:email', login.updateEmail);
 
-//Update fname
-app.get('/login/session/changeFname/:user/:fname', login.isLoggedIn, login.changeFname);
-
-//Update Lname
-app.get('/login/session/changeLname/:user/:lname', login.isLoggedIn, login.changeLname);
-
 //update fname
-app.get('/login/updateLName/:user/:lname', login.updateLName);
+app.get('/login/updateFName/:user/:fname', login.updateFName);
 
 //update lname
-app.get('/login/updateLName/:user/:fname', login.updateFName);
+app.get('/login/updateLName/:user/:lname', login.updateLName);
 
 //getAllRoles
 app.get('/login/getAllRoles/:user', login.getRoles);
@@ -123,7 +114,6 @@ app.get('/voter/session/setVoter', login.isLoggedIn, voter.setVoter);
 //makes a specific user become a voter
 app.get('/voter/becomeVoter/:user', voter.userBecomeVoter);
 
-//returns everything a voter does
 app.get('/voter/getVoterInfo/:voter', voter.getVoterInfo);
 
 //Updates the city of the voter
@@ -198,6 +188,8 @@ app.get('/admin/session/verify/:ID',login.isLoggedIn,admin.isAdmin, admin.verify
 //adds an election
 app.get('/admin/session/addElection/:level/:location/:time/:name', login.isLoggedIn, admin.isAdmin, admin.addElection);
 
+//makes a user an admin
+app.get('/admin/addAdmin/:userAddingAdmin/:newAdmin/:adminLevel', admin.addAdmin);
 
 //Candidate Routes
 
@@ -208,7 +200,7 @@ app.get('/candidate/session/becomeCandidate', login.isLoggedIn, candidate.become
 app.get('/candidate/session/getcandidateFavorite/:user_ID', login.isLoggedIn, candidate.getcandidateFavorite);
 
 //Update the canidate favorite
-app.get('/candidate/session/updateCandidateFavorite//:user_ID/:candidate_ID', login.isLoggedIn, candidate.updateCandidateFavorite);
+app.get('/candidate/session/updateCandidateFavorite/:user_ID/:candidate_ID', login.isLoggedIn, candidate.updateCandidateFavorite);
 
 //Get candidate by state
 app.get('/candidate/session/getCandidatebyState/:state', login.isLoggedIn, candidate.getCandidatebyState);
@@ -224,8 +216,6 @@ app.get('/candidate/session/getCandidatebypartyCode/:partyCode', login.isLoggedI
 
 app.get('/candidate/session/enterElection/:electionID/:level/:location', login.isLoggedIn, candidate.enterElection);
 
-//candidate enter election
-app.get('/candidate/enterElection/:candidate/:electionID', candidate.candidateEnterElection);
 
 
 
