@@ -64,17 +64,16 @@ exports.login = function(req,res){
     mysqlConnection.query(query,
             function(err,rows,fields){
                 //If nothing is returned, login was unsuccessful
-                if(err)
-                    res.send(404);
-                //If something was returned, login was successful
-                else{
-
-                    if(rows.length == 1){
-                        res.send("Success");
-                    }
-                    else res.send(404);
-                }
-            });
+                        if(err)
+                        res.send("<p1> login unsuccessful <\p1>");
+                        //If something was returned, login was successful
+                        else{
+                            if(rows.length == 1){
+                                res.send("<p1> login successful <\p1>");
+                            }
+                            else res.send("<p1> login unsuccessful <\p1>");
+                        }
+                    });
 
 }
 
@@ -102,13 +101,13 @@ exports.getUserID = function(req,res){
     mysqlConnection.query('SELECT USER.ID FROM USER WHERE USER.username = \'' + req.params.user + '\';',
                             function(err,rows,fields){
                         if(err)
-                        res.send("<p1> login unsuccessful <\p1>");
-                        //If something was returned, login was successful
+                        res.send(404);
+                        //If something was returned, getUserID
                         else{
                             if(rows.length == 1){
-                                res.send("<p1> login successful <\p1>");
+                                res.sendStatus(200).send(row[0].ID)
                             }
-                            else res.send("<p1> login unsuccessful <\p1>");
+                            else res.send(404);
                         }
                     });
 }
