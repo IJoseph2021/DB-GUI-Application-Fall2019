@@ -64,17 +64,16 @@ exports.login = function(req,res){
     mysqlConnection.query(query,
             function(err,rows,fields){
                 //If nothing is returned, login was unsuccessful
-                if(err)
-                    res.send(404);
-                //If something was returned, login was successful
-                else{
-
-                    if(rows.length == 1){
-                        res.send(rows[0].ID);
-                    }
-                    else res.send(404);
-                }
-            });
+                        if(err)
+                        res.send("<p1> login unsuccessful <\p1>");
+                        //If something was returned, login was successful
+                        else{
+                            if(rows.length == 1){
+                                res.send("<p1> login successful <\p1>");
+                            }
+                            else res.send("<p1> login unsuccessful <\p1>");
+                        }
+                    });
 
 }
 
@@ -101,18 +100,16 @@ exports.getUserID = function(req,res){
                     function(err,rows,fields){});
     mysqlConnection.query('SELECT USER.ID FROM USER WHERE USER.username = \'' + req.params.user + '\';',
                             function(err,rows,fields){
-                                if(!err){
-                                    if(rows[0]!= undefined){
-                                        res.send(rows[0]);
-                                    }
-                                    else{
-                                        res.send(404);
-                                    }
-                                }
-                                else{
-                                    res.send(404);
-                                }
-                            });
+                        if(err)
+                        res.send(404);
+                        //If something was returned, getUserID
+                        else{
+                            if(rows.length == 1){
+                                res.status(200).json({userId: rows[0].ID})
+                            }
+                            else res.send(404);
+                        }
+                    });
 }
 
 //Skyler
@@ -220,8 +217,12 @@ exports.updateEmail = function (req, res) {
 //Steve Shoemaker
 //Changes the password
 exports.changePassword = function(req,res){
-    mysqlConnection.query(`UPDATE USER SET passhash = '${req.params.newpass}' WHERE USER.id = '${req.params.user}';`,function(err,rows,fields){
+    console.log(req);
+    mysqlConnection.query(`SET SQL_SAFE_UPDATES = 0;`,function(err,rows,fields) {
+    });
+    mysqlConnection.query(`UPDATE USER SET USER.passhash = '${req.params.newpass}' WHERE USER.id = '${req.params.user}';`,function(err,rows,fields){
         if(err){
+            console.log(err)
             res.send(404);
         } else {
             res.send(200);
