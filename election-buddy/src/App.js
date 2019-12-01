@@ -11,7 +11,6 @@ import UserProfile from './Components/ProfilePage/UserProfile';
 import Logout from './Components/Logout/Logout';
 import Candidate from './Components/CandidateCards/Candidate';
 import CandidatePage from './Components/CandidateCards/CandidatePage';
-import HotTopic from './Components/HotTopic/HotTopic';
 import ChangePassword from './Components/ProfilePage/ChangePassword';
 
 class App extends React.Component {

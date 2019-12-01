@@ -90,7 +90,6 @@ class Homepage extends Component {
             </div>
             <Candidate/>
             <Content/>
-
         </div>
       );
     }
