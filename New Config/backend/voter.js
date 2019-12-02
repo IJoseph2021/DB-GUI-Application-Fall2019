@@ -189,8 +189,8 @@ exports.followTopic = function(req,res){
     qID = req.params.question_ID
     user_ID = req.session.userId
  
-    console.log(`INSERT INTO electionBuddy.HOT_TOPIC (question_ID, user_ID) VALUES(${qID}, ${user_ID})`);
-    mysqlConnection.query(`INSERT INTO electionBuddy.HOT_TOPIC (question_ID, user_ID) VALUES(${qID}, ${user_ID})`, function(err, rows, fields){
+    console.log(`INSERT INTO electionBuddy.HOT_TOPIC VALUES(${qID}, ${user_ID}, 1)`);
+    mysqlConnection.query(`INSERT INTO electionBuddy.HOT_TOPIC VALUES(${qID}, ${user_ID}, 1)`, function(err, rows, fields){
         if(err){
             res.send("Follow Question Failed");
             }
@@ -204,9 +204,8 @@ exports.unfollowTopic = function(req,res){
     qID = req.params.question_ID
     user_ID = req.session.userId
  
-    console.log(`DELETE FROM HOT_TOPIC WHERE question_ID = '${qID}' AND user_ID = '${user_ID}';`);
-
-    mysqlConnection.query(`DELETE FROM HOT_TOPIC WHERE question_ID = '${qID}' AND user_ID = '${user_ID}';`, function(err, rows, fields){
+    console.log(`UPDATE HOT_TOPIC SET active = 0 WHERE question_ID = '${qID}' AND user_ID = '${user_ID}';`);
+    mysqlConnection.query(`UPDATE HOT_TOPIC SET active = 0 WHERE question_ID = '${qID}' AND user_ID = '${user_ID}';`,function(err,rows,fields){
         if(err){
             res.send("Unable to Unfollow");
             }

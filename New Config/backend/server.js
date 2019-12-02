@@ -260,7 +260,10 @@ app.get('/questions/session/updateComment/:commenter_ID/:comment2', login.isLogg
 app.get('/questions/session/getQuestionTree/:question_ID', login.isLoggedIn, questions.getQuestionTree);
 
 // Outputs the comment replies to a comment
-app.get('/question/session/getCommentTree/:commentee_ID', login.isLoggedIn, questions.getCommentTree);
+app.get('/questions/session/getCommentTree/:commentee_ID', login.isLoggedIn, questions.getCommentTree);
+
+// Report a comment by sending email to EB team
+app.get('/questions/session/reportComment/:comment_ID',login.isLoggedIn, questions.reportComment);
 
 //election routes
 app.get('/election/getElections/citiesWithElections', elections.getElectionsInCities);
