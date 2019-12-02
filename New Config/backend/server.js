@@ -1,5 +1,3 @@
-
-
 /**A simple node/express server that include communication with a
  * mysql db instance.
 */
@@ -254,6 +252,9 @@ app.get('/questions/session/getQuestionTree/:question_ID',  questions.getQuestio
 // Outputs the comment replies to a comment
 app.get('/question/session/getCommentTree/:commentee_ID',  questions.getCommentTree);
 
+// reports a comment by sending email to EB team
+app.get('/questions/session/reportComment/:comment_ID',login.isLoggedIn, questions.reportComment);
+
 //election routes
 app.get('/election/getElections/citiesWithElections', elections.getElectionsInCities);
 
@@ -334,3 +335,4 @@ app.listen(config.port, config.host, (e) => {
   }
   logger.info(`${config.name} running on ${config.host}:${config.port}`);
 });
+
