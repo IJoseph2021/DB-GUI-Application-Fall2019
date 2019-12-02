@@ -11,29 +11,11 @@ var connection = mysql.createPool({
     database: 'electionBuddy'
   });
   
-  //Setup for connecting to the dev mysql connection
-  //Made by Steve Shoemaker
-var devConnect = mysql.createConnection({
-    connectionLimit : 10,
-    host: 'backend-db',
-    database: 'electionBuddy',
-    port: '3306',
-    user: 'user',
-    password: 'password'
-  });
 
 var currentConnection = connection;
 
-exports.useDevDB = function(){
-    currentConnection = devConnect;
-}
 
-exports.useProdDB = function(){
-    currentConnection = connection;
-}
 
 exports.query = function(query, queryFunction){
   currentConnection.query(query,queryFunction);
 }
-
-exports.connection = currentConnection;

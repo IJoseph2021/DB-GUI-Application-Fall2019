@@ -189,15 +189,6 @@ exports.getPassword = function (req, res) {
         });
 }   
 
-//Stephen Shoemaker
-//Checks the session to see if the person is logged in
-exports.isLoggedIn = function(req,res,next){
-    if(req.session.isLoggedIn == true){
-        return next();
-    } else {
-        res.sendStatus(401);
-    }
-}
 
 //Steve Shoemaker
 //Update email in user table route

@@ -52,18 +52,6 @@ app.use(session({
 
 /**     REQUEST HANDLERS        */
 
-
-//Route to use prod db
-app.get('/useProdDB', function(req,res){
-  mysql.useProdDB();
-  res.send("using prodDB");
-});
-
-app.get('/useDevDB', function(req,res){
-  mysql.useDevDB();
-  res.send(200);
-})
-
 //Login Routes
 
 //Create Account
