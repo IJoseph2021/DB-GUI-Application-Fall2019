@@ -15,9 +15,12 @@ class Signup extends Component {
             fname: "",
             lname: "",
             email: "",
+            role: "",
             signUpSuccess: false,
             validateForm: true
         };
+
+
         this.handleSubmit = this.handleSubmit.bind(this);
         this.validateForm = this.validateForm.bind(this);
     }
@@ -78,90 +81,130 @@ class Signup extends Component {
 
 
     render() {
+        var roles = ["","Not Applicable", "Voter", "Candidate"];
 
         return (
-            <div className="signup-page">
-            { this.state.validateForm ?  "":<div className="invalid-signup">Password fields don't match. Please try again</div> }
-
-            { this.state.signUpSuccess ?  <div className="invalid-signup">Invalid Registration. Please try again.</div>:"" }
+            <div>
                 <div>
-                    <h3 className="signup-heading">Create your Account</h3>
-                    <hr />
-                    <form>
-                        <div className="form-group">
-                            <label htmlFor="username">Username:</label>
-                            <input
+        					<div className="container">
+        						<div className="row">
+        							<div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        								<div className="card card-signin my-5">
+        									<div className="card-body">
+        										<h5 className="card-title text-center">Create Account</h5>
+                            { this.state.validateForm ?  "":<div className="invalid-signup">Username is invalid OR Password fields don't match. Please try again</div> }
+
+                            { this.state.signUpSuccess ?  <div className="invalid-signup">Invalid Registration. Please try again.</div>:"" }
+        										<hr className="my-4"/>
+        										<form className="form-signin">
+        											<div className="form-label-group">
+        												<input
                                 value={this.state.username}
-                                id="username"
-                                className="form-control"
-                                type="text"
+        												type="text"
+        												id="username"
+        												className="form-control"
+        												placeholder="Username" required autoFocus
                                 onChange={event => this.setState({ username: event.target.value })}
-                            ></input>
-                        </div>
+        												/>
+                                <label htmlFor="username">Username</label>
+        											</div>
 
-                        <div className="form-group">
-                            <label htmlFor="password">Password:</label>
-                            <input
+        											<div className="form-label-group">
+        												<input
                                 value={this.state.password}
-                                id="password"
-                                className="form-control"
-                                type="password"
+        												type="password"
+        												id="inputPassword"
+        												className="form-control"
+        												placeholder="Password"
                                 onChange={event => this.setState({ password: event.target.value })}
-                            ></input>
-                        </div>
+        												/>
+                                <label htmlFor="inputPassword">Password</label>
 
-                        <div className="form-group">
-                            <label htmlFor="confirmPassword">Confirm Password:</label>
-                            <input
+        											</div>
+
+                              <div className="form-label-group">
+        												<input
                                 value={this.state.confirmPassword}
-                                id="confirmPassword"
-                                className="form-control"
-                                type="password"
+        												type="password"
+        												id="confirmPassword"
+        												className="form-control"
+        												placeholder="Password"
                                 onChange={event => this.setState({ confirmPassword: event.target.value })}
-                            ></input>
-                        </div>
+        												/>
+                                <label htmlFor="confirmPassword">Confirm Password</label>
+        											</div>
 
-                        <div className="form-group">
-                            <label htmlFor="fname">First Name:</label>
-                            <input
+                              <div className="form-label-group">
+                                <input
                                 value={this.state.fname}
+                                type="text"
                                 id="fname"
                                 className="form-control"
-                                type="text"
+                                placeholder="First Name"
                                 onChange={event => this.setState({ fname: event.target.value })}
-                            ></input>
-                        </div>
+                                />
+                                <label htmlFor="fname">First Name</label>
 
-                        <div className="form-group">
-                            <label htmlFor="lname">Last Name:</label>
-                            <input
-                            value={this.state.lname}
+                              </div>
 
+                              <div className="form-label-group">
+                                <input
+                                value={this.state.lname}
+                                type="text"
                                 id="lname"
                                 className="form-control"
-                                type="text"
+                                placeholder="Last Name"
                                 onChange={event => this.setState({ lname: event.target.value })}
-                            ></input>
-                        </div>
+                                />
+                                <label htmlFor="lname">Last Name</label>
 
-                        <div className="form-group">
-                            <label htmlFor="email">Email:</label>
-                            <input
-                            value={this.state.email}
+                              </div>
 
+                              <div className="form-label-group">
+                                <input
+                                value={this.state.email}
+                                type="text"
                                 id="email"
                                 className="form-control"
-                                type="text"
+                                placeholder="Email"
                                 onChange={event => this.setState({ email: event.target.value })}
-                            ></input>
-                        </div>
+                                />
+                                <label htmlFor="email">Email</label>
 
-                        <button
-                            type="button"
-                            onClick={this.handleSubmit}
-                            className="form-button"
-                        >Sign Up</button>
-                    </form>
+                              </div>
+
+                              <div>
+                                <label htmlFor="role">What is your role?</label>
+                                <select
+                                name="role"
+                                id="role"
+                                onChange={event => this.setState({role: event.target.value})}
+                                >
+                                {
+                                    roles.map(x => (
+                                      <option
+                                      key={x}
+                                      id="role"
+                                      value={x}
+                                      > {x}
+                                      </option>
+                                  )
+                                )
+                                }
+                                </select>
+                              </div>
+
+        											<button style={{"marginTop": "2em"}}
+        											className="btn btn-lg btn-primary btn-block text-uppercase"
+        											type="button"
+        											onClick={this.handleSubmit}
+        											>Sign Up</button>
+        										</form>
+        									</div>
+        								</div>
+        							</div>
+        						</div>
+        					</div>
                 </div>
             </div>
         );

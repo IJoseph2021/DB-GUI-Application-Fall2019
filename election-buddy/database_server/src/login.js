@@ -143,6 +143,17 @@ exports.getUserInfo = function(req,res){
                             });
 }
 
+exports.updateUserInfo = function(req, res){
+  mysqlConnection.query("UPDATE USER SET USER.email = \'" + req.params.email + "\'  WHERE USER.username = \'" +  req.params.user + "\';",
+      function(err,rows, fields){
+          if(err){
+              logger.error(err.message);
+          }
+      });
+
+  res.send("Email Updated");
+}
+
 exports.getSessionUserId = function(req,res){
     console.log(req.session.userId);
     res.send(req.session.userId);
