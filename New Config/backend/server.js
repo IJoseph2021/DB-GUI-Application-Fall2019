@@ -5,7 +5,9 @@
 */
 
 //create main objects
-
+var nodemailer = require('nodemailer');
+const https = require('https');
+const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -74,7 +76,7 @@ app.get('/login/login/:user/:pass', login.login);
 app.get('/login/getEmail/:user', login.getEmail);
 
 //Get User ID
-app.get('/login/getUserId/:user', login.getUserID);
+app.get('/getUserId/:user', login.getUserID);
 
 //Get User Info
 app.get('/login/getUserInfo/:user', login.getUserInfo);
@@ -91,26 +93,17 @@ app.get('/login/getLname/:ID', login.getLname);
 //Get password
 app.get('/login/getPassword/:ID', login.getPassword);
 
-//Get User ID Session
-app.get('/login/session/getUserId', login.isLoggedIn, login.getSessionUserId);
-
-//Update Session Password
-app.get('/login/session/updatePassword/:newPass', login.isLoggedIn,login.changePassword);
+//Update Password
+app.get('/updatePassword/:user/:newpass', login.changePassword);
 
 //updating Email
 app.get('/login/updateEmail/:user/:email', login.updateEmail);
 
-//Update fname
-app.get('/login/session/changeFname/:user/:fname', login.isLoggedIn, login.changeFname);
-
-//Update Lname
-app.get('/login/session/changeLname/:user/:lname', login.isLoggedIn, login.changeLname);
-
 //update fname
-app.get('/login/updateLName/:user/:lname', login.updateLName);
+app.get('/login/updateFName/:user/:fname', login.updateFName);
 
 //update lname
-app.get('/login/updateLName/:user/:fname', login.updateFName);
+app.get('/login/updateLName/:user/:lname', login.updateLName);
 
 //getAllRoles
 app.get('/login/getAllRoles/:user', login.getRoles);
@@ -118,7 +111,7 @@ app.get('/login/getAllRoles/:user', login.getRoles);
 //Voter Routes
 
 //Making the current session a voter
-app.get('/voter/session/setVoter', login.isLoggedIn, voter.setVoter);
+app.get('/voter/session/setVoter',  voter.setVoter);
 
 //makes a specific user become a voter
 app.get('/voter/becomeVoter/:user', voter.userBecomeVoter);
@@ -126,58 +119,58 @@ app.get('/voter/becomeVoter/:user', voter.userBecomeVoter);
 app.get('/voter/getVoterInfo/:voter', voter.getVoterInfo);
 
 //Updates the city of the voter
-app.get('/voter/session/updateCity/:city', login.isLoggedIn, voter.updateCitySession);
+app.get('/voter/session/updateCity/:city',  voter.updateCitySession);
 
 //Gets the voters session
-app.get('/voter/session/getCitySession', login.isLoggedIn, voter.getCitySession);
+app.get('/voter/session/getCitySession',  voter.getCitySession);
 
 //Updates the voter county
-app.get('/voter/session/updateCounty/:county', login.isLoggedIn, voter.updateCountySession);
+app.get('/voter/session/updateCounty/:county',  voter.updateCountySession);
 
 //Updates zipcode
-app.get('/voter/session/updateZipCodeSession/:zipCode', login.isLoggedIn, voter.updateZipCodeSession);
+app.get('/voter/session/updateZipCodeSession/:zipCode',  voter.updateZipCodeSession);
 
 //Gets the voter county
-app.get('/voter/session/getCountySession', login.isLoggedIn, voter.getCountySession);
+app.get('/voter/session/getCountySession',  voter.getCountySession);
 
 //Updates the voter Party
-app.get('/voter/session/updateParty/:partyName', login.isLoggedIn, voter.sessionUpdateParty);
+app.get('/voter/session/updateParty/:partyName',  voter.sessionUpdateParty);
 
 //Gets voter list based on zip Code
-app.get('/voter/session/getVoterListZipCode/:partyCode/:zipCode', login.isLoggedIn, voter.getVoterListZipCode);
+app.get('/voter/session/getVoterListZipCode/:partyCode/:zipCode',  voter.getVoterListZipCode);
 
 //Gets voter list based on state
-app.get('/voter/session/getVoterListState/:partyCode/:state', login.isLoggedIn, voter.getVoterListState);
+app.get('/voter/session/getVoterListState/:partyCode/:state',  voter.getVoterListState);
 
 //Gets voter list based on city
-app.get('/voter/session/getVoterListCity/:partyCode/:city', login.isLoggedIn, voter.getVoterListCity);
+app.get('/voter/session/getVoterListCity/:partyCode/:city',  voter.getVoterListCity);
 
 //Get zip code of current user
-app.get('/voter/session/getZipCodeSession', login.isLoggedIn, voter.getZipCodeSession);
+app.get('/voter/session/getZipCodeSession',  voter.getZipCodeSession);
 
 // Follow a Question
-app.get('/voter/session/followTopic/:question_ID', login.isLoggedIn, voter.followTopic);
+app.get('/voter/session/followTopic/:question_ID',  voter.followTopic);
 
 // Unfollow a question
-app.get('/voter/session/unfollowTopic/:question_ID', login.isLoggedIn, voter.unfollowTopic);
+app.get('/voter/session/unfollowTopic/:question_ID',  voter.unfollowTopic);
 
 // Get List of followed questions
-app.get('/voter/session/getFollowList', login.isLoggedIn, voter.getFollowList);
+app.get('/voter/session/getFollowList',  voter.getFollowList);
 
 // Get List of electorates in elections based on location and party code
-app.get('/voter/session/getCandidatesInElections/:partyCode/:location', login.isLoggedIn, voter.getCandidatesInElections);
+app.get('/voter/session/getCandidatesInElections/:partyCode/:location',  voter.getCandidatesInElections);
 
 //Get list of eligible elections for voter
-app.get('/voter/session/getEligibility/:userID', login.isLoggedIn, voter.getEligibility);
+app.get('/voter/session/getEligibility/:userID',  voter.getEligibility);
 
 
 //Party Routes
 
 //Creates a party
-app.get('/party/createParty/:party', login.isLoggedIn, party.createParty);
+app.get('/party/createParty/:party',  party.createParty);
 
 //Create party and code
-app.get('/party/createPartyAndCode/:partyCode/:partyName', login.isLoggedIn, party.createPartyAndCode);
+app.get('/party/createPartyAndCode/:partyCode/:partyName',  party.createPartyAndCode);
 
 //Gets a party name
 app.get('/party/getPartyName/:partyCode', party.getPartyName);
@@ -189,39 +182,41 @@ app.get('/party/getPartyCode/:partyName', party.getPartyCode);
 //Admin Routes
 
 //Gets admin level #
-app.get('/admin/session/getAdminLevel', login.isLoggedIn, admin.getAdminLevel);
+app.get('/admin/session/getAdminLevel',  admin.getAdminLevel);
 
 //Verifies a candidate
-app.get('/admin/session/verify/:ID',login.isLoggedIn,admin.isAdmin, admin.verifyCandidate);
+app.get('/admin/session/verify/:ID',admin.isAdmin, admin.verifyCandidate);
 
 //adds an election
-app.get('/admin/session/addElection/:level/:location/:time/:name', login.isLoggedIn, admin.isAdmin, admin.addElection);
+app.get('/admin/session/addElection/:level/:location/:time/:name',  admin.isAdmin, admin.addElection);
 
+//makes a user an admin
+app.get('/admin/addAdmin/:userAddingAdmin/:newAdmin/:adminLevel', admin.addAdmin);
 
 //Candidate Routes
 
 //Allows a user to become a candidate
-app.get('/candidate/session/becomeCandidate', login.isLoggedIn, candidate.becomeCandidate);
+app.get('/candidate/session/becomeCandidate',  candidate.becomeCandidate);
 
 //Getting the candidate favorite
-app.get('/candidate/session/getcandidateFavorite/:user_ID', login.isLoggedIn, candidate.getcandidateFavorite);
+app.get('/candidate/session/getcandidateFavorite/:user_ID',  candidate.getcandidateFavorite);
 
 //Update the canidate favorite
-app.get('/candidate/session/updateCandidateFavorite/:user_ID/:candidate_ID', login.isLoggedIn, candidate.updateCandidateFavorite);
+app.get('/candidate/session/updateCandidateFavorite/:user_ID/:candidate_ID',  candidate.updateCandidateFavorite);
 
 //Get candidate by state
-app.get('/candidate/session/getCandidatebyState/:state', login.isLoggedIn, candidate.getCandidatebyState);
+app.get('/candidate/session/getCandidatebyState/:state',  candidate.getCandidatebyState);
 
 //Get candidate by zipcode
-app.get('/candidate/session/getCandidatebyzipCode/:zipCode', login.isLoggedIn, candidate.getCandidatebyzipCode);
+app.get('/candidate/session/getCandidatebyzipCode/:zipCode',  candidate.getCandidatebyzipCode);
 
 //Get candidate by city
-app.get('/candidate/session/getCandidatebyCity/:city', login.isLoggedIn, candidate.getCandidatebyCity);
+app.get('/candidate/session/getCandidatebyCity/:city',  candidate.getCandidatebyCity);
 
 //Get candidate by partycode
-app.get('/candidate/session/getCandidatebypartyCode/:partyCode', login.isLoggedIn, candidate.getCandidatebypartyCode);
+app.get('/candidate/session/getCandidatebypartyCode/:partyCode',  candidate.getCandidatebypartyCode);
 
-app.get('/candidate/session/enterElection/:electionID/:level/:location', login.isLoggedIn, candidate.enterElection);
+app.get('/candidate/session/enterElection/:electionID/:level/:location',  candidate.enterElection);
 
 
 
@@ -230,34 +225,34 @@ app.get('/candidate/session/enterElection/:electionID/:level/:location', login.i
 //Questions Routes
 
 //Creates a questsion
-app.get('/questions/session/createQuestion/:asker_ID/:askee_ID/:question',login.isLoggedIn, questions.createQuestion);
+app.get('/questions/session/createQuestion/:asker_ID/:askee_ID/:question', questions.createQuestion);
 
 //Gets a question on ID
-app.get('/questions/session/getQuestion/:question_ID', login.isLoggedIn, questions.getQuestion);
+app.get('/questions/session/getQuestion/:question_ID',  questions.getQuestion);
 
 //Removes a question on ID
-app.get('/questions/session/removeQuestion/:question_ID', login.isLoggedIn, questions.removeQuestion);
+app.get('/questions/session/removeQuestion/:question_ID',  questions.removeQuestion);
 
 //Updates a question Time
-app.get('/questions/session/updateQuestion/:question_ID/:question2', login.isLoggedIn, questions.updateQuestion);
+app.get('/questions/session/updateQuestion/:question_ID/:question2',  questions.updateQuestion);
 
 // Creates a comment
-app.get('/questions/session/createComment/:commenter_ID/:user_ID/:comment', login.isLoggedIn, questions.createComment);
+app.get('/questions/session/createComment/:commenter_ID/:user_ID/:comment',  questions.createComment);
 
 // Gets comment based on the comment ID
-app.get('/questions/session/getComment/:commenter_ID', login.isLoggedIn, questions.getComment);
+app.get('/questions/session/getComment/:commenter_ID',  questions.getComment);
 
 // Soft Removes comment based on the comment ID
-app.get('/questions/session/removeQuestion/:commenter_ID', login.isLoggedIn, questions.removeComment);
+app.get('/questions/session/removeQuestion/:commenter_ID',  questions.removeComment);
 
 // Updates a comment with new text and new time stamp
-app.get('/questions/session/updateComment/:commenter_ID/:comment2', login.isLoggedIn, questions.updateComment);
+app.get('/questions/session/updateComment/:commenter_ID/:comment2',  questions.updateComment);
 
 // Outputs the tree of comments for a question
-app.get('/questions/session/getQuestionTree/:question_ID', login.isLoggedIn, questions.getQuestionTree);
+app.get('/questions/session/getQuestionTree/:question_ID',  questions.getQuestionTree);
 
 // Outputs the comment replies to a comment
-app.get('/question/session/getCommentTree/:commentee_ID', login.isLoggedIn, questions.getCommentTree);
+app.get('/question/session/getCommentTree/:commentee_ID',  questions.getCommentTree);
 
 //election routes
 app.get('/election/getElections/citiesWithElections', elections.getElectionsInCities);
@@ -278,6 +273,59 @@ app.get('/issues/addElectionIssue/:election/:issue', issues.addElectionIssue);
 
 //gets all issues connected to an election
 app.get('/issues/getElectionIssues/:election', issues.getElectionIssues);
+
+// /* --------- This sends an email to local authority ---------*/
+// app.post('/sendEmail', (req, res) => {
+//   //receive body.sender and body.content
+// 	console.log(req.body)
+// 	console.log(req.params)
+// 	let transporter = nodemailer.createTransport({
+// 	    host: 'smtp.gmail.com',
+// 	    port: 587,
+// 	    secure: false,
+// 	    requireTLS: true,
+// 	    // auth: {
+// 	    //     user: 'skyler.linhtran@gmail.com',
+// 	    //     pass: 'skyler1996'
+// 	    // }
+// 			auth: {
+// 				user: 'electionbuddy.fa2019@gmail.com',
+// 				pass: 'electionbuddy2019'
+// 			}
+// 	});
+//
+//
+//   // var mailOptions = {
+//   //   from: `${JSON.stringify(req.body.sender)} <electionbuddy.fa2019@gmail.com>`,
+//   //   to: 'mfonten@lyle.smu.edu',
+//   //   subject: `${JSON.stringify(req.body.sender)} + from Election Buddy Sent You A Messsage`,
+//   //   text: JSON.stringify(req.body.content)
+//   // };
+//
+// 	var mailOptions = {
+// 	  from: `${JSON.stringify(req.body.sender)} <electionbuddy.fa2019@gmail.com>`,
+// 	  to: 'skylert@smu.edu',
+// 	  subject: `${JSON.stringify(req.body.sender)} + from Election Buddy Sent You A Messsage`,
+// 	  text: JSON.stringify(req.body.content)
+// 	};
+//
+//   transporter.sendMail(mailOptions, function(error, info){
+//     if (error) {
+//       console.log(error);
+//     } else {
+//       console.log('Email sent: ' + info.response);
+// 			res.status(200).send('Email sent.');
+//     }
+//   });
+// });
+//
+// //---------------------------------------------------------------------------------
+// https.createServer({
+// 	key: fs.readFileSync('./ssl_electionbuddy/private.key'),
+// 	cert: fs.readFileSync('./ssl_electionbuddy/certificate.crt'),
+// 	ca: fs.readFileSync('./ssl_electionbuddy/ca_bundle.crt')
+// },app).listen(config.port, config.host);
+
 
 //connecting the express object to listen on a particular port as defined in the config object.
 app.listen(config.port, config.host, (e) => {

@@ -51,3 +51,18 @@ exports.isAdmin = function(req,res,next){
         return next();
     }
 }
+
+exports.addAdmin = function(req,res){
+    mysqlconnection.query(`SELECT adminLevel FROM ADMIN WHERE userId = ${req.params.userAddingAdmin};`, function(err,rows,fields){
+        if(rows != undefined && rows.length!=0 && rows[0].adminLevel > 1 && rows[0].adminLevel >= req.params.adminLevel){
+            mysqlconnection.query(`INSERT INTO ADMIN(userId, adminLevel) VALUES (${req.params.newAdmin}, ${req.params.adminLevel});`,function(err,rows,fields){
+                if(!err){
+                    res.send(200);
+                } else res.send(404);
+            })
+        } else {
+            res.send(404);
+        }
+    })
+
+}
