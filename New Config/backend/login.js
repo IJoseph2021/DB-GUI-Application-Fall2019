@@ -144,7 +144,7 @@ exports.getUsername = function (req, res) {
 //get fname
 exports.getFname = function (req, res) {
     id = req.params.ID;
-    mysqlConnection.query(`SELECT USER.fname FROM USER WHERE USER.ID = '${id}';`,
+    mysqlConnection.query(`SELECT USER.fname FROM USER WHERE USER.id = '${id}';`,
         function (err, rows, fields) {
             if (rows[0] != undefined) {
                 res.send(rows);
@@ -177,7 +177,7 @@ exports.getLname = function (req, res) {
 //get password
 exports.getPassword = function (req, res) {
     id = req.params.ID;
-    mysqlConnection.query(`SELECT USER.passhash FROM USER WHERE USER.ID = '${id}';`,
+    mysqlConnection.query(`SELECT USER.passhash FROM USER WHERE USER.id = '${id}';`,
         function (err, rows, fields) {
             if (rows[0] != undefined) {
                 res.send(rows);
