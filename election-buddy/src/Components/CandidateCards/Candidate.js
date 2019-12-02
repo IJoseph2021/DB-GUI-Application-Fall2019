@@ -66,30 +66,49 @@ export default class Candidate extends React.Component{
     render() {
       return (
         <div className="container-fluid">
-          <div className="row">
-            <div className="col-sm-4 bg-primary">
+          <div className="row justify-content-center">
             {
               this.state.DEM.map(each =>
-                <div key = {each.userId} className="card" style={{"width": "12rem"}}>
+                <div className={`col-sm-${this.state.DEM.length} bg-primary`}>
+                <div key = {each.userId} className="card mx-auto" style={{"width": "12rem"}}>
                   <img src={faker.image.avatar()} className="card-img-top" alt=""/>
                   <div className="card-body">
-                    <h5 className="card-title">{each.name}</h5>
+                  <h5 className="card-title" style={{  "min-height": "3rem"}}>{each.name}</h5>
                     <Link to={`/candidate/${each.userId}`} className="btn btn-primary"> More Information </Link>
                   </div>
                 </div>
-
+                </div>
               )
             }
 
-            </div>
+            {
+              this.state.FES.map(each =>
+                <div className={`col-sm-4 bg-success`}>
+                <div key = {each.userId} className="card mx-auto" style={{"width": "12rem"}}>
+                  <img src={faker.image.avatar()} className="card-img-top" alt=""/>
+                  <div className="card-body">
+                  <h5 className="card-title" style={{  "min-height": "3rem"}}>{each.name}</h5>
+                    <Link to={`/candidate/${each.userId}`} className="btn btn-primary"> More Information </Link>
+                  </div>
+                </div>
+                </div>
+              )
+            }
 
-            <div className="col-sm-4 bg-success">
 
-            </div>
-
-            <div className="col-sm-4 bg-danger">
-
-            </div>
+            {
+              this.state.REP.map(each =>
+                <div className={`col-sm-${this.state.REP.length} bg-danger`}>
+                <div key = {each.userId} className="card mx-auto" style={{"width": "12rem"}}>
+                  <img src={faker.image.avatar()} className="card-img-top" alt=""/>
+                  <div className="card-body">
+                    <h5 className="card-title" style={{  "min-height": "3rem"}}>{each.name}</h5>
+                    <Link to={`/candidate/${each.userId}`} className="btn btn-primary"> More Information </Link>
+                  </div>
+                </div>
+                </div>
+              )
+            }
           </div>
         </div>
       );
