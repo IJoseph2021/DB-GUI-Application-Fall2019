@@ -5,7 +5,7 @@ div.header-republican {
     text-align: center;
     background: rgba(186,22,22, 0.7);
 }
-  
+
 div.header-democrat {
     width: 50%;
     padding: 3% 0;
@@ -13,12 +13,28 @@ div.header-democrat {
     text-align: center;
     background: rgba(2,66,242, 0.7);
 }
-  
+
 .candidateInfo, .candidateNews {
     background: lightgray;
     width: 100%;
-    padding: 1% 0 0 0;
+    padding: 1% 2% 0% 2%;
     text-align: left;
+}
+
+#article_link{
+    text-decoration: "none";
+    color: #FFFFFF;
+}
+
+#button {
+    margin: 15px 0;
+}
+
+#card{
+     padding: 0 20px;
+}
+#title {
+    height: 100
 }
 
 .clear{

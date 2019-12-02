@@ -18,8 +18,8 @@ exports.becomeCandidate = function(req,res){
 // user can have more than one favorite candiates
 exports.getcandidateFavorite = function (req, res) {
     
-    console.log(`SELECT candidate_ID FROM CANDIDATE_FAVORITE WHERE user_ID = '${req.params.user_ID}';`);
-    mysqlConnection.query(`SELECT candidate_ID FROM CANDIDATE_FAVORITE WHERE user_ID = '${req.params.user_ID}'`, function (err, rows, fields) {
+    console.log(`SELECT candidateId FROM CANDIDATE_FAVORITE WHERE voterId = '${req.params.voterId}';`);
+    mysqlConnection.query(`SELECT candidateId FROM CANDIDATE_FAVORITE WHERE user_ID = '${req.params.voterId}'`, function (err, rows, fields) {
         if (rows[0] != undefined) {
             res.send(rows);
         } else {
@@ -31,7 +31,7 @@ exports.getcandidateFavorite = function (req, res) {
 //Baohua Yu
 // update the candidate favorite
 exports.updateCandidateFavorite = function (req, res) {
-    mysqlConnection.query(`UPDATE CANDIDATE_FAVORITE SET candidate_ID = '${req.params.candidate_ID}' WHERE user_ID = '${req.params.user_ID}';`, function (err, rows, fields) {
+    mysqlConnection.query(`UPDATE CANDIDATE_FAVORITE SET candidateId = '${req.params.candidateId}' WHERE user_ID = '${req.params.voterId}';`, function (err, rows, fields) {
         if (err) {
             res.send("err");
 
@@ -44,8 +44,8 @@ exports.updateCandidateFavorite = function (req, res) {
 //Isaac Joseph
 //get candidate by state
 exports.getCandidatebyState = function (req, res) {
-    console.log(`SELECT CANDIDATE.userID FROM CANDIDATE WHERE state = '${req.params.state}';`);
-    mysqlConnection.query(`SELECT CANDIDATE.userID FROM CANDIDATE WHERE state = '${req.params.state}';`, function (err, rows, fields) {
+    console.log(`SELECT CANDIDATE.userId FROM CANDIDATE WHERE state = '${req.params.state}';`);
+    mysqlConnection.query(`SELECT CANDIDATE.userId FROM CANDIDATE WHERE state = '${req.params.state}';`, function (err, rows, fields) {
 
         if (rows[0] != undefined) {
                 res.send(rows);
@@ -59,8 +59,8 @@ exports.getCandidatebyState = function (req, res) {
 //get candidate by zipcode
     exports.getCandidatebyzipCode = function (req, res) {
         zipCode = req.params.zipCode;
-        console.log(`SELECT userID FROM CANDIDATE WHERE zipCode = '${zipCode}';`);
-        mysqlConnection.query(`SELECT userID FROM CANDIDATE WHERE zipCode = '${zipCode}';`, function (err, rows, fields) {
+        console.log(`SELECT userId FROM CANDIDATE WHERE zipCode = '${zipCode}';`);
+        mysqlConnection.query(`SELECT userId FROM CANDIDATE WHERE zipCode = '${zipCode}';`, function (err, rows, fields) {
             if (rows[0] != undefined) {
                 res.send(rows);
 
@@ -74,8 +74,8 @@ exports.getCandidatebyState = function (req, res) {
 //getcandidate by city
     exports.getCandidatebyCity = function (req, res) {
         city = req.params.city;
-        console.log(`SELECT userID FROM CANDIDATE WHERE city = '${city}';`);
-        mysqlConnection.query(`SELECT userID FROM CANDIDATE WHERE city = '${city}';`, function (err, rows, fields) {
+        console.log(`SELECT userId FROM CANDIDATE WHERE city = '${city}';`);
+        mysqlConnection.query(`SELECT userId FROM CANDIDATE WHERE city = '${city}';`, function (err, rows, fields) {
             if (rows[0] != undefined) {
                 res.send(rows);
             } else {
@@ -88,8 +88,8 @@ exports.getCandidatebyState = function (req, res) {
 //getcandidate by partycode
     exports.getCandidatebypartyCode = function (req, res) {
         partyCode = req.params.partyCode;
-        console.log(`SELECT userID FROM CANDIDATE WHERE partyCode = '${partyCode}';`);
-        mysqlConnection.query(`SELECT userID FROM CANDIDATE WHERE partyCode = '${partyCode}';`, function (err, rows, field) {
+        console.log(`SELECT userId FROM CANDIDATE WHERE partyCode = '${partyCode}';`);
+        mysqlConnection.query(`SELECT userId FROM CANDIDATE WHERE partyCode = '${partyCode}';`, function (err, rows, field) {
             if (rows[0] != undefined) {
                 res.send(rows);
             } else {

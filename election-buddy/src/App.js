@@ -11,16 +11,14 @@ import UserProfile from './Components/ProfilePage/UserProfile';
 import Logout from './Components/Logout/Logout';
 import Candidate from './Components/CandidateCards/Candidate';
 import CandidatePage from './Components/CandidateCards/CandidatePage';
-import CommentForm from './Components/CandidateCards/CommentForm';
-import CommentList from './Components/CandidateCards/CommentList';
-
-
+import ChangePassword from './Components/ProfilePage/ChangePassword';
 
 class App extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
+			userId: "",
 			loginState: !!localStorage.getItem('token')
 		}
 		this.updateLoginState = this.updateLoginState.bind(this);
@@ -29,7 +27,8 @@ class App extends React.Component {
 	updateLoginState = () => {
 		if(localStorage.getItem('token')){
 			this.setState({
-					loginState: true
+					loginState: true,
+					userId: localStorage.getItem('token')
 			});
 		}
 		else{
@@ -54,12 +53,14 @@ class App extends React.Component {
 	              <Redirect to="/login"/>
 	            )
 	          )}/>
-						{!this.state.loginState && <Route path="/candidate" exact component={CandidatePage} />}
+						{this.state.loginState && <Route path="/candidate" exact component={CandidatePage} />}
 						{this.state.loginState && <Route path="/" exact component={Homepage} />}
 						{!this.state.loginState && <Route exact path="/login" render={(props) => <Login {...props} updateLoginState={this.updateLoginState}/>}/>}
 						{/*!this.state.loginState && <Route exact path="/login" render={(props) => <Login {...props} updateLoginState={this.updateLoginState}/>}/>*/}
 						{!this.state.loginState && <Route exact path="/registration" exact component={Signup}/>}
-						{this.state.loginState && <Route path="/profile" exact component={UserProfile}/>}
+						{this.state.loginState && <Route path="/profile" exact component={(props) => <UserProfile {...props} userId={this.state.userId}/>}/>}/>}
+						{this.state.loginState && <Route path="/changepwd" exact component={(props) => <ChangePassword {...props} userId={this.state.userId}/>}/>}/>}
+
 					</Switch>
 				</div>
       </Router>

@@ -8,7 +8,7 @@ class UserFunctions {
         return new Promise((resolve, reject) => {
             return axios.get(this.URL + '/login/login/' + user.username + '/' + user.pass)
                 .then(resp => {
-                  // console.log(resp.data);
+                  console.log(resp.data);
                   resolve(resp.data)})
                 .catch(resp => reject(resp));
         })
@@ -40,14 +40,41 @@ class UserFunctions {
         })
     }
 
-    updatePassword(user){
+    getUserCurrentPassword(userId){
+      //app.get('/login/getPassword/:ID', login.getPassword);
+
       return new Promise((resolve, reject) => {
-          return axios.get(this.URL + '/login/session/updatePasword/' +
-          user.newPass
+          return axios.get(this.URL + '/login/getPassword/' +
+          userId
           ).then(resp => resolve(resp.data))
               .catch(resp => reject(resp));
       })
     }
+
+    updatePassword(user){
+      //app.get('/login/updatePassword/:user/:newpass', login.changePassword);
+
+      return new Promise((resolve, reject) => {
+          return axios.get(this.URL + '/updatePassword/' +
+          + user.userId + "/" + user.newPass
+          ).then(resp => resolve(resp.data))
+              .catch(resp => reject(resp));
+      })
+    }
+
+    getUserId(user){
+      return new Promise((resolve, reject) => {
+          return axios.get(this.URL + '/getUserId/' +
+          user.username
+          ).then(resp =>
+            {
+              console.log(resp)
+              resolve(resp.data)
+            })
+              .catch(resp => reject(resp));
+      })
+    }
+
 
     getUserInfo(userIdOrName){
       return new Promise((resolve, reject) => {
@@ -58,9 +85,9 @@ class UserFunctions {
       })
     }
 
-    getUserEmail(username) {
+    getUserEmail(userId) {
         return new Promise((resolve, reject) => {
-            return axios.get(this.URL + '/login/getEmail/' + username)
+            return axios.get(this.URL + '/login/getEmail/' + userId)
                 .then(resp => resolve(resp.data))
                 .catch(resp => reject(resp));
         })

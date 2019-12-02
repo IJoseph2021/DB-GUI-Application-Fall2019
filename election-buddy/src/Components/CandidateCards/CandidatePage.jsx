@@ -6,6 +6,7 @@ import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 import {Link} from 'react-router-dom';
 
+
 export default class CandidatePage extends React.Component {
 
     state = {
@@ -35,7 +36,9 @@ export default class CandidatePage extends React.Component {
     componentDidMount() {
        const key = this.state.candidateName
        const key2 = this.state.party
-       const url = `https://newsapi.org/v2/everything?q=((${key})AND(${key2}))&from=2019-11-10&to=2019-12-25&sortBy=popularity&apiKey=53b1b21475f84b9894e0e6a987ff211d`
+       var tempDate = new Date();
+       const date = tempDate.getFullYear() + '-' + (tempDate.getMonth()+1) + '-' +(tempDate.getDate()-7)
+       const url = `https://newsapi.org/v2/everything?q=((${key})AND(${key2}))&from=${date}&to=2019-12-25&sortBy=popularity&apiKey=53b1b21475f84b9894e0e6a987ff211d`
       fetch(url)
       .then(res => res.json())
       .then((data) => {
@@ -51,8 +54,16 @@ export default class CandidatePage extends React.Component {
       var idx = 0
 
       while (idx < this.state.candidateNews.length) {
-        if (idx % howMany === 0) groupedArticles.push([])
+            if (idx % howMany === 0)
+                groupedArticles.push([])
+
             groupedArticles[groupedArticles.length - 1].push(this.state.candidateNews[idx++])
+
+
+          if(groupedArticles.length === 3  &&  groupedArticles[howMany-1].length  === 3){
+                console.log(groupedArticles.length);
+                break;
+          }
       }
 
       return groupedArticles
@@ -84,7 +95,7 @@ export default class CandidatePage extends React.Component {
 
                 <div className="candidateNews">
                     <h3 style={{padding: "0em 0.8em"}}>
-                        Candidate News
+                        Live Candidate Updates
                     </h3>
 
                         { groupedArticles  && groupedArticles.map((articles,index) =>
@@ -93,16 +104,18 @@ export default class CandidatePage extends React.Component {
                                 <div className="row">
                                 {articles.map(article=>
                                     <div className="col-lg-4 d-flex align-items-stretch">
-                                      <div className="card">
+                                      <div className="card" id="card">
                                         <div className="card-body">
                                          <img class="card-img-top" src={article.urlToImage}/>
                                           <h5 className="card-title">{article.title}</h5>
-                                          <h6 className="card-subtitle mb-2 text-muted">
-                                                <button type="button" variant = "success" className="btn btn-info">
-                                                <a target="_blank" href={article.url}>Learn More</a>
-                                                </button>
-                                          </h6>
                                         </div>
+                                        <h6 className="card-subtitle">
+                                                From {article.source.name}
+                                        </h6>
+                                        <button type="submit"
+                                                className="btn btn-primary">
+                                            <a href={article.url} id="article_link">Learn More</a>
+                                        </button>
                                       </div>
                                     </div>
                                 )}
@@ -113,9 +126,6 @@ export default class CandidatePage extends React.Component {
                 </div>
 
                 <div className="questions">
-                    <h3 style={{padding: "0em 0.8em"}}>
-                        Questions for {this.state.candidateName}
-                    </h3>
                     <CommentList questions={this.state.questions} handleResponse={response => this.handleResponse(response)} candidateName={this.state.candidateName}/>
                     <CommentForm onQuestionSubmit={question => this.handleQuestionSubmit(question)}/>
                 </div>
