@@ -50,7 +50,7 @@ class App extends React.Component {
 	            this.state.loginState ? (
 	              <Homepage/>
 	            ) : (
-	              <Redirect to="/login"/>
+	              <Homepage/>
 	            )
 	          )}/>
 						{this.state.loginState && <Route path="/candidate" exact component={CandidatePage} />}
