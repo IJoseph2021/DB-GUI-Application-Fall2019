@@ -32,13 +32,13 @@ export default class Candidate extends React.Component{
         this.candidateFuncs.getCandidatebypartyCode(each)
         .then(resp => {
           for (var j = 0; j < resp.length; j++) {
-            this.getCandidateFirstNameAndLastName(resp[j].userID)
+            this.getCandidateFirstNameAndLastName(resp[j].userId)
             .then(response => {
               obj = {
                 userId: response.userID,
                 name: response.name
               };
-              console.log(obj)
+              // console.log(obj)
               array.push(obj)
               this.setState({[each]: array})
             })
@@ -52,6 +52,7 @@ export default class Candidate extends React.Component{
 
     async getCandidateFirstNameAndLastName(userId){
       var name = "";
+      // console.log(userId)
       let firstname = await this.candidateFuncs.getCandidateFirstName(userId)
       let lastname = await this.candidateFuncs.getCandidateLastName(userId)
       var response = {
