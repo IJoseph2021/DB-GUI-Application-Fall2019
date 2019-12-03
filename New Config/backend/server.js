@@ -145,6 +145,9 @@ app.get('/voter/session/getCandidatesInElections/:partyCode/:location',  voter.g
 //Get list of eligible elections for voter
 app.get('/voter/session/getEligibility/:userID',  voter.getEligibility);
 
+//Get zipCode from userID
+app.get('/voter/getVoterZipCode/:userID', voter.getVoterZipCode);
+
 
 //Party Routes
 
