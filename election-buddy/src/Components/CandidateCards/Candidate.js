@@ -115,3 +115,4 @@ export default class Candidate extends React.Component{
       );
     }
 }
+//<Link to={`/candidate/${each.userId}`} className="btn btn-primary"> More Information </Link>

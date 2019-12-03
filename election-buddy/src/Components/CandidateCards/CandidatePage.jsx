@@ -5,17 +5,23 @@ import Comment from './Comment';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 import {Link} from 'react-router-dom';
+import CandidateFunctions from '../../API/CandidateFunctions';
 
 
 export default class CandidatePage extends React.Component {
-
-    state = {
-        candidateName: 'Donald Trump',
-        party: 'Republican',
-        candidateInfo: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Pretium aenean pharetra magna ac placerat vestibulum lectus. Arcu cursus euismod quis viverra nibh cras. Lacus suspendisse faucibus interdum posuere lorem ipsum dolor sit amet. Semper quis lectus nulla at volutpat diam ut venenatis. Amet tellus cras adipiscing enim eu turpis egestas. Sagittis id consectetur purus ut faucibus pulvinar. Volutpat lacus laoreet non curabitur. Velit ut tortor pretium viverra suspendisse. Cras ornare arcu dui vivamus. Quis lectus nulla at volutpat diam ut. Felis eget nunc lobortis mattis. Platea dictumst vestibulum rhoncus est. Turpis egestas integer eget aliquet nibh praesent tristique. At imperdiet dui accumsan sit amet nulla facilisi. Eu tincidunt tortor aliquam nulla facilisi. Amet volutpat consequat mauris nunc congue.',
-        candidateNews: [],
-        questions: []
-    };
+    candidateFuncs = new CandidateFunctions();
+    constructor(props){
+        super(props)
+        
+        this.state = {
+            userId: this.props.userId || localStorage.getItem('token'),
+            candidateName: 'Donald Trump',
+            party: 'Republican',
+            candidateInfo: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Pretium aenean pharetra magna ac placerat vestibulum lectus. Arcu cursus euismod quis viverra nibh cras. Lacus suspendisse faucibus interdum posuere lorem ipsum dolor sit amet. Semper quis lectus nulla at volutpat diam ut venenatis. Amet tellus cras adipiscing enim eu turpis egestas. Sagittis id consectetur purus ut faucibus pulvinar. Volutpat lacus laoreet non curabitur. Velit ut tortor pretium viverra suspendisse. Cras ornare arcu dui vivamus. Quis lectus nulla at volutpat diam ut. Felis eget nunc lobortis mattis. Platea dictumst vestibulum rhoncus est. Turpis egestas integer eget aliquet nibh praesent tristique. At imperdiet dui accumsan sit amet nulla facilisi. Eu tincidunt tortor aliquam nulla facilisi. Amet volutpat consequat mauris nunc congue.',
+            candidateNews: [],
+            questions: []
+        }
+      }
 
     handleQuestionSubmit(question) {
         console.log(question.userName);
@@ -34,6 +40,8 @@ export default class CandidatePage extends React.Component {
     }
 
     componentDidMount() {
+        //var id = this.props.userId;
+        console.log(this.state.userId);
        const key = this.state.candidateName
        const key2 = this.state.party
        var tempDate = new Date();
