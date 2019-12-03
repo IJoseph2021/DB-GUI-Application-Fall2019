@@ -19,7 +19,7 @@ exports.becomeCandidate = function(req,res){
 exports.getcandidateFavorite = function (req, res) {
     
     console.log(`SELECT candidateId FROM CANDIDATE_FAVORITE WHERE voterId = '${req.params.voterId}';`);
-    mysqlConnection.query(`SELECT candidateId FROM CANDIDATE_FAVORITE WHERE user_ID = '${req.params.voterId}'`, function (err, rows, fields) {
+    mysqlConnection.query(`SELECT candidateId FROM CANDIDATE_FAVORITE WHERE voterId = '${req.params.voterId}'`, function (err, rows, fields) {
         if (rows[0] != undefined) {
             res.send(rows);
         } else {
@@ -31,7 +31,7 @@ exports.getcandidateFavorite = function (req, res) {
 //Baohua Yu
 // update the candidate favorite
 exports.updateCandidateFavorite = function (req, res) {
-    mysqlConnection.query(`UPDATE CANDIDATE_FAVORITE SET candidateId = '${req.params.candidateId}' WHERE user_ID = '${req.params.voterId}';`, function (err, rows, fields) {
+    mysqlConnection.query(`UPDATE CANDIDATE_FAVORITE SET candidateId = '${req.params.candidateId}' WHERE voterId = '${req.params.voterId}';`, function (err, rows, fields) {
         if (err) {
             res.send("err");
 

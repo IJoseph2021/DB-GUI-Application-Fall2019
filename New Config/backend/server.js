@@ -184,10 +184,10 @@ app.get('/admin/addAdmin/:userAddingAdmin/:newAdmin/:adminLevel', admin.addAdmin
 app.get('/candidate/session/becomeCandidate',  candidate.becomeCandidate);
 
 //Getting the candidate favorite
-app.get('/candidate/session/getcandidateFavorite/:user_ID',  candidate.getcandidateFavorite);
+app.get('/candidate/session/getcandidateFavorite/:voterId',  candidate.getcandidateFavorite);
 
 //Update the canidate favorite
-app.get('/candidate/session/updateCandidateFavorite/:user_ID/:candidate_ID',  candidate.updateCandidateFavorite);
+app.get('/candidate/session/updateCandidateFavorite/:voterId/:candidateId',  candidate.updateCandidateFavorite);
 
 //Get candidate by state
 app.get('/candidate/session/getCandidatebyState/:state',  candidate.getCandidatebyState);
