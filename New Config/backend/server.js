@@ -248,11 +248,10 @@ app.get('/question/session/getCommentTree/:commentee_ID',  questions.getCommentT
 // reports a comment by sending email to EB team
 //app.get('/questions/session/reportComment/:comment_ID', questions.reportComment);
 
-//election routes
+//Election routes
 app.get('/election/getElections/citiesWithElections', elections.getElectionsInCities);
 
-//issueRoutes
-
+//IssueRoutes
 //This function creates an issue
 app.get('/issues/createIssue/:name', issues.createIssue);
 

@@ -3,7 +3,7 @@ There are two distinct parts, a mysql server, and an api express server which in
 
 Here is the API Routes:
 
-ACCOUNT ROUTES
+LOGIN ROUTES
 
 /login/create/:user/:fname/:lname/:pass/:email
 Creates an account based on the input information
