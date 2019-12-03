@@ -203,6 +203,10 @@ app.get('/candidate/session/getCandidatebypartyCode/:partyCode',  candidate.getC
 
 app.get('/candidate/session/enterElection/:electionID/:level/:location',  candidate.enterElection);
 
+//updates a candidate bio
+app.get('/candidate/updateBio/:id/:bio', candidate.addBio);
+
+app.get('/candidate/getBio/:id', candidate.getBio);
 
 
 
@@ -240,7 +244,7 @@ app.get('/questions/session/getQuestionTree/:question_ID',  questions.getQuestio
 app.get('/question/session/getCommentTree/:commentee_ID',  questions.getCommentTree);
 
 // reports a comment by sending email to EB team
-app.get('/questions/session/reportComment/:comment_ID',login.isLoggedIn, questions.reportComment);
+app.get('/questions/session/reportComment/:comment_ID', questions.reportComment);
 
 //election routes
 app.get('/election/getElections/citiesWithElections', elections.getElectionsInCities);

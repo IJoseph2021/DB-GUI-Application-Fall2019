@@ -148,4 +148,24 @@ exports.enterElection = function(req,res){
         });
 }
 
+exports.addBio = function(req,res){
+    mysqlConnection.query(`UPDATE CANDIDATE SET CANDIDATE.bio = '${req.params.bio}' WHERE CANDIDATE.userId = '${req.params.id}';`, function(err,rows,fields){
+        if(err){
+            console.log("ERROR: " + err.message);
+            res.send(404);
 
+        } else {
+            res.send(200);
+        }
+    })
+}
+
+exports.getBio = function(req,res){
+    mysqlConnection.query(`SELECT CANDIDATE.bio FROM CANDIDATE WHERE CANDIDATE.userId = '${req.params.id}';`,function(err,rows,fields){
+        if(!err && rows.length != 0){
+            res.send(rows);
+        } else {
+            res.send(404);
+        }
+    })
+}
