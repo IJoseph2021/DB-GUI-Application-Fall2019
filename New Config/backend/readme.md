@@ -11,24 +11,49 @@ Creates an account based on the input information
 /login/login/:user/:pass
 Tries to login into an account at that username and password
 
+/login/getEmail/:user
+gets the email of a user at a certain ID
+
 /login/updateEmail/:user/:email
 updates the email of a the user
 
-/login/getEmai/:user
-gets the email of a specific username
+login/getUserInfo/:user
+gets all of the user info for a certain ID
+
+/login/getUsername/:ID
+gets the username of a certain ID
 
 /login/getUserId/:user
 gets the userID of a username
 
-/login/session/getUserId
-gets the id of the logged in user
+/login/getFname/:id
+gets the Fname of a user
 
-/login/session/updatePasword/:newPass
-updates the login of the current user to newPassword
+/login/getLname/:id
+gets the lastname of a user
+
+/login/getPassword/:id
+returns the password of the id
+
+/updatePassword/:user/:newpass
+updates the password of the user at that ID
+
+/login/updateEmail/:user/:email
+updates the email of the user
+
+/login/updateFName/:user/:lname
+updates the first name of a user
+
+/login/updateLName/:user/:lname
+updates the last name of a user
+
+/login/getAllRoles/:user
+returns all of the roles the user fills
+
 
 VOTER ROUTES
 
-/voter/session/setVoter
+/voter/becomeVoter/:user
 Adds the currently logged in voter to the voter table
 
 /voter/session/updateCity/:city
