@@ -200,16 +200,22 @@ exports.getCommentTree = function(req, res){
         });
 }
 
+/*
 //not currently working do not use
 exports.reportComment = function(req, res){
     cID = req.params.commentee_ID
-    var email = 'electionbuddyReports@gmail.com';
-    var subject = `'Report for ' + '${cID}'`;
+    emailCC = ""
+    var emailEB = 'electionbuddyReports@gmail.com';
+    var subjectEB = `'Report for ' + '${cID}'`;
     var emailBody = 'Hi EB Team,';
 
     //window.open("mailto:"+email+"?subject="+subject+"&body="+emailBody);
     
-    window.location.href ="mailto:"+email+"?subject="+subject+"&body="+emailBody;
+    //window.location.href ="mailto:"+email+"?subject="+subject+"&body="+emailBody;
+
+    window.open('mailto:'+emailEB+'?cc='+emailCC+'&subject='+subjectEB+'&body='+emailBody, '_self');
+    
+
 
     if(err){
         res.send("Email Client Failed to Open");
@@ -218,4 +224,4 @@ exports.reportComment = function(req, res){
         res.send("Email Client Opened");
     }
 
-}
+}*/
