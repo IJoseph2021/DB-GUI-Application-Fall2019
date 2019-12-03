@@ -5,17 +5,69 @@ import Comment from './Comment';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 import {Link} from 'react-router-dom';
+import CandidateFunctions from '../../API/CandidateFunctions';
 
 
 export default class CandidatePage extends React.Component {
+    candidateFuncs = new CandidateFunctions();
+    constructor(props){
+        super(props)
+        
+        this.state = {
+            userId: this.props.userId || localStorage.getItem('token'),
+            candidateName: '',
+            party: '',
+            candidateInfo: '',
+            candidateNews: [],
+            questions: []
+        }
+      }
 
-    state = {
-        candidateName: 'Donald Trump',
-        party: 'Republican',
-        candidateInfo: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Pretium aenean pharetra magna ac placerat vestibulum lectus. Arcu cursus euismod quis viverra nibh cras. Lacus suspendisse faucibus interdum posuere lorem ipsum dolor sit amet. Semper quis lectus nulla at volutpat diam ut venenatis. Amet tellus cras adipiscing enim eu turpis egestas. Sagittis id consectetur purus ut faucibus pulvinar. Volutpat lacus laoreet non curabitur. Velit ut tortor pretium viverra suspendisse. Cras ornare arcu dui vivamus. Quis lectus nulla at volutpat diam ut. Felis eget nunc lobortis mattis. Platea dictumst vestibulum rhoncus est. Turpis egestas integer eget aliquet nibh praesent tristique. At imperdiet dui accumsan sit amet nulla facilisi. Eu tincidunt tortor aliquam nulla facilisi. Amet volutpat consequat mauris nunc congue.',
-        candidateNews: [],
-        questions: []
-    };
+    async populateInfo(params){
+        //Getting first and last name of the candidate
+        this.candidateFuncs.getCandidateFirstName(params.id)
+		.then(res => {
+			this.setState({candidateName: res[0].fname})
+		})
+		.catch(err => {
+			console.log("Error occured")
+        });
+        this.candidateFuncs.getCandidateLastName(params.id)
+		.then(res => {
+			this.setState(prevState => {
+                prevState.candidateName = prevState.candidateName + ' ' + res[0].lname;
+                return prevState;
+            });
+		})
+		.catch(err => {
+			console.log("Error occured")
+        });
+
+
+        this.candidateFuncs.getCandidateBio(params.id)
+		.then(res => {
+			this.setState({candidateInfo: res[0].bio})
+		})
+		.catch(err => {
+			console.log("Error occured")
+        });
+
+        this.candidateFuncs.getCandidateParty(params.id)
+		.then(res => {
+			this.setState({party: res[0].partyName})
+		})
+		.catch(err => {
+			console.log("Error occured")
+        });
+        /*
+        this.candidateFuncs.getCandidateQuestionsAsked(params.id)
+		.then(res => {
+			//this.setState({party: res[0].partyName})
+		})
+		.catch(err => {
+			console.log("Error occured")
+        });*/
+    }
 
     handleQuestionSubmit(question) {
         console.log(question.userName);
@@ -34,17 +86,21 @@ export default class CandidatePage extends React.Component {
     }
 
     componentDidMount() {
-       const key = this.state.candidateName
-       const key2 = this.state.party
-       var tempDate = new Date();
-       const date = tempDate.getFullYear() + '-' + (tempDate.getMonth()+1) + '-' +(tempDate.getDate()-7)
-       const url = `https://newsapi.org/v2/everything?q=((${key})AND(${key2}))&from=${date}&to=2019-12-25&sortBy=popularity&apiKey=53b1b21475f84b9894e0e6a987ff211d`
-      fetch(url)
-      .then(res => res.json())
-      .then((data) => {
-        this.setState({ candidateNews: data.articles })
-      })
-      .catch(console.log)
+        const { match: { params } } = this.props;
+        this.populateInfo(params)
+        //var id = this.props.userId;
+        console.log(this.props.userId)
+        const key = this.state.candidateName
+        const key2 = this.state.party
+        var tempDate = new Date();
+        const date = tempDate.getFullYear() + '-' + (tempDate.getMonth()+1) + '-' +(tempDate.getDate()-7)
+        const url = `https://newsapi.org/v2/everything?q=((${key})AND(${key2}))&from=${date}&to=2019-12-25&sortBy=popularity&apiKey=53b1b21475f84b9894e0e6a987ff211d`
+       fetch(url)
+            .then(res => res.json())
+            .then((data) => {
+            this.setState({ candidateNews: data.articles })
+        })
+        .catch(console.log)
 
     }
 
@@ -75,11 +131,11 @@ export default class CandidatePage extends React.Component {
         const groupedArticles = this.createGroups()
         return (
             <div>
-                <div className="header-republican container-fluid">
-                    <h1 style={{color: 'black'}}>
+                <div className={`${this.state.party} container-fluid}`}>
+                    <h1 style={{'color': 'black'}}>
                         {this.state.candidateName}
                     </h1>
-                    <h3 style={{color: 'black'}}>
+                    <h3 style={{'color': 'black'}}>
                         {this.state.party}
                     </h3>
                 </div>
@@ -106,7 +162,7 @@ export default class CandidatePage extends React.Component {
                                     <div className="col-lg-4 d-flex align-items-stretch">
                                       <div className="card" id="card">
                                         <div className="card-body">
-                                         <img class="card-img-top" src={article.urlToImage}/>
+                                         <img className="card-img-top" src={article.urlToImage}/>
                                           <h5 className="card-title">{article.title}</h5>
                                         </div>
                                         <h6 className="card-subtitle">
@@ -126,7 +182,7 @@ export default class CandidatePage extends React.Component {
                 </div>
 
                 <div className="questions">
-                    <CommentList questions={this.state.questions} handleResponse={response => this.handleResponse(response)} candidateName={this.state.candidateName}/>
+                    <CommentList questions={this.state.questions} handleResponse={response => this.handleResponse(response)} candidateName={this.state.candidateName} userId={this.state.userId}/>
                     <CommentForm onQuestionSubmit={question => this.handleQuestionSubmit(question)}/>
                 </div>
             </div>
