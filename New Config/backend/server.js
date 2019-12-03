@@ -226,7 +226,7 @@ app.get('/questions/session/removeQuestion/:question_ID',  questions.removeQuest
 app.get('/questions/session/updateQuestion/:question_ID/:question2',  questions.updateQuestion);
 
 // Creates a comment
-app.get('/questions/session/createComment/:commenter_ID/:user_ID/:comment',  questions.createComment);
+app.get('/questions/createComment/:questionID/:commenter_ID/:user_ID/:comment',  questions.createComment);
 
 // Gets comment based on the comment ID
 app.get('/questions/session/getComment/:commenter_ID',  questions.getComment);
