@@ -95,9 +95,6 @@ app.get('/login/getAllRoles/:user', login.getRoles);
 
 //Voter Routes
 
-//Making the current session a voter
-app.get('/voter/session/setVoter',  voter.setVoter);
-
 //makes a specific user become a voter
 app.get('/voter/becomeVoter/:user', voter.userBecomeVoter);
 
@@ -147,6 +144,9 @@ app.get('/voter/session/getCandidatesInElections/:partyCode/:location',  voter.g
 
 //Get list of eligible elections for voter
 app.get('/voter/session/getEligibility/:userID',  voter.getEligibility);
+
+//Get zipCode from userID
+app.get('/voter/getVoterZipCode/:userID', voter.getVoterZipCode);
 
 
 //Party Routes
@@ -208,6 +208,9 @@ app.get('/candidate/updateBio/:id/:bio', candidate.addBio);
 
 app.get('/candidate/getBio/:id', candidate.getBio);
 
+//get candidate party
+app.get('/candidate/getCandidateParty/:id', candidate.getCandidateParty);
+
 
 
 
@@ -243,11 +246,15 @@ app.get('/questions/session/getQuestionTree/:question_ID',  questions.getQuestio
 // Outputs the comment replies to a comment
 app.get('/question/session/getCommentTree/:commentee_ID',  questions.getCommentTree);
 
+app.get('/question/getQuestionsAnswered/:userID', questions.getQuestionsAnswered);
+
+app.get('/question/getQuestionsAsked/:userID', questions.getQuestionsAsked);
 // reports a comment by sending email to EB team
-app.get('/questions/session/reportComment/:comment_ID', questions.reportComment);
+//app.get('/questions/session/reportComment/:comment_ID', questions.reportComment);
 
 //election routes
 app.get('/election/getElections/citiesWithElections', elections.getElectionsInCities);
+
 
 //issueRoutes
 
@@ -327,3 +334,44 @@ app.listen(config.port, config.host, (e) => {
   logger.info(`${config.name} running on ${config.host}:${config.port}`);
 });
 
+var nodemailer = require('nodemailer');
+var smtpTransport = require('nodemailer-smtp-transport');
+app.get('/contactform/:commentID', function (req, res) {
+  
+        cID = req.params.commentID;
+        var subject_with_cID = `Reporting comment ID#: ${cID}`;
+        var reportTXT = `I would like to file a complaint for comment#: ${cID}`;
+        var mailOpts, smtpTrans;
+
+        //Setup Nodemailer transport
+        smtpTrans = nodemailer.createTransport(smtpTransport({
+            service: 'gmail',
+            //host:'smtp.gmail.com',
+            //port:465,
+            //secure:false,
+            auth: {
+                user: "electionbuddyreports",
+                pass: "electionbuddy1!"
+            }
+        }));
+        var mailoutput = "<html>\n\
+                        <body>\n\
+                        <table>\n\
+                        <tr>\n\
+                        <td>Messge: </td>" + reportTXT + "<td></td>\n\
+                        </tr>\n\
+                        </table></body></html>";
+        mailOpts = {
+            to: "Election Buddy Team <electionbuddyreports@gmail.com>",
+            subject: subject_with_cID,
+            html: mailoutput
+        };
+
+        smtpTrans.sendMail(mailOpts, function (error, res) {
+            if (error) {
+                return console.log(error);
+            }
+        });
+        console.log('Message sent successfully!');
+        res.send("Mail Sent");
+    });

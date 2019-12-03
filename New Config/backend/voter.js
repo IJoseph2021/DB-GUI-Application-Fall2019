@@ -5,24 +5,6 @@ This file manages all the routes for the voters
 
 const mysqlConnection = require('./oursql.js');
 
-//Steve Shoemaker
-//This function makes someone a voter
-exports.setVoter = function(req,res){
-    userID = req.session.userId;
-    mysqlConnection.query(`SELECT USER.ID FROM USER WHERE ID = '${userID}';`,
-                            function(OuterErr,OuterRows,OuterFields){
-                                if(!OuterErr){
-                                    mysqlConnection.query(`INSERT INTO VOTER(USERID) VALUES('${userID}');`,function(err,rows,fields){
-                                        if(err){
-                                            console.log(err.message);
-                                        }
-                                    });
-                                }else{
-                                    console.log(OuterErr.message);
-                                }
-                            });
-    res.send("Voter Attempted");
-}
 
 //Steve Shoemaker
 //This function makes a specific user a voter
@@ -302,4 +284,17 @@ exports.getEligibility = function(req,res){
             }
 
         });
+}
+
+exports.getVoterZipCode = function(req,res){
+    userID = req.params.userID
+    console.log(`SELECT VOTER.zipCode FROM VOTER WHERE userID = '${userID}';`);
+    mysqlConnection.query(`SELECT VOTER.zipCode FROM VOTER WHERE userID = '${userID}';`, function(err,rows,fields){
+        if(rows[0] != undefined){
+            res.send(rows);
+        }
+        else{
+            res.send("no zip found that match userID");
+        }
+    });
 }

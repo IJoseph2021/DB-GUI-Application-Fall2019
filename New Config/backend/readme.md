@@ -3,17 +3,6 @@ There are two distinct parts, a mysql server, and an api express server which in
 
 Here is the API Routes:
 
-DEVELOPMENT ROUTES
-
-/setupDB
-This function loads the sample data into the local database and connects to the local database
-
-/useDevDB
-Connects to the local dev database
-
-/useProdDB
-connects to the external production database
-
 ACCOUNT ROUTES
 
 /login/create/:user/:fname/:lname/:pass/:email
@@ -22,31 +11,60 @@ Creates an account based on the input information
 /login/login/:user/:pass
 Tries to login into an account at that username and password
 
+/login/getEmail/:user
+gets the email of a user at a certain ID
+
+
 /login/updateEmail/:user/:email
 updates the email of a the user
 
-/login/getEmai/:user
-gets the email of a specific username
+login/getUserInfo/:user
+gets all of the user info for a certain ID
+
+/login/getUsername/:ID
+gets the username of a certain ID
 
 /login/getUserId/:user
 gets the userID of a username
 
-/login/session/getUserId
-gets the id of the logged in user
+/login/getFname/:ID
+gets the Fname of a user
 
-/login/session/updatePasword/:newPass
-updates the login of the current user to newPassword
+/login/getLname/:ID
+gets the lastname of a user
+
+/login/getPassword/:ID
+returns the password of the ID
+
+/updatePassword/:user/:newpass
+updates the password of the user at that ID
+
+/login/updateEmail/:user/:email
+updates the email of the user
+
+/login/updateFName/:user/:fname
+updates the first name of a user
+
+/login/updateLName/:user/:lname
+updates the last name of a user
+
+/login/getAllRoles/:user
+returns all of the roles the user fills
+
 
 VOTER ROUTES
 
-/voter/session/setVoter
+/voter/becomeVoter/:user
 Adds the currently logged in voter to the voter table
+
+/voter/getVoterInfo/:voter
+Get the voter information
 
 /voter/session/updateCity/:city
 Adds the current voters city to the table
 
 /voter/session/getCitySession
-returns the current voters city
+get the city session
 
 /voter/sesion/updateCounty/:county
 Adds the current voters county to the table
@@ -54,18 +72,46 @@ Adds the current voters county to the table
 /voter/session/getCountySession
 Returns the current county to the table
 
-/voter/session/getVoterList/:partyCode/:state/:city/:zipCode
-If zip code is not Zero, returns a list of all voters that match that zip code and party Code.
-If zip code is zero and city is not Zero, returns a list of all voters that match that city code and party Code
-If zip code and cityCode is zero, returns a list of all voters that match that state and party code
+/voter/session/updateZipCodeSession/:zipCode
+Update the zipcode
+
+/voter/session/updateParty/:partyName
+Updates the voter party
+
+/voter/session/getVoterListZipCode/:partyCode/:zipCode
+Gets voter list base on zipCode
+
+/voter/session/getVoterListState/:partyCode/:state
+Gets voter list bae on state
+
+/voter/session/getVoterListCity/:partyCode/:city
+Gets voter list base on city
 
 /voter/sesson/getZipCodeSession
 returns the current voters Zip Code Session
+
+/voter/session/followTopic/:question_ID
+Follow a question
+
+/voter/session/unfollowTopic/:question_ID
+Unfollow a question
+
+voter/session/getFollowList
+Get list of followed questions
+
+voter/session/getCandidatesInElections/:partyCode/:locatio
+Get List of electorates in elections based on location and party code
+
+voter/session/getEligibility/:userID
+Get list of eligible elections for voter
 
 PARTY ROUTES
 
 /party/createParty/:party
 addas a party with that name to the table
+
+/party/createPartyAndCode/:partyCode/:partyName
+Create party and code
 
 /party/getPartyName/:partyCode
 returns the partyCode that matches the party name
@@ -80,13 +126,47 @@ retursn the admin level of the current user
 /admin/session/verify/:ID
 verifies the candidate of the ID variable
 
+/admin/session/addElection/:level/:location/:time/:name
+Adds an election with election information ofk level, location,time and name
+
+/admin/addAdmin/:userAddingAdmin/:newAdmin/:adminLevel
+Makes a user an admin
+
 CANDIDATE ROUTES
 /candidate/session/becomeCandidate
 the current user becomes a candidate
 
+/candidate/session/getcandidateFavorite/:voterId
+Return the candidateId match the voter favorite
+
+/candidate/session/updateCandidateFavorite/:voterId/:candidateId
+Update candidate favorite
+
+/candidate/session/getCandidatebyState/:state
+Get candidate by state
+
+/candidate/session/getCandidatebyzipCode/:zipCode
+Get candidate by zipCode
+
+/candidate/session/getCandidatebyCity/:city
+Get candidate by city
+
+candidate/session/getCandidatebypartyCode/:partyCode
+Get candidate by partyCode
+
+candidate/session/enterElection/:electionID/:level/:location
+Candidate enter as election
+
+/candidate/updateBio/:id/:bio
+Updates a candidate bio
+
+/candidate/getCandidateParty/:id
+Get candidate party
+
+
 QUESTION ROUTES
-/questions/session/createQuestion/:question_ID/:question_Time/:asker_ID/:askee_ID/:question
-Adds a question to question to the table
+/questions/session/createQuestion/:asker_ID/:askee_ID/:question
+Creates a questions
 
 /questions/session/getQuestion/:question_ID
 returns the question at that question_ID
@@ -94,26 +174,30 @@ returns the question at that question_ID
 /questions/session/removeQuestion/:question_ID
 removes a question at that Question_ID
 
-/questions/session/updateQuestion/:question_ID/:update_Time/:question2
+/questions/session/updateQuestion/:question_ID/:question2
 Updates the text and time of a question
 
-/questions/session/createComment/:comment_Time/:commenter_ID/:commentee_ID/:user_ID/:comment
-Creates a comment on the question at commentee_ID
+/questions/session/createComment/:commenter_ID/:user_ID/:comment
+Creates a comment on the question
 
-/questions/session/getComment/:comment_ID
-returns the comment at the comment_ID
+/questions/session/getComment/:commenter_ID
+returns the comment at the commenter_ID
 
-/questions/session/removeQuestion/:comment_ID
-soft removal of questions at the comment id
+/questions/session/removeQuestion/:commenter_ID
+soft removal of questions at the commenter_ID
 
-/questions/session/updateComment/:comment_ID/:update_Time/:comment2
-updates the comment and comment ID
+/questions/session/updateComment/:commenter_ID/:comment2
+updates the comment with new text an new time stamp
 
 /questions/session/getQuestionTree/:question_ID
 returns the comments on question_ID
 
 /question/session/getCommentTree/:commentee_ID
-returns the comment tree for a comment
+returns the comment repiled for a comment
+
+ELECTION ROUTES
+/election/getElections/citiesWithElections
+Gets city with the election
 
 ISSUE ROUTES
 /issues/createIssue/:name
