@@ -92,6 +92,20 @@ class UserFunctions {
                 .catch(resp => reject(resp));
         })
     }
+
+    getRoles(userId) {
+      //app.get('/login/getAllRoles/:user', login.getRoles);
+      return new Promise((resolve, reject) => {
+          return axios.get(this.URL + '/login/getAllRoles/' + userId)
+              .then(resp => resolve(resp.data))
+              .catch(resp => reject(resp));
+      })
+    }
+
+    makeVote(userId) {
+      //app.get('/voter/becomeVoter/:user', voter.userBecomeVoter);
+
+    }
 }
 
 export default UserFunctions;

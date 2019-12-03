@@ -52,4 +52,40 @@ export default class CandidateFunctions {
                 .catch(resp => reject(resp));
         })
     }
+
+    getCandidateBio(userId) {
+        return new Promise((resolve, reject) => {
+          return axios.get(this.URL + '/candidate/getBio/' + userId
+
+          )
+                .then(resp => {
+                  resolve(resp.data)
+                })
+                .catch(resp => reject(resp));
+        })
+    }
+
+    getCandidateParty(userId) {
+      return new Promise((resolve, reject) => {
+        return axios.get(this.URL + '/candidate/getCandidateParty/' + userId
+
+        )
+              .then(resp => {
+                resolve(resp.data)
+              })
+              .catch(resp => reject(resp));
+      })
+    }
+
+    getCandidateQuestionsAsked(userId) {
+      return new Promise((resolve, reject) => {
+        return axios.get(this.URL + '/candidate/getQuestionsAsked/' + userId
+
+        )
+              .then(resp => {
+                resolve(resp.data)
+              })
+              .catch(resp => reject(resp));
+      })
+    }
 }

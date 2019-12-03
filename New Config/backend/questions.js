@@ -98,15 +98,15 @@ exports.createComment = function(req, res){
 
     comment_Time = dateTime;
     //commenter_ID = req.params.commenter_ID;
-    commentee_ID = req.params.commentee_ID;
-    user_ID = req.params.user_ID;
+    questionID = req.params.questionID;
+    commenter_ID= req.params.commenter_ID;
+    commentee_ID=req.params.user_ID;
     comment = req.params.comment;
     active = 1;
     update_Time = dateTime;
 
-    query = "INSERT INTO electionBuddy.COMMENT (comment_Time, commenter_ID, commentee_ID, user_ID, comment, active, update_Time)"+
-    " VALUES(\""+ comment_Time + "\",\"" + commenter_ID + "\",\"" + commentee_ID + "\",\"" + user_ID + "\",\"" + comment + "\",\"" + active + "\",\"" + update_Time + "\" );";
 
+    query = `INSERT INTO electionBuddy.COMMENT(questionId,commentTime,commenterID,commenteeID,comment,active) VALUES(${questionID}, '${update_Time}', ${commenter_ID}, ${commentee_ID}, '${comment}', 0);`;
     console.log(query);
     mysqlConnection.query(query, 
         function(err,rows,fields){
