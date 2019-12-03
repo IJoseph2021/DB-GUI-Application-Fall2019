@@ -1,18 +1,18 @@
 import React from 'react';
 import { Comment } from './Comment';
+import CandidateFunctions from '../../API/CandidateFunctions';
 
 export default class CommentList extends React.Component {
+    candidateFuncs = new CandidateFunctions();
+    constructor(props){
+        super(props);
 
-  constructor(props){
-    super(props);
-
-    this.state = {
-        candidateName: '',
-        response: ''
-    };
-  }
-
-
+        this.state = {
+            userId: this.props.userId || localStorage.getItem('token'),
+            candidateName: '',
+            response: ''
+        };
+    }
 
     handleResponse = (event) => {
         event.preventDefault();
@@ -27,14 +27,13 @@ export default class CommentList extends React.Component {
         return (
           <div>
             <h1>Questions and Answers</h1>
-            <div className="jumbotron">
+            {/*<{div className="jumbotron">
               <p className="lead">Question here</p>
               <p className="author">Donald Trump</p>
               <hr className="my-4"/>
               <p>Answers here</p>
               <p className="author">Donald Trump</p>
-
-            </div>
+        </div}>*/}
 
               <div className="CommentList container-fluid">
 

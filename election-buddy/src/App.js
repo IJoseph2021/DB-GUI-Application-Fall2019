@@ -50,17 +50,17 @@ class App extends React.Component {
 	            this.state.loginState ? (
 	              <Homepage/>
 	            ) : (
-	              <Redirect to="/login"/>
+					<Redirect to="/login"/>
 	            )
 	          )}/>
-						{this.state.loginState && <Route path="/candidate" exact component={CandidatePage} />}
+						{/*this.state.loginState && <Route path="/candidate" exact component={(props) => <CandidatePage {...props} userId={this.state.userId}/>}/>*/}
+						{this.state.loginState && <Route path="/candidate/:id" exact component={CandidatePage} />}
 						{this.state.loginState && <Route path="/" exact component={Homepage} />}
 						{!this.state.loginState && <Route exact path="/login" render={(props) => <Login {...props} updateLoginState={this.updateLoginState}/>}/>}
 						{/*!this.state.loginState && <Route exact path="/login" render={(props) => <Login {...props} updateLoginState={this.updateLoginState}/>}/>*/}
 						{!this.state.loginState && <Route exact path="/registration" exact component={Signup}/>}
 						{this.state.loginState && <Route path="/profile" exact component={(props) => <UserProfile {...props} userId={this.state.userId}/>}/>}/>}
 						{this.state.loginState && <Route path="/changepwd" exact component={(props) => <ChangePassword {...props} userId={this.state.userId}/>}/>}/>}
-
 					</Switch>
 				</div>
       </Router>
