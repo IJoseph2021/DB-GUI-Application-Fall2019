@@ -3,17 +3,16 @@ import { Comment } from './Comment';
 import CandidateFunctions from '../../API/CandidateFunctions';
 
 export default class CommentList extends React.Component {
+    candidateFuncs = new CandidateFunctions();
+    constructor(props){
+        super(props);
 
-  constructor(props){
-    super(props);
-
-    this.state = {
-        candidateName: '',
-        response: ''
-    };
-  }
-
-
+        this.state = {
+            userId: this.props.userId || localStorage.getItem('token'),
+            candidateName: '',
+            response: ''
+        };
+    }
 
     handleResponse = (event) => {
         event.preventDefault();

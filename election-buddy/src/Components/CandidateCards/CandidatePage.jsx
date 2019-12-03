@@ -59,6 +59,14 @@ export default class CandidatePage extends React.Component {
 		.catch(err => {
 			console.log("Error occured")
         });
+        /*
+        this.candidateFuncs.getCandidateQuestionsAsked(params.id)
+		.then(res => {
+			//this.setState({party: res[0].partyName})
+		})
+		.catch(err => {
+			console.log("Error occured")
+        });*/
     }
 
     handleQuestionSubmit(question) {
@@ -174,7 +182,7 @@ export default class CandidatePage extends React.Component {
                 </div>
 
                 <div className="questions">
-                    <CommentList questions={this.state.questions} handleResponse={response => this.handleResponse(response)} candidateName={this.state.candidateName}/>
+                    <CommentList questions={this.state.questions} handleResponse={response => this.handleResponse(response)} candidateName={this.state.candidateName} userId={this.state.userId}/>
                     <CommentForm onQuestionSubmit={question => this.handleQuestionSubmit(question)}/>
                 </div>
             </div>
