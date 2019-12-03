@@ -74,7 +74,7 @@ export default class Candidate extends React.Component{
                 <div key = {each.userId} className="card mx-auto" style={{"width": "12rem"}}>
                   <img src={faker.image.avatar()} className="card-img-top" alt=""/>
                   <div className="card-body">
-                  <h5 className="card-title" style={{  "min-height": "3rem"}}>{each.name}</h5>
+                  <h5 className="card-title" style={{  "minHeight": "3rem"}}>{each.name}</h5>
                     <Link to={`/candidate/${each.userId}`} className="btn btn-primary"> More Information </Link>
                   </div>
                 </div>
@@ -88,7 +88,7 @@ export default class Candidate extends React.Component{
                 <div key = {each.userId} className="card mx-auto" style={{"width": "12rem"}}>
                   <img src={faker.image.avatar()} className="card-img-top" alt=""/>
                   <div className="card-body">
-                  <h5 className="card-title" style={{  "min-height": "3rem"}}>{each.name}</h5>
+                  <h5 className="card-title" style={{  "minHeight": "3rem"}}>{each.name}</h5>
                     <Link to={`/candidate/${each.userId}`} className="btn btn-primary"> More Information </Link>
                   </div>
                 </div>
@@ -103,7 +103,7 @@ export default class Candidate extends React.Component{
                 <div key = {each.userId} className="card mx-auto" style={{"width": "12rem"}}>
                   <img src={faker.image.avatar()} className="card-img-top" alt=""/>
                   <div className="card-body">
-                    <h5 className="card-title" style={{  "min-height": "3rem"}}>{each.name}</h5>
+                    <h5 className="card-title" style={{  "minHeight": "3rem"}}>{each.name}</h5>
                     <Link to={`/candidate/${each.userId}`} className="btn btn-primary"> More Information </Link>
                   </div>
                 </div>

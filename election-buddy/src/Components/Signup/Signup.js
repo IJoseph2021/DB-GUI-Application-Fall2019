@@ -81,7 +81,7 @@ class Signup extends Component {
 
 
     render() {
-        var roles = ["","Not Applicable", "Voter", "Candidate"];
+        var roles = ["Not Applicable", "Voter"];
 
         return (
             <div>

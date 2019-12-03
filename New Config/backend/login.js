@@ -136,7 +136,7 @@ exports.getUsername = function (req, res) {
             } else {
                 res.send(404);
             }
-            
+
         });
 }
 
@@ -154,7 +154,7 @@ exports.getFname = function (req, res) {
             }
 
         });
-}     
+}
 
 //Baohua Yu
 //get lname
@@ -171,7 +171,7 @@ exports.getLname = function (req, res) {
 
         });
 }
- 
+
 
 //Baohua Yu
 //get password
@@ -187,7 +187,7 @@ exports.getPassword = function (req, res) {
             }
 
         });
-}   
+}
 
 
 //Steve Shoemaker
@@ -251,7 +251,7 @@ exports.updateFName = function (req, res) {
 }
 
 exports.getRoles = function(req,res){
-    
+
     response = {};
 
     var updateResponse = function(variable, value){
@@ -269,14 +269,14 @@ exports.getRoles = function(req,res){
             mysqlConnection.query(`SELECT * FROM ADMIN WHERE userID = '${req.params.user}';`,function(err,rows,fields){
                 if(rows != undefined && rows.length != 0){
                     updateResponse("admin", true);
-                    
+
                 }
-                
+
                 res.send(response);
             });
         });
     });
-    
-    
-    
+
+
+
 }

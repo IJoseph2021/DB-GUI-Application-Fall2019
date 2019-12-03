@@ -1,7 +1,6 @@
 import React from 'react';
 import './UserProfile.css';
 import UserFunctions from '../../API/UserFunctions';
-import ChangePassword from './ChangePassword';
 export default class UserProfile extends React.Component {
 	userFuncs = new UserFunctions();
 
@@ -18,36 +17,13 @@ export default class UserProfile extends React.Component {
       city: "",
       zip: "",
       party: "",
+			role: [],
 			profile: false
 		};
 
-		const user = {
-			userId: this.state.userId,
-			username: this.state.username,
-			pass: this.state.password,
-			firstname: this.state.firstName,
-			lastname: this.state.lastname,
-			email: this.state.email,
-			us_state: this.state.us_state,
-			city: this.state.city,
-			zip: this.state.zip,
-			party: this.state.party
-		};
 
 
-		this.userFuncs.getUserInfo(user).then(res => {
-			console.log("userInfo here", res[0])
-			this.setState({
-				username: res[0].username,
-				firstname: res[0].fname,
-				lastname: res[0].lname,
-				email: res[0].email,
-				passhash: res[0].passhash
-			})
-		}).catch(err => {
-		//error caught here
 
-		})
 
 		this.onChange = this.onChange.bind(this);
 		this.getUserInfo = this.getUserInfo.bind(this);
@@ -68,6 +44,52 @@ export default class UserProfile extends React.Component {
 	getUserInfo = async (event) => {
 
 };
+
+	componentDidMount(){
+
+		const user = {
+			userId: this.state.userId,
+			username: this.state.username,
+			pass: this.state.password,
+			firstname: this.state.firstName,
+			lastname: this.state.lastname,
+			email: this.state.email,
+			us_state: this.state.us_state,
+			city: this.state.city,
+			zip: this.state.zip,
+			party: this.state.party
+		};
+
+		this.userFuncs.getUserInfo(user).then(res => {
+			console.log("userInfo here", res[0])
+			this.setState({
+				username: res[0].username,
+				firstname: res[0].fname,
+				lastname: res[0].lname,
+				email: res[0].email,
+				passhash: res[0].passhash
+			})
+		}).catch(err => {
+		//error caught here
+
+	});
+
+		this.userFuncs.getRoles(user.userId).then(res => {
+			console.log("Roles: ", res)
+			if(!res){
+				this.setState({ role: [...this.state.role, "Not Applicable"] });
+
+			}
+			else {
+				this.setState({ role: Object.keys(res)})
+				}
+		})
+		.catch(err => {
+			//error caught here
+
+		});
+
+	}
 
 	saveUserInfo = async (event) =>{
 		event.preventDefault();
@@ -211,10 +233,26 @@ export default class UserProfile extends React.Component {
 						<div className="form-group row">
 							<label htmlFor="city" className="col-sm-2 col-form-label">City:</label>
 							<div className="col-sm-10">
-								<input type="text" className="form-control" id="city" />
+								<input type="text"
+								className="form-control"
+								id="city"
+								name="city"
+								value={this.state.value}
+								/>
 							</div>
 						</div>
 
+						<div className="form-group row">
+							<label htmlFor="zip" className="col-sm-2 col-form-label">Zip Code:</label>
+							<div className="col-sm-10">
+								<input type="text"
+								name="zip"
+								onChange={this.onChange}
+								className="form-control"
+								value={this.state.zip}
+								id="zip" />
+							</div>
+						</div>
 
 						<div className="form-group row">
 							<label htmlFor="party" className="col-sm-2 col-form-label">Party:</label>
@@ -241,14 +279,26 @@ export default class UserProfile extends React.Component {
 					      <legend className="col-form-label col-sm-2 pt-0">Role:</legend>
 					      <div className="col-sm-10">
 					        <div className="form-check">
-					          <input className="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" disabled/>
+									{
+										this.state.role[0] == "Not Applicable" ? (
+											<input className="form-check-input" type="radio" name="gridRadios1" id="gridRadios1" value="option1" disabled checked/>
+										) : (
+											<input className="form-check-input" type="radio" name="gridRadios1" id="gridRadios1" value="option1" disabled/>
+										)
+									}
 					          <label className="form-check-label" htmlFor="gridRadios1">
 											Not Applicable
 					          </label>
 					        </div>
 
 									<div className="form-check">
-										<input className="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2" disabled/>
+									{
+											this.state.role.includes("voter") ? (
+												<input className="form-check-input" type="radio" name="gridRadios2" id="gridRadios2" value="option2" disabled checked/>
+											) : (
+												<input className="form-check-input" type="radio" name="gridRadios2" id="gridRadios2" value="option2" disabled/>
+											)
+									}
 										<label className="form-check-label" htmlFor="gridRadios2">
 										 Voter
 										</label>
@@ -256,13 +306,27 @@ export default class UserProfile extends React.Component {
 
 
 					        <div className="form-check">
-					          <input className="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3" disabled/>
+									{
+											this.state.role.includes("candidate") ? (
+												<input className="form-check-input" type="radio" name="gridRadios3" id="gridRadios3" value="option2" disabled checked/>
+											) : (
+												<input className="form-check-input" type="radio" name="gridRadios3" id="gridRadios3" value="option2" disabled/>
+											)
+									}
+					          <input className="form-check-input" type="radio" name="gridRadios3" id="gridRadios3" value="option3" disabled/>
 					          <label className="form-check-label" htmlFor="gridRadios3">
 											Candidate
 										</label>
 					        </div>
 					        <div className="form-check disabled">
-					          <input className="form-check-input" type="radio" name="gridRadios" id="gridRadios4" value="option4" disabled/>
+									{
+											this.state.role.includes("admin") ? (
+												<input className="form-check-input" type="radio" name="gridRadios4" id="gridRadios4" value="option4" disabled checked/>
+											) : (
+												<input className="form-check-input" type="radio" name="gridRadios4" id="gridRadios4" value="option4" disabled/>
+											)
+									}
+					          <input className="form-check-input" type="radio" name="gridRadios4" id="gridRadios4" value="option4" disabled />
 					          <label className="form-check-label" htmlFor="gridRadios4">
 					            Election Official
 					          </label>
