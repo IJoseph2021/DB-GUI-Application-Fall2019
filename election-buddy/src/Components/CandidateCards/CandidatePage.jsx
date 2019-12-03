@@ -14,10 +14,10 @@ export default class CandidatePage extends React.Component {
         super(props)
         
         this.state = {
-            userId: this.props.userId || localStorage.getItem('token') || 69,
+            userId: 8 || this.props.userId || localStorage.getItem('token'),
             candidateName: '',
             party: 'Republican',
-            candidateInfo: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Pretium aenean pharetra magna ac placerat vestibulum lectus. Arcu cursus euismod quis viverra nibh cras. Lacus suspendisse faucibus interdum posuere lorem ipsum dolor sit amet. Semper quis lectus nulla at volutpat diam ut venenatis. Amet tellus cras adipiscing enim eu turpis egestas. Sagittis id consectetur purus ut faucibus pulvinar. Volutpat lacus laoreet non curabitur. Velit ut tortor pretium viverra suspendisse. Cras ornare arcu dui vivamus. Quis lectus nulla at volutpat diam ut. Felis eget nunc lobortis mattis. Platea dictumst vestibulum rhoncus est. Turpis egestas integer eget aliquet nibh praesent tristique. At imperdiet dui accumsan sit amet nulla facilisi. Eu tincidunt tortor aliquam nulla facilisi. Amet volutpat consequat mauris nunc congue.',
+            candidateInfo: '',
             candidateNews: [],
             questions: []
         }
@@ -33,17 +33,35 @@ export default class CandidatePage extends React.Component {
         console.log('this is the name we got: ', firstname + lastname)
     } */
     async populateInfo(){
-        var name = "";
-        console.log(this.props.userId)
-        let firstname = await this.candidateFuncs.getCandidateFirstName(this.props.userId).then(
-            res => {
-                name = res[0].fname;
-            }
-        )
-        //let lastname = await this.candidateFuncs.getCandidateLastName(this.props.userId);
-        //name = firstname[0].fname + " " + lastname[0].lname
-        this.setState({candidateName: name});
-        console.log('this is the name we got: ' + name)
+        //Getting first and last name of the candidate
+        this.candidateFuncs.getCandidateFirstName(this.state.userId)
+		.then(res => {
+			this.setState({candidateName: res[0].fname})
+		})
+		.catch(err => {
+			console.log("Error occured")
+        });
+        this.candidateFuncs.getCandidateLastName(this.state.userId)
+		.then(res => {
+			this.setState(prevState => {
+                prevState.candidateName = prevState.candidateName + ' ' + res[0].lname;
+                return prevState;
+            });
+		})
+		.catch(err => {
+			console.log("Error occured")
+        });
+
+
+        this.candidateFuncs.getCandidateBio(this.state.userId)
+		.then(res => {
+			this.setState({candidateInfo: res[0].bio})
+		})
+		.catch(err => {
+			console.log("Error occured")
+        });
+        
+
     }
 
     handleQuestionSubmit(question) {
@@ -63,7 +81,7 @@ export default class CandidatePage extends React.Component {
     }
 
     componentDidMount() {
-        //this.populateInfo()
+        this.populateInfo()
         //var id = this.props.userId;
         console.log(this.props.userId)
         const key = this.state.candidateName
