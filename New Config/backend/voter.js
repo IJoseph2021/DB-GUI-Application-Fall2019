@@ -285,3 +285,16 @@ exports.getEligibility = function(req,res){
 
         });
 }
+
+exports.getVoterZipCode = function(req,res){
+    userID = req.params.userID
+    console.log(`SELECT USER.zipCode FROM USER WHERE userID = '${userID}';`);
+    mysqlConnection.query(`SELECT USER.zipCode FROM USER WHERE userID = '${userID}';`, function(err,rows,fields){
+        if(rows[0] != undefined){
+            res.send(rows);
+        }
+        else{
+            res.send("no zip found that match userID");
+        }
+    });
+}
