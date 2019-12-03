@@ -200,6 +200,27 @@ exports.getCommentTree = function(req, res){
         });
 }
 
+
+exports.getQuestionsAnswered = function(req,res){
+    mysqlConnection.query(`SELECT * FROM USER JOIN COMMENT ON USER.id = COMMENT.commenterId WHERE USER.id = ${req.params.userID};`, function(err,rows,fields){
+        if(err){
+            res.send(404);
+        } else {
+            res.send(rows);
+        }
+    })
+}
+
+exports.getQuestionsAsked = function(req,res){
+    mysqlConnection.query(`SELECT * FROM USER JOIN CANDIDATE_QUESTION ON USER.id = CANDIDATE_QUESTION.askeeId WHERE USER.id = ${req.params.userID};`,function(err,rows,fields){
+        if(err){
+            res.send(404);
+        } else {
+            res.send(rows);
+        }
+    })
+}
+
 /*
 //not currently working do not use
 exports.reportComment = function(req, res){
