@@ -14,34 +14,25 @@ export default class CandidatePage extends React.Component {
         super(props)
         
         this.state = {
-            userId: 8 || this.props.userId || localStorage.getItem('token'),
+            userId: this.props.userId || localStorage.getItem('token'),
             candidateName: '',
-            party: 'Republican',
+            party: '',
             candidateInfo: '',
             candidateNews: [],
             questions: []
         }
       }
-      /* This one returns promise objects
-    populateInfo(){
-        var name = "";
-        console.log(this.props.userId);
-        let firstname = this.candidateFuncs.getCandidateFirstName(this.props.userId);
-        let lastname = this.candidateFuncs.getCandidateLastName(this.props.userId);
-        name = firstname + " " + lastname;
-        this.setState({candidateName: name});
-        console.log('this is the name we got: ', firstname + lastname)
-    } */
-    async populateInfo(){
+
+    async populateInfo(params){
         //Getting first and last name of the candidate
-        this.candidateFuncs.getCandidateFirstName(this.state.userId)
+        this.candidateFuncs.getCandidateFirstName(params.id)
 		.then(res => {
 			this.setState({candidateName: res[0].fname})
 		})
 		.catch(err => {
 			console.log("Error occured")
         });
-        this.candidateFuncs.getCandidateLastName(this.state.userId)
+        this.candidateFuncs.getCandidateLastName(params.id)
 		.then(res => {
 			this.setState(prevState => {
                 prevState.candidateName = prevState.candidateName + ' ' + res[0].lname;
@@ -53,15 +44,21 @@ export default class CandidatePage extends React.Component {
         });
 
 
-        this.candidateFuncs.getCandidateBio(this.state.userId)
+        this.candidateFuncs.getCandidateBio(params.id)
 		.then(res => {
 			this.setState({candidateInfo: res[0].bio})
 		})
 		.catch(err => {
 			console.log("Error occured")
         });
-        
 
+        this.candidateFuncs.getCandidateParty(params.id)
+		.then(res => {
+			this.setState({party: res[0].partyName})
+		})
+		.catch(err => {
+			console.log("Error occured")
+        });
     }
 
     handleQuestionSubmit(question) {
@@ -81,7 +78,8 @@ export default class CandidatePage extends React.Component {
     }
 
     componentDidMount() {
-        this.populateInfo()
+        const { match: { params } } = this.props;
+        this.populateInfo(params)
         //var id = this.props.userId;
         console.log(this.props.userId)
         const key = this.state.candidateName
@@ -125,11 +123,11 @@ export default class CandidatePage extends React.Component {
         const groupedArticles = this.createGroups()
         return (
             <div>
-                <div className="header-republican container-fluid">
-                    <h1 style={{color: 'black'}}>
+                <div className={`${this.state.party} container-fluid}`}>
+                    <h1 style={{'color': 'black'}}>
                         {this.state.candidateName}
                     </h1>
-                    <h3 style={{color: 'black'}}>
+                    <h3 style={{'color': 'black'}}>
                         {this.state.party}
                     </h3>
                 </div>

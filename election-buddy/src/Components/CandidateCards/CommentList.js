@@ -1,5 +1,6 @@
 import React from 'react';
 import { Comment } from './Comment';
+import CandidateFunctions from '../../API/CandidateFunctions';
 
 export default class CommentList extends React.Component {
 

@@ -53,7 +53,8 @@ class App extends React.Component {
 					<Redirect to="/login"/>
 	            )
 	          )}/>
-						{this.state.loginState && <Route path="/candidate" component={(props) => <CandidatePage {...props} userId={this.state.userId}/>}/>}
+						{/*this.state.loginState && <Route path="/candidate" exact component={(props) => <CandidatePage {...props} userId={this.state.userId}/>}/>*/}
+						{this.state.loginState && <Route path="/candidate/:id" exact component={CandidatePage} />}
 						{this.state.loginState && <Route path="/" exact component={Homepage} />}
 						{!this.state.loginState && <Route exact path="/login" render={(props) => <Login {...props} updateLoginState={this.updateLoginState}/>}/>}
 						{/*!this.state.loginState && <Route exact path="/login" render={(props) => <Login {...props} updateLoginState={this.updateLoginState}/>}/>*/}
