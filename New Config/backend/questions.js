@@ -200,16 +200,43 @@ exports.getCommentTree = function(req, res){
         });
 }
 
+
+exports.getQuestionsAnswered = function(req,res){
+    mysqlConnection.query(`SELECT * FROM USER JOIN COMMENT ON USER.id = COMMENT.commenterId WHERE USER.id = ${req.params.userID};`, function(err,rows,fields){
+        if(err){
+            res.send(404);
+        } else {
+            res.send(rows);
+        }
+    })
+}
+
+exports.getQuestionsAsked = function(req,res){
+    mysqlConnection.query(`SELECT * FROM USER JOIN CANDIDATE_QUESTION ON USER.id = CANDIDATE_QUESTION.askeeId WHERE USER.id = ${req.params.userID};`,function(err,rows,fields){
+        if(err){
+            res.send(404);
+        } else {
+            res.send(rows);
+        }
+    })
+}
+
+/*
 //not currently working do not use
 exports.reportComment = function(req, res){
     cID = req.params.commentee_ID
-    var email = 'electionbuddyReports@gmail.com';
-    var subject = `'Report for ' + '${cID}'`;
+    emailCC = ""
+    var emailEB = 'electionbuddyReports@gmail.com';
+    var subjectEB = `'Report for ' + '${cID}'`;
     var emailBody = 'Hi EB Team,';
 
     //window.open("mailto:"+email+"?subject="+subject+"&body="+emailBody);
     
-    window.location.href ="mailto:"+email+"?subject="+subject+"&body="+emailBody;
+    //window.location.href ="mailto:"+email+"?subject="+subject+"&body="+emailBody;
+
+    window.open('mailto:'+emailEB+'?cc='+emailCC+'&subject='+subjectEB+'&body='+emailBody, '_self');
+    
+
 
     if(err){
         res.send("Email Client Failed to Open");
@@ -218,19 +245,4 @@ exports.reportComment = function(req, res){
         res.send("Email Client Opened");
     }
 
-}
-
-exports.returnQuestionandCandidate = function(req, res){
-    candidateID = req.params.candidateID;
-
-    console.log(`SELECT * FROM CANDIDATE_QUESTION WHERE askeeId = '${candidateID}';`);
-    mysqlConnection.query(`SELECT * FROM CANDIDATE_QUESTION WHERE askeeId = '${candidateID}';`,function(err,rows,fields){
-        if(rows[0] != undefined){
-            res.send(rows[0].question);
-        }
-        else{
-            res.send("question not found");
-        }
-    });
-
-}
+}*/
