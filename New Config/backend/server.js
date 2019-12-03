@@ -247,7 +247,7 @@ app.get('/questions/session/getQuestionTree/:question_ID',  questions.getQuestio
 app.get('/question/session/getCommentTree/:commentee_ID',  questions.getCommentTree);
 
 // reports a comment by sending email to EB team
-app.get('/questions/session/reportComment/:comment_ID', questions.reportComment);
+//app.get('/questions/session/reportComment/:comment_ID', questions.reportComment);
 
 //election routes
 app.get('/election/getElections/citiesWithElections', elections.getElectionsInCities);
@@ -330,3 +330,44 @@ app.listen(config.port, config.host, (e) => {
   logger.info(`${config.name} running on ${config.host}:${config.port}`);
 });
 
+var nodemailer = require('nodemailer');
+var smtpTransport = require('nodemailer-smtp-transport');
+app.get('/contactform/:commentID', function (req, res) {
+  
+        cID = req.params.commentID;
+        var subject_with_cID = `Reporting comment ID#: ${cID}`;
+        var reportTXT = `I would like to file a complaint for comment#: ${cID}`;
+        var mailOpts, smtpTrans;
+
+        //Setup Nodemailer transport
+        smtpTrans = nodemailer.createTransport(smtpTransport({
+            service: 'gmail',
+            //host:'smtp.gmail.com',
+            //port:465,
+            //secure:false,
+            auth: {
+                user: "electionbuddyreports",
+                pass: "electionbuddy1!"
+            }
+        }));
+        var mailoutput = "<html>\n\
+                        <body>\n\
+                        <table>\n\
+                        <tr>\n\
+                        <td>Messge: </td>" + reportTXT + "<td></td>\n\
+                        </tr>\n\
+                        </table></body></html>";
+        mailOpts = {
+            to: "Election Buddy Team <electionbuddyreports@gmail.com>",
+            subject: subject_with_cID,
+            html: mailoutput
+        };
+
+        smtpTrans.sendMail(mailOpts, function (error, res) {
+            if (error) {
+                return console.log(error);
+            }
+        });
+        console.log('Message sent successfully!');
+        res.send("Mail Sent");
+    });

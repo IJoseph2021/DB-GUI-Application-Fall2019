@@ -17,7 +17,7 @@ exports.becomeCandidate = function(req,res){
 //Baohua Yu
 // user can have more than one favorite candiates
 exports.getcandidateFavorite = function (req, res) {
-    
+
     console.log(`SELECT candidateId FROM CANDIDATE_FAVORITE WHERE voterId = '${req.params.voterId}';`);
     mysqlConnection.query(`SELECT candidateId FROM CANDIDATE_FAVORITE WHERE voterId = '${req.params.voterId}'`, function (err, rows, fields) {
         if (rows[0] != undefined) {
@@ -53,7 +53,7 @@ exports.getCandidatebyState = function (req, res) {
                 res.send("No candidate found base on the state reference");
             }
         });
-}  
+}
 
 //Baohua Yu
 //get candidate by zipcode
@@ -84,7 +84,7 @@ exports.getCandidatebyState = function (req, res) {
         });
 }
 
- //Baohua Yu  
+ //Baohua Yu
 //getcandidate by partycode
     exports.getCandidatebypartyCode = function (req, res) {
         partyCode = req.params.partyCode;
@@ -104,7 +104,7 @@ exports.candidateEnterElection = function(req,res){
         if(frows[0].LEVEL == 'city') queryLocation = 'city';
         if(frows[0].LEVEL == 'zipCode') queryLocation = 'zipCode';
         if(frows[0].LEVEL == 'state') queryLocation = 'state';
-        
+
         mysqlConnection.query(`SELECT ${queryLocation} FROM CANDIDATE WHERE CANDIDATE.userID = ${req.params.candidate};`,function(serr, srows, sfields){
             if(srows != undefined){
                  mysqlConnection.query(`INSERT INTO ELECTION_CANDIDATES(electionID,userID) VALUES (${req.params.electionID}, ${req.params.candidate});`, function(err,rows,fields){
@@ -132,12 +132,12 @@ exports.enterElection = function(req,res){
     level = req.params.user_level;
     location = req.params.location;
     time = dateTime;
- 
+
     query = "INSERT INTO ELECTIONS (electionID, level, location, time)"+
     " VALUES(\""+ electionID + "\",\"" + level + "\",\"" + location + "\",\"" + time + "\");";
 
     console.log(query);
-    mysqlConnection.query(query, 
+    mysqlConnection.query(query,
         function(err,rows,fields){
             if(err){
                 res.send("Candidate addition to election Failed");
@@ -161,7 +161,7 @@ exports.addBio = function(req,res){
 }
 
 exports.getBio = function(req,res){
-    mysqlConnection.query(`SELECT CANDIDATE.bio FROM CANDIDATE WHERE CANDIDATE.userId = '${req.params.id}';`,function(err,rows,fields){
+    mysqlConnection.query(`SELECT CANDIDATE.bio FROM CANDIDATE WHERE CANDIDATE.userId = ${req.params.id};`,function(err,rows,fields){
         if(!err && rows.length != 0){
             res.send(rows);
         } else {
@@ -169,6 +169,7 @@ exports.getBio = function(req,res){
         }
     })
 }
+
 
 exports.getCandidateParty = function(req,res){
     mysqlConnection.query(`SELECT PARTY.partyName FROM CANDIDATE JOIN PARTY ON PARTY.partyCode = CANDIDATE.partyCode WHERE CANDIDATE.userId = '${req.params.id}';`,function(err,rows,fields){
