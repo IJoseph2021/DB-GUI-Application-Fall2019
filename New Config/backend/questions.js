@@ -219,3 +219,18 @@ exports.reportComment = function(req, res){
     }
 
 }
+
+exports.returnQuestionandCandidate = function(req, res){
+    candidateID = req.params.candidateID;
+
+    console.log(`SELECT * FROM CANDIDATE_QUESTION WHERE askeeId = '${candidateID}';`);
+    mysqlConnection.query(`SELECT * FROM CANDIDATE_QUESTION WHERE askeeId = '${candidateID}';`,function(err,rows,fields){
+        if(rows[0] != undefined){
+            res.send(rows[0].question);
+        }
+        else{
+            res.send("question not found");
+        }
+    });
+
+}
