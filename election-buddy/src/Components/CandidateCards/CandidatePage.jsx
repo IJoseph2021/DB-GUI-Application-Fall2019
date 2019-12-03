@@ -14,14 +14,37 @@ export default class CandidatePage extends React.Component {
         super(props)
         
         this.state = {
-            userId: this.props.userId || localStorage.getItem('token'),
-            candidateName: 'Donald Trump',
+            userId: this.props.userId || localStorage.getItem('token') || 69,
+            candidateName: '',
             party: 'Republican',
             candidateInfo: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Pretium aenean pharetra magna ac placerat vestibulum lectus. Arcu cursus euismod quis viverra nibh cras. Lacus suspendisse faucibus interdum posuere lorem ipsum dolor sit amet. Semper quis lectus nulla at volutpat diam ut venenatis. Amet tellus cras adipiscing enim eu turpis egestas. Sagittis id consectetur purus ut faucibus pulvinar. Volutpat lacus laoreet non curabitur. Velit ut tortor pretium viverra suspendisse. Cras ornare arcu dui vivamus. Quis lectus nulla at volutpat diam ut. Felis eget nunc lobortis mattis. Platea dictumst vestibulum rhoncus est. Turpis egestas integer eget aliquet nibh praesent tristique. At imperdiet dui accumsan sit amet nulla facilisi. Eu tincidunt tortor aliquam nulla facilisi. Amet volutpat consequat mauris nunc congue.',
             candidateNews: [],
             questions: []
         }
       }
+      /* This one returns promise objects
+    populateInfo(){
+        var name = "";
+        console.log(this.props.userId);
+        let firstname = this.candidateFuncs.getCandidateFirstName(this.props.userId);
+        let lastname = this.candidateFuncs.getCandidateLastName(this.props.userId);
+        name = firstname + " " + lastname;
+        this.setState({candidateName: name});
+        console.log('this is the name we got: ', firstname + lastname)
+    } */
+    async populateInfo(){
+        var name = "";
+        console.log(this.props.userId)
+        let firstname = await this.candidateFuncs.getCandidateFirstName(this.props.userId).then(
+            res => {
+                name = res[0].fname;
+            }
+        )
+        //let lastname = await this.candidateFuncs.getCandidateLastName(this.props.userId);
+        //name = firstname[0].fname + " " + lastname[0].lname
+        this.setState({candidateName: name});
+        console.log('this is the name we got: ' + name)
+    }
 
     handleQuestionSubmit(question) {
         console.log(question.userName);
@@ -40,19 +63,20 @@ export default class CandidatePage extends React.Component {
     }
 
     componentDidMount() {
+        //this.populateInfo()
         //var id = this.props.userId;
-        console.log(this.state.userId);
-       const key = this.state.candidateName
-       const key2 = this.state.party
-       var tempDate = new Date();
-       const date = tempDate.getFullYear() + '-' + (tempDate.getMonth()+1) + '-' +(tempDate.getDate()-7)
-       const url = `https://newsapi.org/v2/everything?q=((${key})AND(${key2}))&from=${date}&to=2019-12-25&sortBy=popularity&apiKey=53b1b21475f84b9894e0e6a987ff211d`
-      fetch(url)
-      .then(res => res.json())
-      .then((data) => {
-        this.setState({ candidateNews: data.articles })
-      })
-      .catch(console.log)
+        console.log(this.props.userId)
+        const key = this.state.candidateName
+        const key2 = this.state.party
+        var tempDate = new Date();
+        const date = tempDate.getFullYear() + '-' + (tempDate.getMonth()+1) + '-' +(tempDate.getDate()-7)
+        const url = `https://newsapi.org/v2/everything?q=((${key})AND(${key2}))&from=${date}&to=2019-12-25&sortBy=popularity&apiKey=53b1b21475f84b9894e0e6a987ff211d`
+       fetch(url)
+            .then(res => res.json())
+            .then((data) => {
+            this.setState({ candidateNews: data.articles })
+        })
+        .catch(console.log)
 
     }
 
@@ -114,7 +138,7 @@ export default class CandidatePage extends React.Component {
                                     <div className="col-lg-4 d-flex align-items-stretch">
                                       <div className="card" id="card">
                                         <div className="card-body">
-                                         <img class="card-img-top" src={article.urlToImage}/>
+                                         <img className="card-img-top" src={article.urlToImage}/>
                                           <h5 className="card-title">{article.title}</h5>
                                         </div>
                                         <h6 className="card-subtitle">
