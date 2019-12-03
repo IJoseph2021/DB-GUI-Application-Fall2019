@@ -3,17 +3,6 @@ There are two distinct parts, a mysql server, and an api express server which in
 
 Here is the API Routes:
 
-DEVELOPMENT ROUTES
-
-/setupDB
-This function loads the sample data into the local database and connects to the local database
-
-/useDevDB
-Connects to the local dev database
-
-/useProdDB
-connects to the external production database
-
 ACCOUNT ROUTES
 
 /login/create/:user/:fname/:lname/:pass/:email

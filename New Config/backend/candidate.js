@@ -169,3 +169,13 @@ exports.getBio = function(req,res){
         }
     })
 }
+
+exports.getCandidateParty = function(req,res){
+    mysqlConnection.query(`SELECT PARTY.partyName FROM CANDIDATE JOIN PARTY ON PARTY.partyCode = CANDIDATE.partyCode WHERE CANDIDATE.userId = '${req.params.id}';`,function(err,rows,fields){
+        if(err){
+            res.send(404);
+        } else {
+            res.send(rows);
+        }
+    });
+}

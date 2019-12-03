@@ -208,6 +208,9 @@ app.get('/candidate/updateBio/:id/:bio', candidate.addBio);
 
 app.get('/candidate/getBio/:id', candidate.getBio);
 
+//get candidate party
+app.get('/candidate/getCandidateParty/:id', candidate.getCandidateParty);
+
 
 
 
