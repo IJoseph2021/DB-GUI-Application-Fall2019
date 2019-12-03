@@ -106,7 +106,7 @@ app.get('/voter/getVoterInfo/:voter', voter.getVoterInfo);
 //Updates the city of the voter
 app.get('/voter/session/updateCity/:city',  voter.updateCitySession);
 
-//Gets the voters session
+//Gets the  city session
 app.get('/voter/session/getCitySession',  voter.getCitySession);
 
 //Updates the voter county
@@ -201,6 +201,7 @@ app.get('/candidate/session/getCandidatebyCity/:city',  candidate.getCandidateby
 //Get candidate by partycode
 app.get('/candidate/session/getCandidatebypartyCode/:partyCode',  candidate.getCandidatebypartyCode);
 
+//Candidate enter as election
 app.get('/candidate/session/enterElection/:electionID/:level/:location',  candidate.enterElection);
 
 //updates a candidate bio
