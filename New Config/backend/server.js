@@ -95,6 +95,9 @@ app.get('/login/getAllRoles/:user', login.getRoles);
 
 //Voter Routes
 
+//Making the current session a voter
+app.get('/voter/session/setVoter',  voter.setVoter);
+
 //makes a specific user become a voter
 app.get('/voter/becomeVoter/:user', voter.userBecomeVoter);
 
@@ -204,8 +207,6 @@ app.get('/candidate/session/enterElection/:electionID/:level/:location',  candid
 //updates a candidate bio
 app.get('/candidate/updateBio/:id/:bio', candidate.addBio);
 
-app.get('/candidate/getBio/:id', candidate.getBio);
-
 //get candidate party
 app.get('/candidate/getCandidateParty/:id', candidate.getCandidateParty);
 
@@ -244,15 +245,11 @@ app.get('/questions/session/getQuestionTree/:question_ID',  questions.getQuestio
 // Outputs the comment replies to a comment
 app.get('/question/session/getCommentTree/:commentee_ID',  questions.getCommentTree);
 
-app.get('/question/getQuestionsAnswered/:userID', questions.getQuestionsAnswered);
-
-app.get('/question/getQuestionsAsked/:userID', questions.getQuestionsAsked);
 // reports a comment by sending email to EB team
 //app.get('/questions/session/reportComment/:comment_ID', questions.reportComment);
 
 //election routes
 app.get('/election/getElections/citiesWithElections', elections.getElectionsInCities);
-
 
 //issueRoutes
 
