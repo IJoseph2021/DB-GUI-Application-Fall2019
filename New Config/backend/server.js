@@ -189,7 +189,7 @@ app.get('/admin/getUnverified', admin.getUnverified);
 //Candidate Routes
 
 //Allows a user to become a candidate
-app.get('/candidate/session/becomeCandidate',  candidate.becomeCandidate);
+app.get('/candidate/session/becomeCandidate/:id',  candidate.becomeCandidate);
 
 //Getting the candidate favorite
 app.get('/candidate/session/getcandidateFavorite/:voterId',  candidate.getcandidateFavorite);
@@ -249,7 +249,7 @@ app.get('/questions/createComment/:questionID/:commenter_ID/:user_ID/:comment', 
 app.get('/questions/session/getComment/:commenter_ID',  questions.getComment);
 
 // Soft Removes comment based on the comment ID
-app.get('/questions/session/removeQuestion/:commenter_ID',  questions.removeComment);
+app.get('/questions/session/removeComment/:commenter_ID',  questions.removeComment);
 
 // Updates a comment with new text and new time stamp
 app.get('/questions/session/updateComment/:commenter_ID/:comment2',  questions.updateComment);
