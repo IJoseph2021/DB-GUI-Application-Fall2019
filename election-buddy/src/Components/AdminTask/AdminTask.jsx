@@ -1,19 +1,9 @@
-/*
-exports.becomeCandidate = function(req,res){
-    mysqlConnection.query(`INSERT INTO CANDIDATE(USERID) VALUES(${req.session.userId})`,function(err,rows,fields){
-        if(err){
-            res.send("err");
-        } else {
-            res.send("candidate updated");
-        }
-    });
-}
-*/
+
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Forms from '../../API/Forms';
 
-export default class ConvertToCandidateForm extends React.Component{
+export default class AdminTask extends React.Component{
     forms = new Forms()
     constructor(){
       super()

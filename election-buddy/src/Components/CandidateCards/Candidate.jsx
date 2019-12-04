@@ -70,7 +70,7 @@ export default class Candidate extends React.Component{
           <div className="row justify-content-center">
             {
               this.state.DEM.map(each =>
-                <div className={`col-sm-${this.state.DEM.length} bg-primary`}>
+                <div className={`col-sm-${Math.floor(12/this.state.DEM.length)} bg-primary`}>
                 <div key = {each.userId} className="card mx-auto" style={{"width": "12rem"}}>
                   <img src={faker.image.avatar()} className="card-img-top" alt=""/>
                   <div className="card-body">
@@ -84,7 +84,7 @@ export default class Candidate extends React.Component{
 
             {
               this.state.FES.map(each =>
-                <div className={`col-sm-4 bg-success`}>
+                <div className={`col-sm-${Math.floor(12/this.state.FES.length)} bg-success`}>
                 <div key = {each.userId} className="card mx-auto" style={{"width": "12rem"}}>
                   <img src={faker.image.avatar()} className="card-img-top" alt=""/>
                   <div className="card-body">
@@ -99,7 +99,7 @@ export default class Candidate extends React.Component{
 
             {
               this.state.REP.map(each =>
-                <div className={`col-sm-${this.state.REP.length} bg-danger`}>
+                <div className={`col-sm-${Math.floor(12/this.state.REP.length)} bg-danger`}>
                 <div key = {each.userId} className="card mx-auto" style={{"width": "12rem"}}>
                   <img src={faker.image.avatar()} className="card-img-top" alt=""/>
                   <div className="card-body">
