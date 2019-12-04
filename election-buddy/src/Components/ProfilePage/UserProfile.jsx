@@ -628,8 +628,8 @@ export default class UserProfile extends React.Component {
 
 							<div className="col-sm-10">
 
-								<input type="text"
-
+								<textarea type="text"
+									rows = "3"
 									name="bio"
 
 									value={this.state.bio}
