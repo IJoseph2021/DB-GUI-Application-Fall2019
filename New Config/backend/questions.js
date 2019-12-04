@@ -52,8 +52,8 @@ exports.getQuestion = function(req, res){
 //soft remove
 exports.removeQuestion = function(req, res){
     qID = req.params.question_ID
-    console.log(`UPDATE CANDIDATE_QUESTION SET active = 0 WHERE question_ID = '${qID}';`);
-    mysqlConnection.query(`UPDATE CANDIDATE_QUESTION SET active = 0 WHERE question_ID = '${qID}';`,function(err,rows,fields){
+    console.log(`UPDATE CANDIDATE_QUESTION SET active = 0 WHERE questionId = '${qID}';`);
+    mysqlConnection.query(`UPDATE CANDIDATE_QUESTION SET active = 0 WHERE questionId = '${qID}';`,function(err,rows,fields){
     
         if(err){
             res.send("Question Remove Failed");
@@ -75,8 +75,8 @@ exports.updateQuestion = function(req, res){
     question2 = req.params.question2;
     update_Time = dateTime;
 
-    console.log(`UPDATE CANDIDATE_QUESTION SET question = '${question2}', update_Time = '${update_Time}' WHERE question_ID = '${qID}';`);
-    mysqlConnection.query(`UPDATE CANDIDATE_QUESTION SET question = '${question2}', update_Time = '${update_Time}' WHERE question_ID = '${qID}';`,function(err,rows,fields){
+    console.log(`UPDATE CANDIDATE_QUESTION SET question = '${question2}', questionTime = '${update_Time}' WHERE questionId = '${qID}';`);
+    mysqlConnection.query(`UPDATE CANDIDATE_QUESTION SET question = '${question2}', questionTime = '${update_Time}' WHERE questionId = '${qID}';`,function(err,rows,fields){
         if(err){
             res.send("Error Updating Question");
         }
@@ -106,7 +106,7 @@ exports.createComment = function(req, res){
     update_Time = dateTime;
 
 
-    query = `INSERT INTO electionBuddy.COMMENT(questionId,commentTime,commenterID,commenteeID,comment,active) VALUES(${questionID}, '${update_Time}', ${commenter_ID}, ${commentee_ID}, '${comment}', 0);`;
+    query = `INSERT INTO electionBuddy.COMMENT(questionId,commentTime,commenterId,commenteeId,comment,active) VALUES(${questionID}, '${update_Time}', ${commenter_ID}, ${commentee_ID}, '${comment}', 1);`;
     console.log(query);
     mysqlConnection.query(query, 
         function(err,rows,fields){
@@ -122,8 +122,8 @@ exports.createComment = function(req, res){
 exports.getComment = function(req, res){
     cID = req.params.commenter_ID
 
-    console.log(`SELECT comment FROM COMMENT WHERE commenter_ID = '${cID}';`);
-    mysqlConnection.query(`SELECT comment FROM COMMENT WHERE commenter_ID = '${cID}';`,function(err,rows,fields){
+    console.log(`SELECT comment FROM COMMENT WHERE commenterId = '${cID}';`);
+    mysqlConnection.query(`SELECT comment FROM COMMENT WHERE commenterId = '${cID}';`,function(err,rows,fields){
         if(rows[0] != undefined){
             res.send(rows[0].comment);
         }
@@ -135,8 +135,8 @@ exports.getComment = function(req, res){
 
 exports.removeComment = function(req, res){
     cID = req.params.commenter_ID
-    console.log(`UPDATE COMMENT SET active = 0 WHERE commenter_ID = '${cID}';`);
-    mysqlConnection.query(`UPDATE COMMENT SET active = 0 WHERE commenter_ID = '${cID}';`,function(err,rows,fields){
+    console.log(`UPDATE COMMENT SET active = 0 WHERE commentId = '${cID}';`);
+    mysqlConnection.query(`UPDATE COMMENT SET active = 0 WHERE commentId = '${cID}';`,function(err,rows,fields){
     
         if(err){
             res.send("Comment Remove Failed");
@@ -158,8 +158,8 @@ exports.updateComment = function(req, res){
     comment2 = req.params.comment2;
     update_Time = dateTime;
 
-    console.log(`UPDATE COMMENT SET comment = '${comment2}', update_Time = '${update_Time}' WHERE commenter_ID = '${cID}';`);
-    mysqlConnection.query(`UPDATE COMMENT SET comment = '${comment2}', update_Time = '${update_Time}' WHERE commenter_ID = '${cID}';`,function(err,rows,fields){
+    console.log(`UPDATE COMMENT SET comment = '${comment2}', commentTime = '${update_Time}' WHERE commenter_ID = '${cID}';`);
+    mysqlConnection.query(`UPDATE COMMENT SET comment = '${comment2}', commentTime = '${update_Time}' WHERE commenter_ID = '${cID}';`,function(err,rows,fields){
         if(err){
             res.send("Error Updating Comment");
         }
@@ -171,7 +171,7 @@ exports.updateComment = function(req, res){
 
 exports.getQuestionTree = function(req, res){
     qID = req.params.question_ID
-    query = "SELECT comment FROM COMMENT WHERE COMMENT.commentee_ID = \'" + qID + "\'" +
+    query = "SELECT comment FROM COMMENT WHERE COMMENT.commenteeId = \'" + qID + "\'" +
     "AND COMMENT.active = \"" + 1 + "\";";
     mysqlConnection.query(query,
         function(err,rows,fields){
