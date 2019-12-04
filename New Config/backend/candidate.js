@@ -180,3 +180,54 @@ exports.getCandidateParty = function(req,res){
         }
     });
 }
+
+//i.j.
+exports.getCandidateInfo = function(req,res){
+    userId = req.params.userId
+    mysqlConnection.query(`SELECT * 
+    FROM CANDIDATE
+    JOIN USER
+    ON CANDIDATE.userId = USER.id
+    WHERE CANDIDATE.userID = '${userId}'`,
+    function(err,rows,fields){
+        if(err){console.log(err.message)};
+        if(rows.length == undefined || rows[0] == undefined){
+            res.send('Cannot find user');
+        } else {
+          res.send(rows)
+        }
+      }
+    );
+}
+
+
+exports.updateCandidateInfo = function(req,res){
+    userId = req.params.userId
+    partyCode = req.params.partyCode
+    zipCode = req.params.zipCode
+    state = req.params.state
+    city = req.params.city
+    bio = req.params.bio
+    verified = req.params.verified
+    mysqlConnection.query(`UPDATE CANDIDATE
+      SET 
+      partyCode = '${partyCode}',
+      zipCode = '${zipCode}',
+      state = '${state}',
+      city = '${city}', 
+      bio = '${bio}',
+      verified = ${verified}
+      WHERE
+      userId = ${userId};` ,
+    function(err,rows,fields){
+        if(err){
+            console.log(userId)
+            console.log(err.message)
+        }
+        else {
+            res.send("Update Success")
+            };
+
+        }
+    );
+}

@@ -219,6 +219,12 @@ app.get('/candidate/getBio/:id', candidate.getBio);
 //get candidate party
 app.get('/candidate/getCandidateParty/:id', candidate.getCandidateParty);
 
+//get all candidate info
+app.get('/candidate/getCandidateInfo/:userId', candidate.getCandidateInfo);
+
+//update Candidate info
+app.get('/candidate/updateCandidateInfo/:userId/:partyCode/:zipCode/:state/:city/:bio/:verified', candidate.updateCandidateInfo)
+
 
 
 
@@ -261,6 +267,8 @@ app.get('/question/getQuestionsAsked/:userID', questions.getQuestionsAsked);
 //app.get('/questions/session/reportComment/:comment_ID', questions.reportComment);
 
 //election routes
+
+//return elections in cities
 app.get('/election/getElections/citiesWithElections', elections.getElectionsInCities);
 
 //return all info given electionId
@@ -313,7 +321,7 @@ app.post('/sendEmailOtherIssues', (req, res) => {
 
   // var mailOptions = {
   //   from: `${JSON.stringify(req.body.sender)} <electionbuddy.fa2019@gmail.com>`,
-  //   to: 'mfonten@lyle.smu.edu',
+  //   to: 'mfontenot@lyle.smu.edu',
   //   subject: `${JSON.stringify(req.body.sender)} + from Election Buddy Sent You A Messsage`,
   //   text: JSON.stringify(req.body.content)
   // };
@@ -358,7 +366,7 @@ app.post('/sendEmailLocalAuth', (req, res) => {
 
   // var mailOptions = {
   //   from: `${JSON.stringify(req.body.sender)} <electionbuddy.fa2019@gmail.com>`,
-  //   to: 'mfonten@lyle.smu.edu',
+  //   to: 'mfontenot@lyle.smu.edu',
   //   subject: `${JSON.stringify(req.body.sender)} + from Election Buddy Sent You A Messsage`,
   //   text: JSON.stringify(req.body.content)
   // };
@@ -387,7 +395,7 @@ https.createServer({
 	ca: fs.readFileSync('./ssl_electionbuddy/ca_bundle.crt')
 },app).listen(config.port, config.host);
 
-// 
+//
 // //connecting the express object to listen on a particular port as defined in the config object.
 // app.listen(config.port, config.host, (e) => {
 //   if (e) {

@@ -20,29 +20,17 @@ export default class UserProfile extends React.Component {
 		this.state = {
 
 			userId: this.props.userId || localStorage.getItem('token'),
-
 			username: this.props.username || "",
-
 			firstName: "",
-
 			lastname: "",
-
 			passhash: "",
-
-			us_state: "",
-
-			city: "",
-
-			zip: "",
-
+      us_state: "",
+      city: "",
+      zip: "",
 			bio: "",
-
-			party: "",
-
+      party: "",
 			role: [],
-
 			email: "",
-
 			updateSuccess: false
 
 		};
@@ -224,10 +212,21 @@ export default class UserProfile extends React.Component {
 
 	}
 
+	updateBio = () => {
+		this.candidateFuncs.updateCandidateBio(this.state.userId, this.state.bio)
+		.then(res => {
+			console.log(this.state.bio)
+			//this.setState({bio: res[0].bio})
+			console.log("in update bio")
+			console.log(this.state.userId)
+			console.log(this.state.bio)
+		})
+		.catch(err => {
+			console.log("Error occured")
+		});
+	}
 
-
-	saveUserInfo = async (event) => {
-
+	saveUserInfo = async (event) =>{
 		event.preventDefault();
 
 
@@ -619,13 +618,9 @@ export default class UserProfile extends React.Component {
 				</div>
 
 				{
-
 					this.state.role.includes("candidate") ? (
-
 						<div className="form-group row">
-
 							<label htmlFor="bio" className="col-sm-2 col-form-label">Bio:</label>
-
 							<div className="col-sm-10">
 
 								<textarea type="text"
@@ -641,11 +636,8 @@ export default class UserProfile extends React.Component {
 									id="bio" />
 
 							</div>
-
 						</div>
-
 					) : ""
-
 				}
 
 
@@ -706,9 +698,11 @@ export default class UserProfile extends React.Component {
 
 									Voter
 
-                                                                                                                                         </label>
+                                                                              </label>
 
-							</div>
+
+						</div>
+
 
 
 
@@ -762,7 +756,7 @@ export default class UserProfile extends React.Component {
 
 									Election Official
 
-                                                                               </label>
+                 </label>
 
 							</div>
 
@@ -789,7 +783,6 @@ export default class UserProfile extends React.Component {
 					</div>
 
 				</div>
-
 
 
 			</div>
