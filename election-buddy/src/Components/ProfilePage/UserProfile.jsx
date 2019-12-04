@@ -1,28 +1,34 @@
 import React from 'react';
 import './UserProfile.css';
 import UserFunctions from '../../API/UserFunctions';
+import CandidateFunctions from '../../API/CandidateFunctions';
+
 export default class UserProfile extends React.Component {
 	userFuncs = new UserFunctions();
-
+	candidateFuncs = new CandidateFunctions();
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			userId: this.props.userId || localStorage.getItem('token'),
 			username: this.props.username || "",
-      firstName: "",
-      lastname: "",
+      		firstName: "",
+      		lastname: "",
 			passhash: "",
-      us_state: "",
-      city: "",
-      zip: "",
-      party: "",
+      		us_state: "",
+      		city: "",
+      		zip: "",
+			party: "",
+			bio: "",
 			role: [],
 			email: "",
 			updateSuccess: false
 		};
 
+<<<<<<< HEAD:election-buddy/src/Components/ProfilePage/UserProfile.jsx
 
+=======
+>>>>>>> jakeSearch:election-buddy/src/Components/ProfilePage/UserProfile.js
 		this.onChange = this.onChange.bind(this);
 		this.saveUserInfo = this.saveUserInfo.bind(this);
 	}
@@ -30,6 +36,7 @@ export default class UserProfile extends React.Component {
 
 	onChange = event => {
 		this.setState({[event.target.name]: event.target.value})
+		this.updateBio()
 	}
 
 
@@ -77,6 +84,7 @@ export default class UserProfile extends React.Component {
 
 		});
 
+<<<<<<< HEAD:election-buddy/src/Components/ProfilePage/UserProfile.jsx
 //[{"userID":4,"partyCode":"FES","zipCode":"90278","state":"CA","city":"Los Angeles"}]
 		this.userFuncs.getVoterInfo(localStorage.getItem('token')).then(res => {
 			// console.log(res)
@@ -89,12 +97,27 @@ export default class UserProfile extends React.Component {
 		}).catch({
 
 		})
+=======
+		// this.userFuncs.getUserInfo().then(res => {
+		//
+		// }).catch({
+		//
+		// })
+		this.candidateFuncs.getCandidateBio(user.userId)
+		.then(res => {
+			this.setState({bio: res[0].bio})
+		})
+		.catch(err => {
+			console.log("Error occured")
+		});
+>>>>>>> jakeSearch:election-buddy/src/Components/ProfilePage/UserProfile.js
 
+		
 	}
 
 	saveUserInfo = async (event) =>{
 		event.preventDefault();
-
+		
 		const userInfo = {
 			username: this.state.username,
 			// pass: this.state.password,
@@ -104,6 +127,7 @@ export default class UserProfile extends React.Component {
 			email: this.state.email,
 			state: this.state.us_state,
 			city: this.state.city,
+<<<<<<< HEAD:election-buddy/src/Components/ProfilePage/UserProfile.jsx
 			zipCode: this.state.zip,
 			partyCode: this.state.party
 		};
@@ -121,6 +145,28 @@ export default class UserProfile extends React.Component {
 		}).catch(err => {
 			console.log(err)
 		})
+=======
+			zip: this.state.zip,
+			party: this.state.party,
+			bio: this.state.bio
+		};
+		
+		
+	}
+
+	updateBio = () => {
+		this.candidateFuncs.updateCandidateBio(this.state.userId, this.state.bio)
+		.then(res => {
+			console.log(this.state.bio)
+			//this.setState({bio: res[0].bio})
+			console.log("in update bio")
+			console.log(this.state.userId)
+			console.log(this.state.bio)
+		})
+		.catch(err => {
+			console.log("Error occured")
+		});
+>>>>>>> jakeSearch:election-buddy/src/Components/ProfilePage/UserProfile.js
 	}
 
     render() {
@@ -286,6 +332,18 @@ export default class UserProfile extends React.Component {
 									<option value="DEM">Democratic Party</option>
 									<option value="FES">Flat Earth Society</option>
 								</select>
+							</div>
+						</div>
+
+						<div className="form-group row">
+							<label htmlFor="bio" className="col-sm-2 col-form-label">Bio:</label>
+							<div className="col-sm-10">
+								<input type="text"
+								name="bio"
+								value={this.state.bio}
+								onChange={e => this.setState({ bio: e.target.value }) }
+								className="form-control"
+								id="bio" />
 							</div>
 						</div>
 

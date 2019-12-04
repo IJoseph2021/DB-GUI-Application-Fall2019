@@ -102,7 +102,7 @@ export default class CandidatePage extends React.Component {
     }
 
     handleQuestionSubmit(question) {
-        /*console.log(question.userName);
+        console.log(question.userName);
         this.userFuncs.getUserIdCamel(question).then(res => {
             this.candidateFuncs.createQuestion(this.state.userId, res.userId, question.comment).then(resp => {
                 console.log("Question submitted")
@@ -110,12 +110,12 @@ export default class CandidatePage extends React.Component {
         })
         .catch(err => {
             console.log("Error occured in question submitting")
-        })*/
-
+        })
+/*
         this.setState(prevState => {
             prevState.questions.push(new Comment(-1, question.userName, question.comment, ''));
             return prevState;
-        });
+        });*/
     }
 
     handleResponse(response) {
@@ -167,13 +167,16 @@ export default class CandidatePage extends React.Component {
       return groupedArticles
     }
 
+    editBio() {
+
+    }
 
     render () {
 
         const groupedArticles = this.createGroups()
         return (
             <div>
-                <div className={`${this.state.party} container-fluid}`}>
+                <div className={`${this.state.party} cointainer-fluid`}>
                     <h1 style={{'color': 'black'}}>
                         {this.state.candidateName}
                     </h1>
@@ -189,9 +192,10 @@ export default class CandidatePage extends React.Component {
                     <p style={{padding: "0em 1.5em"}}>
                         {this.state.candidateInfo}
                     </p>
+                    
                 </div>
 
-                <div className="candidateInfo">
+                <div className="candidateInfo2">
                     <h3 style={{padding: "0em 0.8em"}}>
                         Questions and Answers
                     </h3>
