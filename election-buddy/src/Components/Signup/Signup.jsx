@@ -60,7 +60,7 @@ class Signup extends Component {
           }).catch(err => {
 
           })
-          
+
           this.userFuncs.signUp(user).then(res => {
               if (!!res.indexOf("made")) {
                 this.setState({signUpSuccess: false})
@@ -198,6 +198,14 @@ class Signup extends Component {
                                   )
                                 )
                                 }
+                                </select>
+                                </div>
+                                <div class="selectWrapper">
+                                  <select class="selectBox">
+                                  <option>Option 1</option>
+                                  <option>Option 2</option>
+                                  <option>Option 3</option>
+                                  <option>Option 4</option>
                                 </select>
                                 </div>
                                 */}

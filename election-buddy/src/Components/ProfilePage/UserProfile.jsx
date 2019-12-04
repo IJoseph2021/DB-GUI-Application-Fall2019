@@ -18,6 +18,7 @@ export default class UserProfile extends React.Component {
       zip: "",
       party: "",
 			role: [],
+			email: "",
 			profile: false
 		};
 
@@ -76,7 +77,7 @@ export default class UserProfile extends React.Component {
 
 		this.userFuncs.getRoles(user.userId).then(res => {
 			console.log("Roles: ", res)
-			if(!res){
+			if(Object.entries(res).length === 0 && res.constructor === Object){
 				this.setState({ role: [...this.state.role, "Not Applicable"] });
 
 			}
@@ -105,16 +106,19 @@ export default class UserProfile extends React.Component {
 			// pass: this.state.password,
 			firstname: this.state.firstName,
 			lastName: this.state.lastName,
+			email: this.state.email,
 			us_state: this.state.us_state,
 			city: this.state.city,
 			zip: this.state.zip,
 			party: this.state.party
 		};
+
+		
 	}
 
     render() {
       return (
-				<div className="user-profile">
+				<div className="user-profile" id="wrap">
 				<h1 className="display-4">Your Profile</h1>
 						<div className="form-group row">
 							<label htmlFor="username" className="col-sm-2 col-form-label">Username:</label>
@@ -176,7 +180,7 @@ export default class UserProfile extends React.Component {
 								value={this.state.us_state}
 								className="custom-select"
 								id="state"
-								name="state"
+								name="us_state"
 								onChange={this.onChange}>
 									<option value="">N/A</option>
 									<option value="AK">Alaska</option>
@@ -270,8 +274,6 @@ export default class UserProfile extends React.Component {
 								name="party"
 								onChange={this.onChange}>
 									<option value="">N/A</option>
-									<option value="LBRT">Libertarian</option>
-									<option value="GREEN">Green Party</option>
 									<option value="REP">Republican Party</option>
 									<option value="DEM">Democratic Party</option>
 									<option value="FES">Flat Earth Society</option>
