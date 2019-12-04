@@ -184,6 +184,8 @@ app.get('/admin/session/addElection/:level/:location/:time/:name',  admin.isAdmi
 //makes a user an admin
 app.get('/admin/addAdmin/:userAddingAdmin/:newAdmin/:adminLevel', admin.addAdmin);
 
+app.get('/admin/getUnverified', admin.getUnverified);
+
 //Candidate Routes
 
 //Allows a user to become a candidate
@@ -260,6 +262,15 @@ app.get('/question/getQuestionsAsked/:userID', questions.getQuestionsAsked);
 
 //election routes
 app.get('/election/getElections/citiesWithElections', elections.getElectionsInCities);
+
+//return all info given electionId
+app.get('/election/returnElectionInfo/:electionId',elections.returnElectionInfo);
+
+//return election location 
+app.get('/election/getElectionLocation/:electionId',elections.getElectionLocation);
+
+//return all election ID's that a candidate is in (ID)
+app.get('/election/getElectionsByCandidate/:userId',elections.getElectionsByCandidate);
 
 
 //issueRoutes

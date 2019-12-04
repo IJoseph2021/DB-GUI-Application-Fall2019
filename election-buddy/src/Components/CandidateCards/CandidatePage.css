@@ -4,6 +4,7 @@ div.Republican {
     height: 30%;
     text-align: center;
     background: rgba(186,22,22, 0.7);
+    border: 3px solid black;
 }
 
 div.Democrat {
@@ -12,17 +13,27 @@ div.Democrat {
     height: 30%;
     text-align: center;
     background: rgba(2,66,242, 0.7);
+    border: 3px solid black;
 }
 
-div.Flat {
+div.Flat, div.Green, div.Libertarian {
     width: 100%;
     padding: 3% 0;
     height: 30%;
     text-align: center;
     background: green;
+    border: 3px solid black;
 }
 
 .candidateInfo, .candidateNews {
+    background: lightgray;
+    width: 100%;
+    padding: 1% 2% 1% 2%;
+    text-align: left;
+}
+
+.candidateInfo2 {
+    margin-top: 1%;
     background: lightgray;
     width: 100%;
     padding: 1% 2% 0% 2%;

@@ -65,6 +65,18 @@ export default class CandidateFunctions {
         })
     }
 
+    updateCandidateBio(userId, bio) {
+      return new Promise((resolve, reject) => {
+        return axios.get(this.URL + '/candidate/updateBio/' + userId + '/' + bio
+
+        )
+              .then(resp => {
+                resolve(resp.data)
+              })
+              .catch(resp => reject(resp));
+      })
+  }
+
     getCandidateParty(userId) {
       return new Promise((resolve, reject) => {
         return axios.get(this.URL + '/candidate/getCandidateParty/' + userId
