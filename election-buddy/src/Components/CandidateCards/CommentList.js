@@ -28,14 +28,13 @@ export default class CommentList extends React.Component {
     render() {
         return (
           <div>
-            <h1>Questions and Answers</h1>
-            {/*<{div className="jumbotron">
-              <p className="lead">Question here</p>
-              <p className="author">Donald Trump</p>
-              <hr className="my-4"/>
-              <p>Answers here</p>
-              <p className="author">Donald Trump</p>
-        </div}>*/}
+            {/*
+            <div className="header container-fluid background: lightgray
+                            width: 100%">
+                    <h3 style={{padding: "0em 0.8em"}}>
+                        Questions and Answers
+                    </h3>
+            </div>*/}
 
               <div className="CommentList container-fluid">
 

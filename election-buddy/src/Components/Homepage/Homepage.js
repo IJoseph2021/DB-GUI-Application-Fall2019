@@ -28,66 +28,13 @@ class Homepage extends Component {
       .catch(console.log)
     }
 
-
-    createGroups() {
-      var groupedArticles = [];
-      var howMany = 3;
-      var idx = 0;
-
-      while (idx < this.state.generalNews.length) {
-            if (idx % howMany === 0)
-                groupedArticles.push([])
-
-            groupedArticles[groupedArticles.length - 1].push(this.state.generalNews[idx++]);
-
-          if(groupedArticles.length === 3  &&  groupedArticles[howMany-1].length  === 3){
-                console.log(groupedArticles.length);
-                break;
-          }
-    }
-
-      return groupedArticles
-    }
-
-
-
     render() {
 
-      const groupedArticles = this.createGroups()
       return (
         <div>
-            <div className="generalNews">
-                <h3 style={{padding: "0em 0.8em"}}>
-                    Live Updates
-                </h3>
-
-                    { groupedArticles  && groupedArticles.map((articles,index) =>
-                            (
-                            <div>
-                            <div className="row">
-                            {articles.map(article=>
-                                <div className="col-lg-4 d-flex align-items-stretch" >
-                                  <div className="card" id="card">
-                                    <div className="card-body">
-                                     <img class="card-img-top" src={article.urlToImage}/>
-                                      <h5 id="title" className="card-title">{article.title}</h5>
-                                    </div>
-                                    <h6 className="card-subtitle">
-                                        From {article.source.name}
-                                    </h6>
-                                    <button type="submit"
-                                            id = "button"
-                                            className="btn btn-primary">
-                                        <a href={article.url} id="article_link">Learn More</a>
-                                    </button>
-                                  </div>
-                                </div>
-                            )}
-                            </div>
-                        </div>
-                        ))
-                    }
-            </div>
+            <h1>
+              Candidates:
+            </h1>
             <Candidate/>
             <Content/>
         </div>

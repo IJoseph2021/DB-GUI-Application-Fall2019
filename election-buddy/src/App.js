@@ -12,6 +12,7 @@ import Logout from './Components/Logout/Logout';
 import Candidate from './Components/CandidateCards/Candidate';
 import CandidatePage from './Components/CandidateCards/CandidatePage';
 import ChangePassword from './Components/ProfilePage/ChangePassword';
+import News from './Components/News/News';
 
 class App extends React.Component {
 	constructor(props) {
@@ -56,6 +57,7 @@ class App extends React.Component {
 						{/*this.state.loginState && <Route path="/candidate" exact component={(props) => <CandidatePage {...props} userId={this.state.userId}/>}/>*/}
 						{this.state.loginState && <Route path="/candidate/:id" exact component={CandidatePage} />}
 						{this.state.loginState && <Route path="/" exact component={Homepage} />}
+						{this.state.loginState && <Route path="/news" exact component={News} />}
 						{!this.state.loginState && <Route exact path="/login" render={(props) => <Login {...props} updateLoginState={this.updateLoginState}/>}/>}
 						{/*!this.state.loginState && <Route exact path="/login" render={(props) => <Login {...props} updateLoginState={this.updateLoginState}/>}/>*/}
 						{!this.state.loginState && <Route exact path="/registration" exact component={Signup}/>}
