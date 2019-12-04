@@ -7,17 +7,15 @@ exports.getElectionsInCities = function(req,res){
     })
 }
 
-exports.returnElectionInfo = function(req,red){
+exports.returnElectionInfo = function(req,res){
     electionId = req.params.electionId
-    mysqlConnection.query(`SELECT * 
-    FROM USER 
-    JOIN ELECTION_CANDIDATES 
-    ON ELECTIONS.electionId = ELECTION_CANDIDATES.electionId  
+    mysqlconnection.query(`SELECT fname, lname, partyCode, bio 
+    FROM ELECTION_CANDIDATES
     JOIN CANDIDATE
-    ON ELECTION_CANDIDATES.electionId = CANDIDATE.userId
+    ON ELECTION_CANDIDATES.userId = CANDIDATE.userId
     JOIN USER
-    ON CANDIDATE.userId = USER.id
-    WHERE USER.id = ${req.params.electionId};`,function(err,rows,fields){
+    ON CANDIDATE.userId = USER.id 
+    WHERE ELECTION_CANDIDATES.electionId = ${req.params.electionId};`,function(err,rows,fields){
         if(err){
             res.send(404);
         } else {
