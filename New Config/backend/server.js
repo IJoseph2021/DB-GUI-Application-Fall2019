@@ -189,7 +189,7 @@ app.get('/admin/getUnverified', admin.getUnverified);
 //Candidate Routes
 
 //Allows a user to become a candidate
-app.get('/candidate/session/becomeCandidate',  candidate.becomeCandidate);
+app.get('/candidate/session/becomeCandidate/:id',  candidate.becomeCandidate);
 
 //Getting the candidate favorite
 app.get('/candidate/session/getcandidateFavorite/:voterId',  candidate.getcandidateFavorite);

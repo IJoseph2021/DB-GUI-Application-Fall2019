@@ -5,7 +5,7 @@ const mysqlConnection = require('./oursql.js');
 //Steve
 //This function adds a user to the candidate table
 exports.becomeCandidate = function(req,res){
-    mysqlConnection.query(`INSERT INTO CANDIDATE(USERID) VALUES(${req.session.userId})`,function(err,rows,fields){
+    mysqlConnection.query(`INSERT INTO CANDIDATE(USERID) VALUES(${req.params.id})`,function(err,rows,fields){
         if(err){
             res.send("err");
         } else {
