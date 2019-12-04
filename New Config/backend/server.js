@@ -269,6 +269,9 @@ app.get('/election/returnElectionInfo/:electionId',elections.returnElectionInfo)
 //return election location 
 app.get('/election/getElectionLocation/:electionId',elections.getElectionLocation);
 
+//return all election ID's that a candidate is in (ID)
+app.get('/election/getElectionsByCandidate/:userId',elections.getElectionsByCandidate);
+
 
 //issueRoutes
 
