@@ -14,10 +14,10 @@ export default class CandidatePage extends React.Component {
     
     constructor(props){
         super(props)
-        
+        const { match: { params } } = this.props;
         this.state = {
             userId: this.props.userId || localStorage.getItem('token'),
-            candidateId: '',
+            candidateId: params.id,
             candidateName: '',
             party: '',
             candidateInfo: '',
@@ -26,8 +26,10 @@ export default class CandidatePage extends React.Component {
         }
       }
 
-    async populateInfo(params){
-        this.setState({candidateId: params.id});
+    async populateInfo(){
+        const { match: { params } } = this.props;
+        this.setState({candidateId: params.id})
+        console.log(this.state.candidateId);
         //Getting first and last name of the candidate
         this.candidateFuncs.getCandidateFirstName(params.id)
 		.then(res => {
@@ -126,8 +128,8 @@ export default class CandidatePage extends React.Component {
 
     componentDidMount() {
         const { match: { params } } = this.props;
-        
-        this.populateInfo(params)
+        this.populateInfo()
+        console.log(this.state.candidateId)
         //var id = this.props.userId;
         console.log(this.props.userId)
         const key = this.state.candidateName

@@ -12,8 +12,10 @@ export default class CommentList extends React.Component {
             candidateName: '',
             response: ''
         };
+        console.log(this.props.candidateId);
+        console.log(this.props.userId);
     }
-
+    
     handleResponse = (event) => {
         event.preventDefault();
         this.props.handleResponse(this.state);
@@ -65,14 +67,14 @@ export default class CommentList extends React.Component {
 
                               <div className="candidate_response card" style={{ "display": x.response.length == 0 ? 'block' : 'none' }}>
                                   <form className="candidate_response card"
-                                        style={{ "display": i.response == '' ? 'block' : 'none' }}
+                                        style={{ "display": this.props.candidateId === this.props.userId ? 'block' : 'none' }}
                                         onSubmit={this.handleResponse}>
                                       <input type="text"
                                           id="name"
                                           name="name"
-                                          placeholder="Candidate Name"
+                                          
                                           className="form-control"
-                                          value={this.state.candidateName}
+                                          value={this.props.candidateName}
                                           onChange={ e => this.setState({ candidateName: e.target.value }) } />
 
                                       <input type="text"
@@ -87,7 +89,7 @@ export default class CommentList extends React.Component {
                                           Post
                                       </button>
                                   </form>
-                                  <div  style={{ "display": i.response != '' ? 'block' : 'none' }}
+                                  <div  style={{ "display": i.response != '' && this.props.candidateId !== this.props.userId ? 'block' : 'none' }}
                                         className="candidate_response card form-control">
                                         <p><mark>{this.props.candidateName} has not answered this question</mark></p>
                                   </div>
