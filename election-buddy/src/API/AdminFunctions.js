@@ -18,7 +18,7 @@ class AdminFunctions {
 
     verifyCandidate(user){
         return new Promise((resolve, reject) => {
-            return axios.get(this.URL + '/candidate/session/becomeCandidate/' +  user.userId)
+            return axios.get(this.URL + '/admin/session/verify/' +  user.userId)
                 .then(resp => {
                   resolve(resp.data)})
                 .catch(resp => reject(resp));
@@ -33,6 +33,8 @@ class AdminFunctions {
               .catch(resp => reject(resp));
       })
     }
+
+
 
 }
 

@@ -249,7 +249,7 @@ export default class UserProfile extends React.Component {
 	saveUserInfo = async (event) =>{
 		event.preventDefault();
 
-
+		console.log("trigger")
 
 		const userInfo = {
 
