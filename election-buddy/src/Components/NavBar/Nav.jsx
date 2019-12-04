@@ -11,7 +11,7 @@ class Nav extends Component {
     super(props)
 
     this.state = {
-      userId: this.props.userId || localStorage.getItem('token'),
+      userId: localStorage.getItem('token'),
       role: []
     }
     this.handleSearch = this.handleSearch.bind(this)
@@ -34,6 +34,21 @@ class Nav extends Component {
   }
   handleSearch(){
 
+  }
+
+  componentWillMount(){
+    this.userFuncs.getRoles(this.state.userId).then(res => {
+      if(!res){
+        this.setState({ role: [...this.state.role, "Not Applicable"] });
+      }
+      else {
+        this.setState({ role: Object.keys(res)})
+        }
+    })
+    .catch(err => {
+      //error caught here
+
+    });
   }
 
   render() {
