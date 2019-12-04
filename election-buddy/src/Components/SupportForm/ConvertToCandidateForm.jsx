@@ -39,16 +39,15 @@ export default class ConvertToCandidateForm extends React.Component{
     }
 
     handleSubmit(){
-      const content = {
-        sender: this.state.name,
-        subject: this.state.subject,
-        details: this.state.details
+      const user = {
+        id: localStorage.getItem('token')
       }
-      // this.forms.convertCandidate(content).then(res => {
-      //   //do something here
-      // }).catch(err => {
-      //   //do sth here
-      // })
+
+      this.forms.convertCandidate(user).then(res => {
+        //do something here
+      }).catch(err => {
+        //do sth here
+      })
 
       this.setState({
         subject: "",

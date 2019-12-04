@@ -22,9 +22,9 @@ class Forms {
       })
     }
 
-    convertCandidate(content){
+    convertCandidate(user){
       return new Promise((resolve, reject) => {
-          return axios.post(this.URL + '/sendRequestConvert' , content)
+          return axios.post(this.URL + '/candidate/session/becomeCandidate/:id' , user)
               .then(resp => {
                 resolve(resp.data)})
               .catch(resp => reject(resp));
