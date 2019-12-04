@@ -100,4 +100,18 @@ export default class CandidateFunctions {
               .catch(resp => reject(resp));
       })
     }
+
+    createQuestion(asker_ID, askee_ID, question) {
+      return new Promise((resolve, reject) => {
+        return axios.get(this.URL + '/questions/session/createQuestion/' +
+        asker_ID + '/' +
+        askee_ID + '/' +
+        question
+      )
+            .then(resp => {
+              resolve(resp.data)
+            })
+            .catch(resp => reject(resp));
+    })
+    }
 }

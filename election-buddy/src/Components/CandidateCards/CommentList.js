@@ -6,7 +6,7 @@ export default class CommentList extends React.Component {
     candidateFuncs = new CandidateFunctions();
     constructor(props){
         super(props);
-
+        console.log(this.props.userId);
         this.state = {
             userId: this.props.userId || localStorage.getItem('token'),
             candidateName: '',
@@ -47,13 +47,13 @@ export default class CommentList extends React.Component {
                               <div className="card">
 
 
-                              <div className="card-header">
-                                  <p>{x.userName}</p>
-                              </div>
+                                <div className="card-header">
+                                    <p>{x.userName}</p>
+                                </div>
 
-                              <div className="card-body">
-                                  {x.comment}
-                              </div>
+                                <div className="card-body font-weight-bold">
+                                    {x.comment}
+                                </div>
                               </div>
 
                               <div className="card" style={{ "display": x.response != '' ? 'block' : 'none' }}>
@@ -63,8 +63,9 @@ export default class CommentList extends React.Component {
                                   <p className="card-body">{x.response}</p>
                               </div>
 
-                              <div style={{ "display": x.response.length == 0 ? 'block' : 'none' }}>
+                              <div className="candidate_response card" style={{ "display": x.response.length == 0 ? 'block' : 'none' }}>
                                   <form className="candidate_response card"
+                                        style={{ "display": i.response == '' ? 'block' : 'none' }}
                                         onSubmit={this.handleResponse}>
                                       <input type="text"
                                           id="name"
@@ -86,6 +87,10 @@ export default class CommentList extends React.Component {
                                           Post
                                       </button>
                                   </form>
+                                  <div  style={{ "display": i.response != '' ? 'block' : 'none' }}
+                                        className="candidate_response card form-control">
+                                        <p><mark>{this.props.candidateName} has not answered this question</mark></p>
+                                  </div>
                               </div>
                           </li>
                       )}

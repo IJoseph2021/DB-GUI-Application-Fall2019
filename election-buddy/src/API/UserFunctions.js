@@ -75,6 +75,18 @@ class UserFunctions {
       })
     }
 
+    getUserIdCamel(user){
+      return new Promise((resolve, reject) => {
+          return axios.get(this.URL + '/getUserId/' +
+          user.userName
+          ).then(resp =>
+            {
+              console.log(resp)
+              resolve(resp.data)
+            })
+              .catch(resp => reject(resp));
+      })
+    }
 
     getUserInfo(userIdOrName){
       return new Promise((resolve, reject) => {
