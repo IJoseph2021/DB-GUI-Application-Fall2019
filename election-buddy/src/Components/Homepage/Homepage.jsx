@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './Homepage.css';
-import Content from './Content.js';
-import Candidate from '../CandidateCards/Candidate.js';
+import Candidate from '../CandidateCards/Candidate';
 
 class Homepage extends Component {
     constructor(props) {
@@ -36,7 +35,6 @@ class Homepage extends Component {
               Candidates:
             </h1>
             <Candidate/>
-            <Content/>
         </div>
       );
     }

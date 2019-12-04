@@ -33,8 +33,7 @@ exports.getVoterInfo = function(req,res){
 //Steve Shoemaker
 //Updates the city of the session voter
 exports.updateCitySession = function(req,res){
-    userID = req.session.userId;
-    mysqlConnection.query(`UPDATE VOTER SET city = '${req.params.city}' WHERE userID = '${req.session.userId}';`, function(err,rows,fields){
+    mysqlConnection.query(`UPDATE VOTER SET city = '${req.params.city}' WHERE userID = '${req.params.userId}';`, function(err,rows,fields){
         if(err) console.log(err.message);
     })
     res.send('update Attempted');
@@ -43,8 +42,7 @@ exports.updateCitySession = function(req,res){
 //Steve Shoemaker
 //Gets the city of the current user
 exports.getCitySession = function(req,res){
-    userID = req.session.userId;
-    mysqlConnection.query(`SELECT CITY FROM VOTER WHERE userID = '${userID}';`,function(err,rows,fields){
+    mysqlConnection.query(`SELECT CITY FROM VOTER WHERE userID = '${req.params.userId}';`,function(err,rows,fields){
         if(rows[0] != undefined){
             res.send(rows[0].CITY);
         } else {
@@ -65,8 +63,7 @@ exports.updateCountySession = function(req,res){
 
 //Written by Parker-- please check and see if correct
 exports.updateZipCodeSession = function(req,res){
-    userID = req.session.userID;
-    mysqlConnection.query(`UPDATE VOTER SET zipCode = '${req.params.zipCode}' WHERE userID = '${req.session.userId}';`, function(err,rows,fields){
+    mysqlConnection.query(`UPDATE VOTER SET zipCode = '${req.params.zipCode}' WHERE userID = '${req.params.userId}';`, function(err,rows,fields){
 
         if(err) console.log(err.message);
     })
@@ -89,28 +86,57 @@ exports.getCountySession = function(req,res){
 //Stephen Shoemaker
 //This route updates the party of the voter
 exports.sessionUpdateParty = function(req,res){
-    userID = req.session.userId;
-    
     mysqlConnection.query(`SELECT partyCode FROM PARTY WHERE partyName = '${req.params.partyName}'`,function(err,rows,fields){
         if(err){console.log("finding party name: " + err.message)};
         if(rows.length == undefined || rows[0] == undefined){
             res.send('Party Not Found');
         } else {
-            mysqlConnection.query(`UPDATE VOTER SET partyCode = '${rows[0].partyCode}' WHERE userID = '${userID}';`, function(innerErr,innerRows,innerFields){
+            mysqlConnection.query(`UPDATE VOTER SET partyCode = '${rows[0].partyCode}' WHERE userID = '${req.params.userId}';`, function(innerErr,innerRows,innerFields){
                 if(innerErr) console.log(innerErr.message);
                 else res.send('Party Updated');
             });
-            
+
         }
     });
 }
 
+exports.getInfoVoter = function(req,res){
+    mysqlConnection.query(`SELECT * FROM VOTER WHERE VOTER.userID = '${req.params.userId}'`,
+    function(err,rows,fields){
+        if(err){console.log(err.message)};
+        if(rows.length == undefined || rows[0] == undefined){
+            res.send('Cannot find user');
+        } else {
+          res.send(rows)
+        }
+      }
+    );
+}
+
+exports.updateInfoVoter = function(req,res){
+    mysqlConnection.query(`UPDATE VOTER
+      SET zipCode = '${req.params.zipCode}',
+      partyCode = '${req.params.partyCode}',
+      state = '${req.params.state}',
+      city = '${req.params.city}' WHERE
+      userID = '${req.params.userId}'` ,
+    function(err,rows,fields){
+        if(err){console.log(err.message)}
+
+        else {
+            res.send("Update Success")
+            };
+
+        }
+    );
+}
+
+
 //Steve Shoemaker
 //Get Zip code of the current user
 exports.getZipCodeSession = function(req,res){
-    userID = req.session.userId;
-    console.log(`SELECT zipCode FROM VOTER WHERE userID = '${userID}';`);
-    mysqlConnection.query(`SELECT zipCode FROM VOTER WHERE userID = '${userID}';`,function(err,rows,fields){
+    console.log(`SELECT zipCode FROM VOTER WHERE userID = '${req.params.userId}';`);
+    mysqlConnection.query(`SELECT zipCode FROM VOTER WHERE userID = '${req.params.userId}';`,function(err,rows,fields){
         if(rows[0] != undefined){
             res.send(rows[0].zipCode);
         } else {
@@ -126,7 +152,7 @@ exports.getZipCodeSession = function(req,res){
 exports.getVoterListZipCode = function(req,res){
     partyCode = req.params.partyCode
     zipCode = req.params.zipCode
-   
+
     console.log(`SELECT USER.fname, USER.lname FROM USER INNER JOIN VOTER ON USER.ID = VOTER.userID WHERE partyCode = '${partyCode}' AND zipCode = '${zipCode}';`);
     mysqlConnection.query(`SELECT USER.fname, USER.lname FROM USER INNER JOIN VOTER ON USER.ID = VOTER.userID WHERE partyCode = '${partyCode}' AND zipCode = '${zipCode}';`, function(err,rows,fields){
         if(rows[0] != undefined){
@@ -137,7 +163,7 @@ exports.getVoterListZipCode = function(req,res){
         }
     });
 }
-    
+
 exports.getVoterListCity = function(req,res){
     partyCode = req.params.partyCode
     city = req.params.city
@@ -170,7 +196,7 @@ exports.getVoterListState = function(req,res){
 exports.followTopic = function(req,res){
     qID = req.params.question_ID
     user_ID = req.session.userId
- 
+
     console.log(`INSERT INTO electionBuddy.HOT_TOPIC VALUES(${qID}, ${user_ID}, 1)`);
     mysqlConnection.query(`INSERT INTO electionBuddy.HOT_TOPIC VALUES(${qID}, ${user_ID}, 1)`, function(err, rows, fields){
         if(err){
@@ -185,7 +211,7 @@ exports.followTopic = function(req,res){
 exports.unfollowTopic = function(req,res){
     qID = req.params.question_ID
     user_ID = req.session.userId
- 
+
     console.log(`UPDATE HOT_TOPIC SET active = 0 WHERE question_ID = '${qID}' AND user_ID = '${user_ID}';`);
     mysqlConnection.query(`UPDATE HOT_TOPIC SET active = 0 WHERE question_ID = '${qID}' AND user_ID = '${user_ID}';`,function(err,rows,fields){
         if(err){
@@ -202,10 +228,10 @@ exports.getFollowList = function(req, res){
 
     console.log(`SELECT question FROM HOT_TOPIC INNER JOIN CANDIDATE_QUESTION ON HOT_TOPIC question_ID = CANDIDATE_QUESTION.question_ID WHERE user_ID = '${user_ID}';`);
     mysqlConnection.query(`SELECT question
-        FROM HOT_TOPIC 
+        FROM HOT_TOPIC
         INNER JOIN CANDIDATE_QUESTION ON HOT_TOPIC.question_ID = CANDIDATE_QUESTION.question_ID
         WHERE user_ID = '${user_ID}';`, function(err, rows, fields){
-        
+
             if(err){
             res.send("Unable to get follow list");
             }
@@ -257,7 +283,7 @@ exports.getEligibility = function(req,res){
 
     userID = req.params.userID;
     time = dateTime;
- 
+
     console.log(
         `SELECT ELECTIONS.electionID
         FROM ELECTIONS
@@ -287,7 +313,7 @@ exports.getEligibility = function(req,res){
 }
 
 exports.getVoterZipCode = function(req,res){
-    userID = req.params.userID
+    userID = req.params.userId
     console.log(`SELECT VOTER.zipCode FROM VOTER WHERE userID = '${userID}';`);
     mysqlConnection.query(`SELECT VOTER.zipCode FROM VOTER WHERE userID = '${userID}';`, function(err,rows,fields){
         if(rows[0] != undefined){

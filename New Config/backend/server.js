@@ -110,13 +110,13 @@ app.get('/voter/session/getCitySession',  voter.getCitySession);
 app.get('/voter/session/updateCounty/:county',  voter.updateCountySession);
 
 //Updates zipcode
-app.get('/voter/session/updateZipCodeSession/:zipCode',  voter.updateZipCodeSession);
+app.get('/voter/session/updateZipCodeSession/:zipCode/:userId',  voter.updateZipCodeSession);
 
 //Gets the voter county
 app.get('/voter/session/getCountySession',  voter.getCountySession);
 
 //Updates the voter Party
-app.get('/voter/session/updateParty/:partyName',  voter.sessionUpdateParty);
+app.get('/voter/session/updateParty/:partyName/:userId',  voter.sessionUpdateParty);
 
 //Gets voter list based on zip Code
 app.get('/voter/session/getVoterListZipCode/:partyCode/:zipCode',  voter.getVoterListZipCode);
@@ -128,7 +128,7 @@ app.get('/voter/session/getVoterListState/:partyCode/:state',  voter.getVoterLis
 app.get('/voter/session/getVoterListCity/:partyCode/:city',  voter.getVoterListCity);
 
 //Get zip code of current user
-app.get('/voter/session/getZipCodeSession',  voter.getZipCodeSession);
+app.get('/voter/session/getZipCodeSession/:userId',  voter.getZipCodeSession);
 
 // Follow a Question
 app.get('/voter/session/followTopic/:question_ID',  voter.followTopic);
@@ -148,6 +148,12 @@ app.get('/voter/session/getEligibility/:userID',  voter.getEligibility);
 //Get zipCode from userID
 app.get('/voter/getVoterZipCode/:userID', voter.getVoterZipCode);
 
+/* ------------------ SKYLER ------------------ */
+//Get info voter
+app.get('/voter/getInfoVoter/:userId', voter.getInfoVoter);
+
+//Update info voter
+app.get('/voter/updateInfoVoter/:userId/:partyCode/:zipCode/:state/:city', voter.updateInfoVoter);
 
 //Party Routes
 
@@ -273,71 +279,116 @@ app.get('/issues/addElectionIssue/:election/:issue', issues.addElectionIssue);
 //gets all issues connected to an election
 app.get('/issues/getElectionIssues/:election', issues.getElectionIssues);
 
-// /* --------- This sends an email to local authority ---------*/
-// app.post('/sendEmail', (req, res) => {
-//   //receive body.sender and body.content
-// 	console.log(req.body)
-// 	console.log(req.params)
-// 	let transporter = nodemailer.createTransport({
-// 	    host: 'smtp.gmail.com',
-// 	    port: 587,
-// 	    secure: false,
-// 	    requireTLS: true,
-// 	    // auth: {
-// 	    //     user: 'skyler.linhtran@gmail.com',
-// 	    //     pass: 'skyler1996'
-// 	    // }
-// 			auth: {
-// 				user: 'electionbuddy.fa2019@gmail.com',
-// 				pass: 'electionbuddy2019'
-// 			}
-// 	});
-//
-//
-//   // var mailOptions = {
-//   //   from: `${JSON.stringify(req.body.sender)} <electionbuddy.fa2019@gmail.com>`,
-//   //   to: 'mfonten@lyle.smu.edu',
-//   //   subject: `${JSON.stringify(req.body.sender)} + from Election Buddy Sent You A Messsage`,
-//   //   text: JSON.stringify(req.body.content)
-//   // };
-//
-// 	var mailOptions = {
-// 	  from: `${JSON.stringify(req.body.sender)} <electionbuddy.fa2019@gmail.com>`,
-// 	  to: 'skylert@smu.edu',
-// 	  subject: `${JSON.stringify(req.body.sender)} + from Election Buddy Sent You A Messsage`,
-// 	  text: JSON.stringify(req.body.content)
-// 	};
-//
-//   transporter.sendMail(mailOptions, function(error, info){
-//     if (error) {
-//       console.log(error);
-//     } else {
-//       console.log('Email sent: ' + info.response);
-// 			res.status(200).send('Email sent.');
-//     }
-//   });
-// });
-//
-// //---------------------------------------------------------------------------------
-// https.createServer({
-// 	key: fs.readFileSync('./ssl_electionbuddy/private.key'),
-// 	cert: fs.readFileSync('./ssl_electionbuddy/certificate.crt'),
-// 	ca: fs.readFileSync('./ssl_electionbuddy/ca_bundle.crt')
-// },app).listen(config.port, config.host);
+/* --------- This sends an email about OTHER Issues ---------*/
+app.post('/sendEmailOtherIssues', (req, res) => {
+  //receive body.sender and body.content
+	console.log(req.body)
+	console.log(req.params)
+	let transporter = nodemailer.createTransport({
+	    host: 'smtp.gmail.com',
+	    port: 587,
+	    secure: false,
+	    requireTLS: true,
+	    // auth: {
+	    //     user: 'skyler.linhtran@gmail.com',
+	    //     pass: 'skyler1996'
+	    // }
+			auth: {
+				user: 'electionbuddy.fa2019@gmail.com',
+				pass: 'electionbuddy2019'
+			}
+	});
 
 
-//connecting the express object to listen on a particular port as defined in the config object.
-app.listen(config.port, config.host, (e) => {
-  if (e) {
-    throw new Error('Internal Server Error');
-  }
-  logger.info(`${config.name} running on ${config.host}:${config.port}`);
+  // var mailOptions = {
+  //   from: `${JSON.stringify(req.body.sender)} <electionbuddy.fa2019@gmail.com>`,
+  //   to: 'mfonten@lyle.smu.edu',
+  //   subject: `${JSON.stringify(req.body.sender)} + from Election Buddy Sent You A Messsage`,
+  //   text: JSON.stringify(req.body.content)
+  // };
+
+	var mailOptions = {
+	  from: `${JSON.stringify(req.body.sender)} <electionbuddy.fa2019@gmail.com>`,
+	  to: 'skylert@smu.edu',
+	  subject: `${JSON.stringify(req.body.subject)}`,
+	  text: JSON.stringify(req.body.explanation)
+	};
+
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+			res.status(200).send('Email sent.');
+    }
+  });
 });
+
+/* --------- This sends an email to local authority ---------*/
+app.post('/sendEmailLocalAuth', (req, res) => {
+  //receive body.sender and body.content
+	console.log(req.body)
+	console.log(req.params)
+	let transporter = nodemailer.createTransport({
+	    host: 'smtp.gmail.com',
+	    port: 587,
+	    secure: false,
+	    requireTLS: true,
+	    // auth: {
+	    //     user: 'skyler.linhtran@gmail.com',
+	    //     pass: 'skyler1996'
+	    // }
+			auth: {
+				user: 'electionbuddy.fa2019@gmail.com',
+				pass: 'electionbuddy2019'
+			}
+	});
+
+
+  // var mailOptions = {
+  //   from: `${JSON.stringify(req.body.sender)} <electionbuddy.fa2019@gmail.com>`,
+  //   to: 'mfonten@lyle.smu.edu',
+  //   subject: `${JSON.stringify(req.body.sender)} + from Election Buddy Sent You A Messsage`,
+  //   text: JSON.stringify(req.body.content)
+  // };
+
+	var mailOptions = {
+	  from: `${JSON.stringify(req.body.sender)} <electionbuddy.fa2019@gmail.com>`,
+	  to: 'skylert@smu.edu',
+	  subject: `${JSON.stringify(req.body.sender)} from Election Buddy Sent You A Concern`,
+	  text: JSON.stringify(req.body.concern)
+	};
+
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+			res.status(200).send('Email sent.');
+    }
+  });
+});
+
+//---------------------------------------------------------------------------------
+https.createServer({
+	key: fs.readFileSync('./ssl_electionbuddy/private.key'),
+	cert: fs.readFileSync('./ssl_electionbuddy/certificate.crt'),
+	ca: fs.readFileSync('./ssl_electionbuddy/ca_bundle.crt')
+},app).listen(config.port, config.host);
+
+// 
+// //connecting the express object to listen on a particular port as defined in the config object.
+// app.listen(config.port, config.host, (e) => {
+//   if (e) {
+//     throw new Error('Internal Server Error');
+//   }
+//   logger.info(`${config.name} running on ${config.host}:${config.port}`);
+// });
 
 var nodemailer = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
 app.get('/contactform/:commentID', function (req, res) {
-  
+
         cID = req.params.commentID;
         var subject_with_cID = `Reporting comment ID#: ${cID}`;
         var reportTXT = `I would like to file a complaint for comment#: ${cID}`;

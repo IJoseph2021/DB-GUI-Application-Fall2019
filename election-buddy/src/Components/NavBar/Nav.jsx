@@ -2,14 +2,36 @@ import React, { Component } from 'react';
 import logo from '../../logo_transparent.png';
 import './NavBar.css';
 import { BrowserRouter as Router, Link } from "react-router-dom";
+import UserFunctions from '../../API/UserFunctions';
 
 class Nav extends Component {
+  userFuncs = new UserFunctions();
+
   constructor(props){
     super(props)
 
+    this.state = {
+      userId: this.props.userId || localStorage.getItem('token'),
+      role: []
+    }
     this.handleSearch = this.handleSearch.bind(this)
   }
 
+
+  componentDidMount(){
+    this.userFuncs.getRoles(this.state.userId).then(res => {
+			if(!res){
+				this.setState({ role: [...this.state.role, "Not Applicable"] });
+			}
+			else {
+				this.setState({ role: Object.keys(res)})
+				}
+		})
+		.catch(err => {
+			//error caught here
+
+		});
+  }
   handleSearch(){
 
   }
@@ -20,7 +42,7 @@ class Nav extends Component {
         {
           this.props.loginState ?
           (
-            <nav style={{"margin": "0 auto"}} className="navbar navbar-expand-lg navbar-light bg-light">
+            <nav style={{"margin": "0 auto", "width" : "100%"}} className="navbar navbar-expand-lg navbar-light bg-light">
               <Link to="/"><img src={logo} alt="Logo"/></Link>
               <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
@@ -28,7 +50,7 @@ class Nav extends Component {
 
               <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav mr-auto">
-                  <li className="nav-item active">
+                  <li className="nav-item">
                     <Link to="/" className="nav-link">Home</Link>
                   </li>
                   <li className="nav-item">
@@ -42,7 +64,7 @@ class Nav extends Component {
                       <Link className="dropdown-item" to="/profile">User Profile</Link>
                       <Link className="dropdown-item" to="/changepwd">Change password</Link>
                       {
-                        this.props.role.includes("admin") ? (
+                        this.state.role.includes("admin") ? (
                           <Link className="dropdown-item" to="/admintask">Admin Task</Link>
                         ) : (
                           ""
@@ -51,6 +73,9 @@ class Nav extends Component {
                       <div className="dropdown-divider"></div>
                       <Link className="dropdown-item" to="/logout">Log out</Link>
                     </div>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/support">Support</Link>
                   </li>
                   <form className="form-inline my-2 my-lg-0">
                     <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>

@@ -15,6 +15,7 @@ import CandidatePage from './Components/CandidateCards/CandidatePage';
 import ChangePassword from './Components/ProfilePage/ChangePassword';
 import News from './Components/News/News';
 import Support from './Components/Support/Support';
+import AdminTask from './Components/AdminTask/AdminTask'
 
 class App extends React.Component {
 	userFuncs = new UserFunctions();
@@ -23,27 +24,14 @@ class App extends React.Component {
 		super(props);
 
 		this.state = {
-			userId: "",
+			userId: localStorage.getItem('token') || "",
 			loginState: !!localStorage.getItem('token'),
 			role: []
 		}
 		this.updateLoginState = this.updateLoginState.bind(this);
 	}
 
-
-	updateLoginState = () => {
-		if(localStorage.getItem('token')){
-			this.setState({
-					loginState: true,
-					userId: localStorage.getItem('token')
-			});
-		}
-		else{
-			this.setState({
-				loginState: false
-			});
-		}
-
+	componentDidMount(){
 		this.userFuncs.getRoles(localStorage.getItem('token')).then(res => {
 			console.log("Roles: ", res)
 			if(!res){
@@ -57,7 +45,21 @@ class App extends React.Component {
 			//error caught here
 
 		});
-	};
+	}
+
+	updateLoginState = () => {
+		if(localStorage.getItem('token')){
+			this.setState({
+					loginState: true,
+					userId: localStorage.getItem('token')
+			});
+		}
+		else{
+			this.setState({
+				loginState: false
+			});
+		}
+	}
 
 	render() {
 		return (
@@ -71,9 +73,16 @@ class App extends React.Component {
 	            this.state.loginState ? (
 	              <Homepage/>
 	            ) : (
-					<Redirect to="/login"/>
+								<Redirect to="/login"/>
 	            )
 	          )}/>
+
+						<Route exact path="/admintask" render={() => (
+							this.state.role.includes("admin") ? (
+								<AdminTask/>
+							) : ""
+						)}/>
+
 						{/*this.state.loginState && <Route path="/candidate" exact component={(props) => <CandidatePage {...props} userId={this.state.userId}/>}/>*/}
 						{this.state.loginState && <Route path="/support" exact component={Support} />}
 						{this.state.loginState && <Route path="/candidate/:id" exact component={CandidatePage} />}

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 class UserFunctions {
-  URL = "http://electionbuddy.skylerlt.com:8000";
+  URL = "https://electionbuddy.skylerlt.com:8000";
   // URL = "http://127.0.0.1:8000"; //localhost
 
     login(user){
@@ -30,10 +30,11 @@ class UserFunctions {
         })
     }
 
+
     updateUserEmail(user) {
         return new Promise((resolve, reject) => {
             return axios.get(this.URL + '/login/updateEmail/' +
-            user.username + '/' +
+            user.userId + '/' +
             user.email
             ).then(resp => resolve(resp.data))
                 .catch(resp => reject(resp));
@@ -114,9 +115,36 @@ class UserFunctions {
       })
     }
 
-    makeVote(userId) {
-      //app.get('/voter/becomeVoter/:user', voter.userBecomeVoter);
+    getVoterInfo(userId){
+      //app.get('/voter/getInfoVoter/:userId', voter.getInfoVoter);
+      return new Promise((resolve, reject) => {
+          return axios.get(this.URL + '/voter/getInfoVoter/' + userId)
+              .then(resp => resolve(resp.data))
+              .catch(resp => reject(resp));
+      })
+    }
 
+    updateVoterInfo(user){
+      //app.get('/voter/updateInfoVoter/:userId/:partyCode/:zipCode/:state/:city', voter.updateInfoVoter);
+      return new Promise((resolve, reject) => {
+          return axios.get(this.URL + '/voter/updateInfoVoter/'
+          + user.userId + '/'
+          + user.partyCode + '/'
+          + user.zipCode + '/'
+          + user.state + '/'
+          + user.city)
+              .then(resp => resolve(resp.data))
+              .catch(resp => reject(resp));
+      })
+    }
+
+    addVoter(userId){
+      //app.get('/voter/becomeVoter/:user', voter.userBecomeVoter);
+      return new Promise((resolve, reject) => {
+          return axios.get(this.URL + '/voter/becomeVoter/' + userId)
+              .then(resp => resolve(resp.data))
+              .catch(resp => reject(resp));
+      })
     }
 }
 
