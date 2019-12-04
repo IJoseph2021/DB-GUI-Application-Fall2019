@@ -219,6 +219,9 @@ app.get('/candidate/getBio/:id', candidate.getBio);
 //get candidate party
 app.get('/candidate/getCandidateParty/:id', candidate.getCandidateParty);
 
+//get all candidate info
+app.get('/candidate/getCandidateInfo/:userId', candidate.getCandidateInfo);
+
 
 
 

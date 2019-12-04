@@ -182,7 +182,7 @@ exports.getCandidateParty = function(req,res){
 }
 
 //i.j.
-exports.getInfoCandidate = function(req,res){
+exports.getCandidateInfo = function(req,res){
     userId = req.params.userId
     mysqlConnection.query(`SELECT * 
     FROM CANDIDATE
