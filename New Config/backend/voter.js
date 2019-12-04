@@ -101,13 +101,15 @@ exports.sessionUpdateParty = function(req,res){
 }
 
 exports.getInfoVoter = function(req,res){
-    mysqlConnection.query(`SELECT * FROM VOTER WHERE VOTER.userID = '${req.params.userId}'`,function(err,rows,fields){
+    mysqlConnection.query(`SELECT * FROM VOTER WHERE VOTER.userID = '${req.params.userId}'`,
+    function(err,rows,fields){
         if(err){console.log(err.message)};
         if(rows.length == undefined || rows[0] == undefined){
             res.send('Cannot find user');
         } else {
           res.send(rows)
         }
+      }
     );
 }
 
