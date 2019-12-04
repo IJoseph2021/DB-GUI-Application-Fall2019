@@ -212,7 +212,9 @@ exports.getQuestionsAnswered = function(req,res){
 }
 
 exports.getQuestionsAsked = function(req,res){
-    mysqlConnection.query(`SELECT * FROM USER JOIN CANDIDATE_QUESTION ON USER.id = CANDIDATE_QUESTION.askeeId WHERE USER.id = ${req.params.userID};`,function(err,rows,fields){
+    //mysqlConnection.query(`SELECT * FROM USER JOIN CANDIDATE_QUESTION ON USER.id = CANDIDATE_QUESTION.askeeId WHERE USER.id = ${req.params.userID};`,function(err,rows,fields){
+    mysqlConnection.query(`SELECT * FROM USER JOIN CANDIDATE_QUESTION WHERE USER.id = ${req.params.userID};`,function(err,rows,fields){
+
         if(err){
             res.send(404);
         } else {
