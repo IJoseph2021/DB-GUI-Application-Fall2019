@@ -6,15 +6,18 @@ import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 import {Link} from 'react-router-dom';
 import CandidateFunctions from '../../API/CandidateFunctions';
-
+import UserFunctions from '../../API/UserFunctions';
 
 export default class CandidatePage extends React.Component {
     candidateFuncs = new CandidateFunctions();
+    userFuncs = new UserFunctions();
+    
     constructor(props){
         super(props)
-        
+        const { match: { params } } = this.props;
         this.state = {
             userId: this.props.userId || localStorage.getItem('token'),
+            candidateId: params.id,
             candidateName: '',
             party: '',
             candidateInfo: '',
@@ -23,7 +26,10 @@ export default class CandidatePage extends React.Component {
         }
       }
 
-    async populateInfo(params){
+    async populateInfo(){
+        const { match: { params } } = this.props;
+        this.setState({candidateId: params.id})
+        console.log(this.state.candidateId);
         //Getting first and last name of the candidate
         this.candidateFuncs.getCandidateFirstName(params.id)
 		.then(res => {
@@ -59,20 +65,55 @@ export default class CandidatePage extends React.Component {
 		.catch(err => {
 			console.log("Error occured")
         });
-        /*
+
         this.candidateFuncs.getCandidateQuestionsAsked(params.id)
-		.then(res => {
-			//this.setState({party: res[0].partyName})
-		})
-		.catch(err => {
-			console.log("Error occured")
-        });*/
+		.then(resp => {
+            console.log("Theres no error")
+            console.log(resp)
+            for (var i = 0; i < resp.length; i++) 
+            {
+                this.setState(prevState => {
+                    prevState.questions.push(new Comment(resp[i].questionId, resp[i].username, resp[i].question, ''))
+                })
+            }
+        })
+        .catch(err => {
+            console.log("Error occured")
+        })
+
+        this.candidateFuncs.getCandidateQuestionsAnswered(params.id)
+		.then(resp => {
+            console.log("Theres no error")
+            for (var i = 0; i < resp.length; i++) 
+            {
+                for (var j = 0; j < this.state.questions.length; j++)
+                {
+                    if (resp[i].questionId == this.state.questions[j].questionId) {
+                        this.setState(prevState => {
+                            prevState.questions[j].response = resp[i].comment;
+                        });
+                    }
+                }
+            }
+        })
+        .catch(err => {
+            console.log("Error occured")
+        })
     }
 
     handleQuestionSubmit(question) {
-        console.log(question.userName);
+        /*console.log(question.userName);
+        this.userFuncs.getUserIdCamel(question).then(res => {
+            this.candidateFuncs.createQuestion(this.state.userId, res.userId, question.comment).then(resp => {
+                console.log("Question submitted")
+            });
+        })
+        .catch(err => {
+            console.log("Error occured in question submitting")
+        })*/
+
         this.setState(prevState => {
-            prevState.questions.push(new Comment(question.userName, question.comment, ''));
+            prevState.questions.push(new Comment(-1, question.userName, question.comment, ''));
             return prevState;
         });
     }
@@ -87,7 +128,8 @@ export default class CandidatePage extends React.Component {
 
     componentDidMount() {
         const { match: { params } } = this.props;
-        this.populateInfo(params)
+        this.populateInfo()
+        console.log(this.state.candidateId)
         //var id = this.props.userId;
         console.log(this.props.userId)
         const key = this.state.candidateName
@@ -182,7 +224,7 @@ export default class CandidatePage extends React.Component {
                 </div>
 
                 <div className="questions">
-                    <CommentList questions={this.state.questions} handleResponse={response => this.handleResponse(response)} candidateName={this.state.candidateName} userId={this.state.userId}/>
+                    <CommentList questions={this.state.questions} handleResponse={response => this.handleResponse(response)} candidateName={this.state.candidateName} userId={this.state.userId} candidateId={this.state.candidateId}/>
                     <CommentForm onQuestionSubmit={question => this.handleQuestionSubmit(question)}/>
                 </div>
             </div>
