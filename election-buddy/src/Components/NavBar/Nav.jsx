@@ -2,14 +2,36 @@ import React, { Component } from 'react';
 import logo from '../../logo_transparent.png';
 import './NavBar.css';
 import { BrowserRouter as Router, Link } from "react-router-dom";
+import UserFunctions from '../../API/UserFunctions';
 
 class Nav extends Component {
+  userFuncs = new UserFunctions();
+
   constructor(props){
     super(props)
 
+    this.state = {
+      userId: this.props.userId || localStorage.getItem('token'),
+      role: []
+    }
     this.handleSearch = this.handleSearch.bind(this)
   }
 
+
+  componentDidMount(){
+    this.userFuncs.getRoles(this.state.userId).then(res => {
+			if(!res){
+				this.setState({ role: [...this.state.role, "Not Applicable"] });
+			}
+			else {
+				this.setState({ role: Object.keys(res)})
+				}
+		})
+		.catch(err => {
+			//error caught here
+
+		});
+  }
   handleSearch(){
 
   }
@@ -42,7 +64,7 @@ class Nav extends Component {
                       <Link className="dropdown-item" to="/profile">User Profile</Link>
                       <Link className="dropdown-item" to="/changepwd">Change password</Link>
                       {
-                        this.props.role.includes("admin") ? (
+                        this.state.role.includes("admin") ? (
                           <Link className="dropdown-item" to="/admintask">Admin Task</Link>
                         ) : (
                           ""

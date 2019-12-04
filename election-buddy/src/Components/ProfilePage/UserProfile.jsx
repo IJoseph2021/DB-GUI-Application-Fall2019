@@ -19,22 +19,12 @@ export default class UserProfile extends React.Component {
       party: "",
 			role: [],
 			email: "",
-			profile: false
+			updateSuccess: false
 		};
 
 
-
-
-
 		this.onChange = this.onChange.bind(this);
-		this.getUserInfo = this.getUserInfo.bind(this);
-		this.toggleForm = this.toggleForm.bind(this);
-	}
-
-	toggleForm (event) {
-		this.setState({
-			profile: !this.state.profile
-		})
+		this.saveUserInfo = this.saveUserInfo.bind(this);
 	}
 
 
@@ -42,9 +32,6 @@ export default class UserProfile extends React.Component {
 		this.setState({[event.target.name]: event.target.value})
 	}
 
-	getUserInfo = async (event) => {
-
-};
 
 	componentDidMount(){
 
@@ -62,7 +49,7 @@ export default class UserProfile extends React.Component {
 		};
 
 		this.userFuncs.getUserInfo(user).then(res => {
-			console.log("userInfo here", res[0])
+			// console.log("userInfo here", res[0])
 			this.setState({
 				username: res[0].username,
 				firstname: res[0].fname,
@@ -76,7 +63,7 @@ export default class UserProfile extends React.Component {
 	});
 
 		this.userFuncs.getRoles(user.userId).then(res => {
-			console.log("Roles: ", res)
+			// console.log("Roles: ", res)
 			if(Object.entries(res).length === 0 && res.constructor === Object){
 				this.setState({ role: [...this.state.role, "Not Applicable"] });
 
@@ -90,11 +77,18 @@ export default class UserProfile extends React.Component {
 
 		});
 
-		// this.userFuncs.getUserInfo().then(res => {
-		//
-		// }).catch({
-		//
-		// })
+//[{"userID":4,"partyCode":"FES","zipCode":"90278","state":"CA","city":"Los Angeles"}]
+		this.userFuncs.getVoterInfo(localStorage.getItem('token')).then(res => {
+			// console.log(res)
+			this.setState({
+				party: res[0].partyCode,
+				zip: res[0].zipCode,
+				us_state: res[0].state,
+				city: res[0].city
+			})
+		}).catch({
+
+		})
 
 	}
 
@@ -102,18 +96,31 @@ export default class UserProfile extends React.Component {
 		event.preventDefault();
 
 		const userInfo = {
-			// username: this.state.username,
+			username: this.state.username,
 			// pass: this.state.password,
+			userId: this.state.userId,
 			firstname: this.state.firstName,
 			lastName: this.state.lastName,
 			email: this.state.email,
-			us_state: this.state.us_state,
+			state: this.state.us_state,
 			city: this.state.city,
-			zip: this.state.zip,
-			party: this.state.party
+			zipCode: this.state.zip,
+			partyCode: this.state.party
 		};
 
-		
+		this.userFuncs.updateVoterInfo(userInfo).then(res => {
+			// console.log(res)
+			this.setState({updateSuccess: true})
+		}).catch(err => {
+			this.setState({updateSuccess: false})
+			console.log(err)
+		})
+
+		this.userFuncs.updateUserEmail(userInfo).then(res => {
+			// console.log(res)
+		}).catch(err => {
+			console.log(err)
+		})
 	}
 
     render() {
@@ -247,7 +254,8 @@ export default class UserProfile extends React.Component {
 								className="form-control"
 								id="city"
 								name="city"
-								value={this.state.value}
+								onChange={this.onChange}
+								value={this.state.city}
 								/>
 							</div>
 						</div>
@@ -345,9 +353,13 @@ export default class UserProfile extends React.Component {
 
 					  <div className="form-group row">
 					    <div className="col-sm-10">
-					      <button onClick = {this.saveProfile} type="button" className="btn btn-primary">Save Your Profile</button>
-					    </div>
+					      <button onClick = {this.saveUserInfo} type="button" className="btn btn-primary">Save Your Profile</button>
+								{
+									this.state.updateSuccess ? <p className="text-success">Update Information Success</p> : ""
+								}
+							</div>
 					  </div>
+
         </div>
       );
     }

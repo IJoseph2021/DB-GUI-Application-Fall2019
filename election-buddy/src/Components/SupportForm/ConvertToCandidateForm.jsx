@@ -30,7 +30,7 @@ export default class ConvertToCandidateForm extends React.Component{
 
      this.userFuncs.getUserInfo(user).then(res => {
        this.setState({
-         name: `${res[0].fname} + " " + ${res[0].lname}`
+         name: `${res[0].fname} ${res[0].lname}`
        })
      }).catch(err => {
      //error caught here

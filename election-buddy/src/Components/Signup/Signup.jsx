@@ -39,6 +39,7 @@ class Signup extends Component {
           this.setState({validateForm: true})
 
           const user = {
+              username: this.state.username,
               user: this.state.username,
               pass: this.state.password,
               fname: this.state.fname,
@@ -55,20 +56,24 @@ class Signup extends Component {
             email: ""
           })
 
-          this.userFuncs.addVote(user).then(res => {
-
-          }).catch(err => {
-
-          })
-
           this.userFuncs.signUp(user).then(res => {
-              if (!!res.indexOf("made")) {
+              if (res) {
                 this.setState({signUpSuccess: false})
+                this.userFuncs.getUserId(user).then(res => {
+                  this.userFuncs.addVoter(res.userId).then(response =>{
+                    console.log(response)
+                  }).catch(err => {
+                    console.log(err)
+                  })
+                }).catch(err => {
+                  console.log(err)
+                })
                 this.forceUpdate();
                 this.props.history.push('/login');
 
               }
               else{
+                this.setState({signUpSuccess: true})
                 this.forceUpdate();
 
               }
@@ -76,10 +81,12 @@ class Signup extends Component {
             //error caught here
 
             });
+
         }
         else{
           this.setState({validateForm: false})
         }
+
 
 
 

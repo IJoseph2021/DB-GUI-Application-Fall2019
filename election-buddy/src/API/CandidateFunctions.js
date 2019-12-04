@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export default class CandidateFunctions {
-  URL = "http://electionbuddy.skylerlt.com:8000";
+  URL = "https://electionbuddy.skylerlt.com:8000";
   // URL = "http://127.0.0.1:8000"; //localhost
 
     getCandidatebypartyCode(partyCode){
@@ -116,6 +116,6 @@ export default class CandidateFunctions {
     }
 
     addCandidate(candidate){
-      
+
     }
 }

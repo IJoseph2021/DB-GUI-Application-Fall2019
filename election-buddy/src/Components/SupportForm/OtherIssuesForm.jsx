@@ -32,7 +32,7 @@ export default class OtherIssuesForm extends React.Component{
 
       this.userFuncs.getUserInfo(user).then(res => {
         this.setState({
-          name: `${res[0].fname} + " " + ${res[0].lname}`
+          name: `${res[0].fname} ${res[0].lname}`
         })
       }).catch(err => {
       //error caught here
@@ -48,11 +48,11 @@ export default class OtherIssuesForm extends React.Component{
         subject: this.state.subject,
         details: this.state.details
       }
-      // this.forms.sendEmailOtherIssues(content).then(res => {
-      //   //do something here
-      // }).catch(err => {
-      //   //do sth here
-      // })
+      this.forms.otherIssues(content).then(res => {
+        //do something here
+      }).catch(err => {
+        //do sth here
+      })
 
       this.setState({
         subject: "",
