@@ -80,9 +80,8 @@ export default class CommentList extends React.Component {
                                           name="question"
                                           placeholder="What's your response?"
                                           className="form-control"
-                                          value={this.state.response}
-                                          onChange={ e => this.setState({ response: e.target.value }) } 
-                                          //onChange={ e => ( x.response = e.target.value) }
+                                          value={i.response}
+                                          onChange={ e => ( x.response = e.target.value) }
                                           />
                                       <button type="submit"
                                           className="btn btn-primary">

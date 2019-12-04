@@ -130,7 +130,8 @@ export default class UserProfile extends React.Component {
 	updateBio = () => {
 		this.candidateFuncs.updateCandidateBio(this.state.userId, this.state.bio)
 		.then(res => {
-			this.setState({bio: res[0].bio})
+			console.log(this.state.bio)
+			//this.setState({bio: res[0].bio})
 			console.log("in update bio")
 			console.log(this.state.userId)
 			console.log(this.state.bio)
@@ -313,7 +314,7 @@ export default class UserProfile extends React.Component {
 								<input type="text"
 								name="bio"
 								value={this.state.bio}
-								onChange= {e => this.setState({ bio: e.target.value }) }
+								onChange={e => this.setState({ bio: e.target.value }) }
 								className="form-control"
 								id="bio" />
 							</div>

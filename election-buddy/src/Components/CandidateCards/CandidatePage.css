@@ -14,7 +14,7 @@ div.Democrat {
     background: rgba(2,66,242, 0.7);
 }
 
-div.Flat {
+div.Flat, div.Green, div.Libertarian {
     width: 100%;
     padding: 3% 0;
     height: 30%;

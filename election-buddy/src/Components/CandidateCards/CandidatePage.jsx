@@ -102,7 +102,7 @@ export default class CandidatePage extends React.Component {
     }
 
     handleQuestionSubmit(question) {
-        /*console.log(question.userName);
+        console.log(question.userName);
         this.userFuncs.getUserIdCamel(question).then(res => {
             this.candidateFuncs.createQuestion(this.state.userId, res.userId, question.comment).then(resp => {
                 console.log("Question submitted")
@@ -110,12 +110,12 @@ export default class CandidatePage extends React.Component {
         })
         .catch(err => {
             console.log("Error occured in question submitting")
-        })*/
-
+        })
+/*
         this.setState(prevState => {
             prevState.questions.push(new Comment(-1, question.userName, question.comment, ''));
             return prevState;
-        });
+        });*/
     }
 
     handleResponse(response) {
