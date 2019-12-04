@@ -79,7 +79,19 @@ export default class CandidateFunctions {
 
     getCandidateQuestionsAsked(userId) {
       return new Promise((resolve, reject) => {
-        return axios.get(this.URL + '/candidate/getQuestionsAsked/' + userId
+        return axios.get(this.URL + '/question/getQuestionsAsked/' + userId
+
+        )
+              .then(resp => {
+                resolve(resp.data)
+              })
+              .catch(resp => reject(resp));
+      })
+    }
+
+    getCandidateQuestionsAnswered(userId) {
+      return new Promise((resolve, reject) => {
+        return axios.get(this.URL + '/question/getQuestionsAnswered/' + userId
 
         )
               .then(resp => {

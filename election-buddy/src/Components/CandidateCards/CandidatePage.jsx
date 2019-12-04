@@ -59,14 +59,36 @@ export default class CandidatePage extends React.Component {
 		.catch(err => {
 			console.log("Error occured")
         });
-        /*
+
         this.candidateFuncs.getCandidateQuestionsAsked(params.id)
-		.then(res => {
-			//this.setState({party: res[0].partyName})
-		})
-		.catch(err => {
-			console.log("Error occured")
-        });*/
+		.then(resp => {
+            console.log("Theres no error")
+            console.log(resp)
+            for (var i = 0; i < resp.length; i++) 
+            {
+                this.setState(prevState => {
+                    prevState.questions.push(new Comment(resp[i].username, resp[i].question, ''))
+                })
+            }
+        })
+        .catch(err => {
+            console.log("Error occured")
+        })
+
+        this.candidateFuncs.getCandidateQuestionsAnswered(params.id)
+		.then(resp => {
+            console.log("Theres no error")
+            console.log(resp)
+            for (var i = 0; i < resp.length; i++) 
+            {
+                this.setState(prevState => {
+                    //prevState.questions.push(new Comment(resp[i].username, resp[i].question, ''))
+                })
+            }
+        })
+        .catch(err => {
+            console.log("Error occured")
+        })
     }
 
     handleQuestionSubmit(question) {
