@@ -23,3 +23,16 @@ exports.returnElectionInfo = function(req,res){
         }
     })
 }
+
+exports.getElectionLocation = function(req,res){
+    electionId = req.params.electionId
+    mysqlconnection.query(`SELECT location 
+    FROM ELECTIONS
+    WHERE ELECTIONS.electionId = ${req.params.electionId};`,function(err,rows,fields){
+        if(err){
+            res.send(404);
+        } else {
+            res.send(rows);
+        }
+    })
+}
