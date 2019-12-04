@@ -154,7 +154,8 @@ export default class CandidateFunctions {
         user.zipCode + '/' +
         user.state + '/' +
         user.city + '/' +
-        user.bio
+        user.bio + '/' +
+        user.verified
         )
               .then(resp => {
                 resolve(resp.data)

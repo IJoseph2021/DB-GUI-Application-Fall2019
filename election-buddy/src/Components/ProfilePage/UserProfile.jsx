@@ -31,7 +31,8 @@ export default class UserProfile extends React.Component {
       party: "",
 			role: [],
 			email: "",
-			updateSuccess: false
+			updateSuccess: false,
+			verify: ""
 
 		};
 
@@ -62,8 +63,6 @@ export default class UserProfile extends React.Component {
 
 	componentDidMount() {
 
-
-
 		const user = {
 
 			userId: this.state.userId,
@@ -84,7 +83,9 @@ export default class UserProfile extends React.Component {
 
 			zip: this.state.zip,
 
-			party: this.state.party
+			party: this.state.party,
+
+			verified: this.state.verify
 
 		};
 
@@ -158,10 +159,7 @@ export default class UserProfile extends React.Component {
 
 		//[{"userID":4,"partyCode":"FES","zipCode":"90278","state":"CA","city":"Los Angeles"}]
 
-		this.userFuncs.getVoterInfo(localStorage.getItem('token')).then(res => {
-
-			// console.log(res)
-
+			this.userFuncs.getVoterInfo(localStorage.getItem('token')).then(res =>{
 			this.setState({
 
 				party: res[0].partyCode,
@@ -173,7 +171,29 @@ export default class UserProfile extends React.Component {
 				city: res[0].city
 
 			})
+		}).catch({
 
+
+
+		})
+			this.candidateFuncs.getCandidateInfo(localStorage.getItem('token')).then(res =>{
+				console.log(res)
+			this.setState({
+
+				party: res[0].partyCode,
+
+				zip: res[0].zipCode,
+
+				us_state: res[0].state,
+
+				city: res[0].city,
+
+				bio: res[0].bio,
+
+				verify: res[0].verified
+
+
+			})
 		}).catch({
 
 
@@ -215,11 +235,11 @@ export default class UserProfile extends React.Component {
 	updateBio = () => {
 		this.candidateFuncs.updateCandidateBio(this.state.userId, this.state.bio)
 		.then(res => {
-			console.log(this.state.bio)
-			//this.setState({bio: res[0].bio})
-			console.log("in update bio")
-			console.log(this.state.userId)
-			console.log(this.state.bio)
+			// console.log(this.state.bio)
+			// //this.setState({bio: res[0].bio})
+			// console.log("in update bio")
+			// console.log(this.state.userId)
+			// console.log(this.state.bio)
 		})
 		.catch(err => {
 			console.log("Error occured")
@@ -251,27 +271,46 @@ export default class UserProfile extends React.Component {
 
 			zipCode: this.state.zip,
 
-			partyCode: this.state.party
+			partyCode: this.state.party,
+
+			verified: this.state.verify
 
 		};
 
 		this.updateBio()
 
-		this.userFuncs.updateVoterInfo(userInfo).then(res => {
+		if(this.state.role.includes("voter")) {
+			this.userFuncs.updateVoterInfo(userInfo).then(res => {
 
-			// console.log(res)
+				// console.log(res)
 
-			this.setState({ updateSuccess: true })
+				this.setState({ updateSuccess: true })
 
-		}).catch(err => {
+			}).catch(err => {
 
-			this.setState({ updateSuccess: false })
+				this.setState({ updateSuccess: false })
 
-			console.log(err)
+				console.log(err)
 
-		})
+			})
+		}
 
 
+		if(this.state.role.includes("candidate")) {
+			this.candidateFuncs.updateCandidateInfo(userInfo).then(res => {
+
+				// console.log(res)
+
+				this.setState({ updateSuccess: true })
+
+			}).catch(err => {
+
+				this.setState({ updateSuccess: false })
+
+				console.log(err)
+
+			})
+		}
 
 		this.userFuncs.updateUserEmail(userInfo).then(res => {
 
