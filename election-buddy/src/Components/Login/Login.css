@@ -16,6 +16,19 @@ hr {
   --input-padding-y: .75rem;
 }
 
+.selectWrapper{
+  border-radius:36px;
+  display:inline-block;
+  overflow:hidden;
+  background:#cccccc;
+  border:1px solid #cccccc;
+}
+.selectBox{
+  width:140px;
+  height:40px;
+  border:0px;
+  outline:none;
+}
 
 .card-signin {
   border: 0;

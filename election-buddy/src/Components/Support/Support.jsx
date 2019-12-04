@@ -4,10 +4,14 @@ import CandidateFunctions from '../../API/CandidateFunctions';
 import ContactLocalAuthorityForm from '../SupportForm/ContactLocalAuthorityForm';
 import ConvertToCandidateForm from '../SupportForm/ConvertToCandidateForm';
 import OtherIssuesForm from '../SupportForm/OtherIssuesForm';
+import UserFunctions from '../../API/UserFunctions';
+
 const faker = require("faker");
 
 export default class Support extends React.Component{
+    userFuncs = new UserFunctions();
     candidateFuncs = new CandidateFunctions()
+
     constructor(){
       super()
 
@@ -15,36 +19,115 @@ export default class Support extends React.Component{
         convertForm: false,
         contactForm: false,
         OtherIssuesForm: false,
+        convertSubmit: false,
+        contactSubmit: false,
+        otherIssuesSubmit: false,
         email: ""
       }
 
       this.onClick = this.onClick.bind(this)
+      this.backToSupport = this.backToSupport.bind(this)
+      this.backToSupportAfterSubmit = this.backToSupportAfterSubmit.bind(this)
+
+      this.finishSubmission = this.finishSubmission.bind(this)
     }
 
    componentDidMount(){
+     this.userFuncs.getUserEmail(localStorage.getItem('token')).then(res => {
+       this.setState({
+         email: res.EMAIL
+       })
+     }).catch(err => {
+     //error caught here
+
+   });
+
     }
 
     onClick(event){
-      console.log(event.target.name)
       this.setState({[event.target.name]: !this.state[event.target.name]})
     }
 
+    backToSupport(event){
+      this.setState({
+        convertForm: false,
+        contactForm: false,
+        OtherIssuesForm: false,
+        convertSubmit: false,
+        contactSubmit: false,
+        otherIssuesSubmit: false,
+      })
+    }
 
+    backToSupportAfterSubmit(event){
+      this.setState({
+        convertForm: false,
+        contactForm: false,
+        OtherIssuesForm: false,
+      })
+    }
+
+    finishSubmission(a_state) {
+      this.setState({
+        convertSubmit: false,
+        contactSubmit: false,
+        otherIssuesSubmit: false
+      })
+
+      this.setState({
+        [a_state]: !this.state.a_state
+      })
+    }
 
     render() {
       return (
         <div className="">
         {
           this.state.convertForm ?
-          ( <ConvertToCandidateForm email_for_form={this.state.email}/> )
+          ( <ConvertToCandidateForm
+            finishSubmission={this.finishSubmission}
+            backToSupport={this.backToSupport}
+            email_for_form={this.state.email}
+            backToSupportAfterSubmit={this.backToSupportAfterSubmit}
+            /> )
             : (
               this.state.contactForm ?
-              ( <ContactLocalAuthorityForm email_for_form={this.state.email}/> )
+              ( <ContactLocalAuthorityForm
+                finishSubmission={this.finishSubmission}
+                backToSupport={this.backToSupport}
+                email_for_form={this.state.email}
+                backToSupportAfterSubmit={this.backToSupportAfterSubmit}
+
+                /> )
               : (
                 this.state.OtherIssuesForm ?
-              ( <OtherIssuesForm email_for_form={this.state.email}/> )
+              ( <OtherIssuesForm
+                finishSubmission={this.finishSubmission}
+                backToSupport={this.backToSupport}
+                email_for_form={this.state.email}
+                backToSupportAfterSubmit={this.backToSupportAfterSubmit}
+                /> )
               : (
+
                 <div className="jumbotron" style={{"textAlign": "center"}}>
+                {
+                  this.state.contactSubmit ? (
+                    <p class="text-success">We Have Sent A Message To Local Authority For You. Your Concerns Will Be Soon Resolved. Thanks!</p>
+                  ) : ""
+                }
+
+                {
+                  this.state.otherIssuesSubmit ? (
+                  <p class="text-success">We Have Sent Your Issues To Our Support. Your Issues Will Be Soon Resolved. Thanks!</p>
+                  ) : ""
+                }
+
+                {
+                  this.state.convertSubmit ? (
+                    <p class="text-success">We Have Sent A Message To Election Buddy Admin About Your Request. Please Wait Until We Get Back To You With Update On Your Status and Role. Thanks!</p>
+                  ) : ""
+                }
+
                   <h1 className="display-5">Election Buddy Premium Support</h1>
                   <p className="lead">Contact our support for further assistance</p>
                   <hr className="my-4"/>

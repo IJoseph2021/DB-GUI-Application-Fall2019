@@ -30,6 +30,9 @@ class UserFunctions {
         })
     }
 
+    addVoter(user){
+
+    }
     updateUserEmail(user) {
         return new Promise((resolve, reject) => {
             return axios.get(this.URL + '/login/updateEmail/' +

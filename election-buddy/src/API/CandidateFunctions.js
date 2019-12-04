@@ -114,4 +114,8 @@ export default class CandidateFunctions {
             .catch(resp => reject(resp));
     })
     }
+
+    addCandidate(candidate){
+      
+    }
 }
