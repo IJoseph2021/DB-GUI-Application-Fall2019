@@ -302,7 +302,7 @@ app.post('/sendEmailOtherIssues', (req, res) => {
 
   // var mailOptions = {
   //   from: `${JSON.stringify(req.body.sender)} <electionbuddy.fa2019@gmail.com>`,
-  //   to: 'mfonten@lyle.smu.edu',
+  //   to: 'mfontenot@lyle.smu.edu',
   //   subject: `${JSON.stringify(req.body.sender)} + from Election Buddy Sent You A Messsage`,
   //   text: JSON.stringify(req.body.content)
   // };
@@ -347,7 +347,7 @@ app.post('/sendEmailLocalAuth', (req, res) => {
 
   // var mailOptions = {
   //   from: `${JSON.stringify(req.body.sender)} <electionbuddy.fa2019@gmail.com>`,
-  //   to: 'mfonten@lyle.smu.edu',
+  //   to: 'mfontenot@lyle.smu.edu',
   //   subject: `${JSON.stringify(req.body.sender)} + from Election Buddy Sent You A Messsage`,
   //   text: JSON.stringify(req.body.content)
   // };
@@ -376,7 +376,7 @@ https.createServer({
 	ca: fs.readFileSync('./ssl_electionbuddy/ca_bundle.crt')
 },app).listen(config.port, config.host);
 
-// 
+//
 // //connecting the express object to listen on a particular port as defined in the config object.
 // app.listen(config.port, config.host, (e) => {
 //   if (e) {

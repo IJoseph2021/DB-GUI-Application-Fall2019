@@ -16,6 +16,7 @@ export default class UserProfile extends React.Component {
       us_state: "",
       city: "",
       zip: "",
+			bio: "",
       party: "",
 			role: [],
 			email: "",
@@ -90,6 +91,20 @@ export default class UserProfile extends React.Component {
 
 		})
 
+	}
+
+	updateBio = () => {
+		this.candidateFuncs.updateCandidateBio(this.state.userId, this.state.bio)
+		.then(res => {
+			console.log(this.state.bio)
+			//this.setState({bio: res[0].bio})
+			console.log("in update bio")
+			console.log(this.state.userId)
+			console.log(this.state.bio)
+		})
+		.catch(err => {
+			console.log("Error occured")
+		});
 	}
 
 	saveUserInfo = async (event) =>{
@@ -288,6 +303,21 @@ export default class UserProfile extends React.Component {
 								</select>
 							</div>
 						</div>
+						{
+							this.state.role.includes("candidate") ? (
+								<div className="form-group row">
+									<label htmlFor="bio" className="col-sm-2 col-form-label">Bio:</label>
+									<div className="col-sm-10">
+										<input type="text"
+										name="bio"
+										value={this.state.bio}
+										onChange={e => this.setState({ bio: e.target.value }) }
+										className="form-control"
+										id="bio" />
+									</div>
+								</div>
+							) : ""
+						}
 
 						{/*Remember to put this info later*/}
 					  <fieldset className="form-group">

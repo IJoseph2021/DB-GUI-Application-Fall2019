@@ -46,8 +46,7 @@ export default class ContactLocalAuthorityForm extends React.Component{
     handleSubmit(){
       const content = {
         sender: this.state.name,
-        subject: this.state.subject,
-        details: this.state.details
+        concern: this.state.concern
       }
       this.forms.localAuth(content).then(res => {
         //do something here
@@ -56,8 +55,7 @@ export default class ContactLocalAuthorityForm extends React.Component{
       })
 
       this.setState({
-        subject: "",
-        details: ""
+        concern: ""
       })
 
       this.props.finishSubmission("contactSubmit")
@@ -97,9 +95,9 @@ export default class ContactLocalAuthorityForm extends React.Component{
                       </div>
 
                       <div className="form-group">
-                      <label htmlFor="reason">Concern to send to local authority:</label>
+                      <label htmlFor="concern">Concern to send to local authority:</label>
                       <textarea
-                      value={this.state.reason}
+                      value={this.state.concern}
                       name="concern"
                       onChange={this.onChange}
                       className="form-control" id="concern" rows="4"></textarea>
