@@ -25,7 +25,14 @@ class AdminFunctions {
         })
     }
 
-
+    getUnverified(){
+      return new Promise((resolve, reject) => {
+          return axios.get(this.URL + '/admin/getUnverified/')
+              .then(resp => {
+                resolve(resp.data)})
+              .catch(resp => reject(resp));
+      })
+    }
 
 }
 

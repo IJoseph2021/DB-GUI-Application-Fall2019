@@ -71,7 +71,7 @@ export default class OtherIssuesForm extends React.Component{
         <div className="">
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">
-            <li className="breadcrumb-item"><Link onClick={this.props.backToSupport}>Support</Link></li>
+            <li className="breadcrumb-item"><Link to='/support' onClick={this.props.backToSupport}>Support</Link></li>
             <li className="breadcrumb-item active" aria-current="page">Other Issues Form</li>
           </ol>
         </nav>

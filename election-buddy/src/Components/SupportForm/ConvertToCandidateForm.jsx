@@ -44,7 +44,7 @@ export default class ConvertToCandidateForm extends React.Component{
       }
 
       this.forms.convertCandidate(user).then(res => {
-        //do something here
+        console.log(res)
       }).catch(err => {
         //do sth here
       })
@@ -66,7 +66,7 @@ export default class ConvertToCandidateForm extends React.Component{
         <div className="">
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">
-            <li className="breadcrumb-item"><Link onClick={this.props.backToSupport}>Support</Link></li>
+            <li className="breadcrumb-item"><Link to='/support' onClick={this.props.backToSupport}>Support</Link></li>
             <li className="breadcrumb-item active" aria-current="page">Convert To Candidate Form</li>
           </ol>
         </nav>

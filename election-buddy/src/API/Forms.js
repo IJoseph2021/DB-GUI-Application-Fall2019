@@ -24,7 +24,7 @@ class Forms {
 
     convertCandidate(user){
       return new Promise((resolve, reject) => {
-          return axios.post(this.URL + '/candidate/session/becomeCandidate/:id' , user)
+          return axios.get(this.URL + '/candidate/session/becomeCandidate/' + user.id)
               .then(resp => {
                 resolve(resp.data)})
               .catch(resp => reject(resp));
