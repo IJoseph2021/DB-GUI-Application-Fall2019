@@ -176,10 +176,10 @@ app.get('/party/getPartyCode/:partyName', party.getPartyCode);
 app.get('/admin/session/getAdminLevel',  admin.getAdminLevel);
 
 //Verifies a candidate
-app.get('/admin/session/verify/:ID',admin.isAdmin, admin.verifyCandidate);
+app.get('/admin/session/verify/:ID', admin.verifyCandidate);
 
 //adds an election
-app.get('/admin/session/addElection/:level/:location/:time/:name',  admin.isAdmin, admin.addElection);
+app.get('/admin/session/addElection/:level/:location/:time/:name', admin.addElection);
 
 //makes a user an admin
 app.get('/admin/addAdmin/:userAddingAdmin/:newAdmin/:adminLevel', admin.addAdmin);
