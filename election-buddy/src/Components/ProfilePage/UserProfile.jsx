@@ -6,786 +6,794 @@ import UserFunctions from '../../API/UserFunctions';
 
 export default class UserProfile extends React.Component {
 
-              userFuncs = new UserFunctions();
+	userFuncs = new UserFunctions();
 
- 
 
-              constructor(props) {
 
-                           super(props);
+	constructor(props) {
 
- 
+		super(props);
 
-                           this.state = {
 
-                                         userId: this.props.userId || localStorage.getItem('token'),
 
-                                         username: this.props.username || "",
+		this.state = {
 
-      firstName: "",
+			userId: this.props.userId || localStorage.getItem('token'),
 
-      lastname: "",
+			username: this.props.username || "",
 
-                                         passhash: "",
+			firstName: "",
 
-      us_state: "",
+			lastname: "",
 
-      city: "",
+			passhash: "",
 
-      zip: "",
+			us_state: "",
 
-                                         bio: "",
+			city: "",
 
-      party: "",
+			zip: "",
 
-                                         role: [],
+			bio: "",
 
-                                         email: "",
+			party: "",
 
-                                         updateSuccess: false
+			role: [],
 
-                           };
+			email: "",
 
- 
+			updateSuccess: false
 
- 
+		};
 
-                           this.onChange = this.onChange.bind(this);
 
-                           this.saveUserInfo = this.saveUserInfo.bind(this);
 
-              }
 
- 
 
- 
+		this.onChange = this.onChange.bind(this);
 
-              onChange = event => {
+		this.saveUserInfo = this.saveUserInfo.bind(this);
 
-                           this.setState({[event.target.name]: event.target.value})
+	}
 
-              }
 
- 
 
- 
 
-              componentDidMount(){
 
- 
+	onChange = event => {
 
-                           const user = {
+		this.setState({ [event.target.name]: event.target.value })
 
-                                         userId: this.state.userId,
+	}
 
-                                         username: this.state.username,
 
-                                         pass: this.state.password,
 
-                                         firstname: this.state.firstName,
 
-                                         lastname: this.state.lastname,
 
-                                         email: this.state.email,
+	componentDidMount() {
 
-                                         us_state: this.state.us_state,
 
-                                         city: this.state.city,
 
-                                         zip: this.state.zip,
+		const user = {
 
-                                         party: this.state.party
+			userId: this.state.userId,
 
-                           };
+			username: this.state.username,
 
- 
+			pass: this.state.password,
 
-                            this.userFuncs.getUserInfo(user).then(res => {
+			firstname: this.state.firstName,
 
-                                         // console.log("userInfo here", res[0])
+			lastname: this.state.lastname,
 
-                                         this.setState({
+			email: this.state.email,
 
-                                                       username: res[0].username,
+			us_state: this.state.us_state,
 
-                                                       firstname: res[0].fname,
+			city: this.state.city,
 
-                                                       lastname: res[0].lname,
+			zip: this.state.zip,
 
-                                                       email: res[0].email,
+			party: this.state.party
 
-                                                       passhash: res[0].passhash
+		};
 
-                                         })
 
-                           }).catch(err => {
 
-                           //error caught here
+		this.userFuncs.getUserInfo(user).then(res => {
 
- 
+			// console.log("userInfo here", res[0])
 
-              });
+			this.setState({
 
- 
+				username: res[0].username,
 
-                            this.userFuncs.getRoles(user.userId).then(res => {
+				firstname: res[0].fname,
 
-                                         // console.log("Roles: ", res)
+				lastname: res[0].lname,
 
-                                         if(Object.entries(res).length === 0 && res.constructor === Object){
+				email: res[0].email,
 
-                                                       this.setState({ role: [...this.state.role, "Not Applicable"] });
+				passhash: res[0].passhash
 
- 
+			})
 
-                                         }
+		}).catch(err => {
 
-                                         else {
+			//error caught here
 
-                                                       this.setState({ role: Object.keys(res)})
 
-                                                       }
 
-                           })
+		});
 
-                           .catch(err => {
 
-                                         //error caught here
 
- 
+		this.userFuncs.getRoles(user.userId).then(res => {
 
-                           });
+			// console.log("Roles: ", res)
 
- 
+			if (Object.entries(res).length === 0 && res.constructor === Object) {
 
-//[{"userID":4,"partyCode":"FES","zipCode":"90278","state":"CA","city":"Los Angeles"}]
+				this.setState({ role: [...this.state.role, "Not Applicable"] });
 
-              this.userFuncs.getVoterInfo(localStorage.getItem('token')).then(res => {
 
-                                         // console.log(res)
 
-                                         this.setState({
+			}
 
-                                                       party: res[0].partyCode,
+			else {
 
-                                                       zip: res[0].zipCode,
+				this.setState({ role: Object.keys(res) })
 
-                                                       us_state: res[0].state,
+			}
 
-                                                       city: res[0].city
+		})
 
-                                         })
+			.catch(err => {
 
-                           }).catch({
+				//error caught here
 
- 
 
-                           })
 
- 
+			});
 
-              }
+			this.candidateFuncs.getCandidateBio(user.userId)
+		.then(res => {
+			this.setState({bio: res[0].bio})
+		})
+		.catch(err => {
+			console.log("Error occured")
+		});
 
- 
 
-              updateBio = () => {
 
-              this.candidateFuncs.updateCandidateBio(this.state.userId, this.state.bio)
+		//[{"userID":4,"partyCode":"FES","zipCode":"90278","state":"CA","city":"Los Angeles"}]
 
-                           .then(res => {
+		this.userFuncs.getVoterInfo(localStorage.getItem('token')).then(res => {
 
-                                         console.log(this.state.bio)
+			// console.log(res)
 
-                                         //this.setState({bio: res[0].bio})
+			this.setState({
 
-                                         console.log("in update bio")
+				party: res[0].partyCode,
 
-                                         console.log(this.state.userId)
+				zip: res[0].zipCode,
 
-                                         console.log(this.state.bio)
+				us_state: res[0].state,
 
-                           })
+				city: res[0].city
 
-                           .catch(err => {
+			})
 
-                                         console.log("Error occured")
+		}).catch({
 
-                           });
 
-              }
 
- 
+		})
 
-              saveUserInfo = async (event) =>{
 
-                           event.preventDefault();
 
- 
+	}
 
-                           const userInfo = {
 
-                                         username: this.state.username,
 
-                                         // pass: this.state.password,
+	updateBio = () => {
 
-                                         userId: this.state.userId,
+		this.candidateFuncs.updateCandidateBio(this.state.userId, this.state.bio)
 
-                                         firstname: this.state.firstName,
+			.then(res => {
 
-                                         lastName: this.state.lastName,
+				console.log(this.state.bio)
 
-                                         email: this.state.email,
+				//this.setState({bio: res[0].bio})
 
-                                         state: this.state.us_state,
+				console.log("in update bio")
 
-                                         city: this.state.city,
+				console.log(this.state.userId)
 
-                                         zipCode: this.state.zip,
+				console.log(this.state.bio)
 
-                                         partyCode: this.state.party
+			})
 
-                           };
+			.catch(err => {
 
- 
+				console.log("Error occured")
 
-                     this.userFuncs.updateVoterInfo(userInfo).then(res => {
+			});
 
-                                         // console.log(res)
+	}
 
-                                         this.setState({updateSuccess: true})
 
-                           }).catch(err => {
 
-                                         this.setState({updateSuccess: false})
+	saveUserInfo = async (event) => {
 
-                                         console.log(err)
+		event.preventDefault();
 
-                           })
 
- 
 
-                    this.userFuncs.updateUserEmail(userInfo).then(res => {
+		const userInfo = {
 
-                                         // console.log(res)
+			username: this.state.username,
 
-                           }).catch(err => {
+			// pass: this.state.password,
 
-                                         console.log(err)
+			userId: this.state.userId,
 
-                           })
+			firstname: this.state.firstName,
 
-              }
+			lastName: this.state.lastName,
 
- 
+			email: this.state.email,
 
-    render() {
+			state: this.state.us_state,
 
-      return (
+			city: this.state.city,
 
-                                                       <div className="user-profile" id="wrap">
+			zipCode: this.state.zip,
 
-                                                       <h1 className="display-4">Your Profile</h1>
+			partyCode: this.state.party
 
-                                                                                  <div className="form-group row">
+		};
 
-                                                                                                <label htmlFor="username" className="col-sm-2 col-form-label">Username:</label>
 
-                                                                                                <div className="col-sm-10">
 
-                                                                                                             <input
+		this.userFuncs.updateVoterInfo(userInfo).then(res => {
 
-                                                                                                             name="username"
+			// console.log(res)
 
-                                                                                                             value={this.state.username}
+			this.setState({ updateSuccess: true })
 
-                                                                                                             disabled
+		}).catch(err => {
 
-                                                                                                             type="text"
+			this.setState({ updateSuccess: false })
 
-                                                                                                             className="form-control"
+			console.log(err)
 
-                                                                                                             id="username"
+		})
 
-                                                                                                             onChange={this.onChange}/>
 
-                                                                                                </div>
 
-                                                                                   </div>
+		this.userFuncs.updateUserEmail(userInfo).then(res => {
 
- 
+			// console.log(res)
 
-                                                                                  <div className="form-group row">
+		}).catch(err => {
 
-                                                                                                <label htmlFor="firstName" className="col-sm-2 col-form-label">First Name:</label>
+			console.log(err)
 
-                                                                                                <div className="col-sm-10">
+		})
 
-                                                                                                             <input
+	}
 
-                                                                                                             name="firstName"
 
-                                                                                                             onChange={this.onChange}
 
-                                                                                                             type="text"
+	render() {
 
-                                                                                                             value={this.state.firstname}
+		return (
 
-                                                                                                             className="form-control"
+			<div className="user-profile" id="wrap">
 
-                                                                                                             id="firstName"/>
+				<h1 className="display-4">Your Profile</h1>
 
-                                                                                                </div>
+				<div className="form-group row">
 
-                                                                                   </div>
+					<label htmlFor="username" className="col-sm-2 col-form-label">Username:</label>
 
- 
+					<div className="col-sm-10">
 
-                                                                                  <div className="form-group row">
+						<input
 
-                                                                                                <label htmlFor="lastName" className="col-sm-2 col-form-label">Last Name:</label>
+							name="username"
 
-                                                                                                 <div className="col-sm-10">
+							value={this.state.username}
 
-                                                                                                             <input
+							disabled
 
-                                                                                                             onChange={this.onChange}
+							type="text"
 
-                                                                                                             name="lastName"
+							className="form-control"
 
-                                                                                                             value={this.state.lastname}
+							id="username"
 
-                                                                                                             type="text"
+							onChange={this.onChange} />
 
-                                                                                                             className="form-control"
+					</div>
 
-                                                                                                             id="lastName"/>
+				</div>
 
-                                                                                                </div>
 
-                                                                                   </div>
 
- 
+				<div className="form-group row">
 
-                                                                                  <div className="form-group row">
+					<label htmlFor="firstName" className="col-sm-2 col-form-label">First Name:</label>
 
-                                                                                                <label htmlFor="email" className="col-sm-2 col-form-label">Email:</label>
+					<div className="col-sm-10">
 
-                                                                                                <div className="col-sm-10">
+						<input
 
-                                                                                                             <input
+							name="firstName"
 
-                                                                                                             onChange={this.onChange}
+							onChange={this.onChange}
 
-                                                                                                             name="email"
+							type="text"
 
-                                                                                                             value={this.state.email}
+							value={this.state.firstname}
 
-                                                                                                             type="text"
+							className="form-control"
 
-                                                                                                             className="form-control"
+							id="firstName" />
 
-                                                                                                             id="email" />
+					</div>
 
-                                                                                                </div>
+				</div>
 
-                                                                                   </div>
 
- 
 
-                                                                                  <div className="form-group row">
+				<div className="form-group row">
 
-                                                                                                <label htmlFor="state" className="col-sm-2 col-form-label">State:</label>
+					<label htmlFor="lastName" className="col-sm-2 col-form-label">Last Name:</label>
 
-                                                                                                <div className ="col-sm-10">
+					<div className="col-sm-10">
 
-                                                                                                             <select
+						<input
 
-                                                                                                             value={this.state.us_state}
+							onChange={this.onChange}
 
-                                                                                                             className="custom-select"
+							name="lastName"
 
-                                                                                                             id="state"
+							value={this.state.lastname}
 
-                                                                                                             name="us_state"
+							type="text"
 
-                                                                                                             onChange={this.onChange}>
+							className="form-control"
 
-                                                                                                                           <option value="">N/A</option>
+							id="lastName" />
 
-                                                                                                                           <option value="AK">Alaska</option>
+					</div>
 
-                                                                                                                           <option value="AL">Alabama</option>
+				</div>
 
-                                                                                                                           <option value="AR">Arkansas</option>
 
-                                                                                                                           <option value="AZ">Arizona</option>
 
-                                                                                                                           <option value="CA">California</option>
+				<div className="form-group row">
 
-                                                                                                                           <option value="CO">Colorado</option>
+					<label htmlFor="email" className="col-sm-2 col-form-label">Email:</label>
 
-                                                                                                                           <option value="CT">Connecticut</option>
+					<div className="col-sm-10">
 
-                                                                                                                           <option value="DC">District of Columbia</option>
+						<input
 
-                                                                                                                           <option value="DE">Delaware</option>
+							onChange={this.onChange}
 
-                                                                                                                           <option value="FL">Florida</option>
+							name="email"
 
-                                                                                                                           <option value="GA">Georgia</option>
+							value={this.state.email}
 
-                                                                                                                           <option value="HI">Hawaii</option>
+							type="text"
 
-                                                                                                                           <option value="IA">Iowa</option>
+							className="form-control"
 
-                                                                                                                           <option value="ID">Idaho</option>
+							id="email" />
 
-                                                                                                                           <option value="IL">Illinois</option>
+					</div>
 
-                                                                                                                           <option value="IN">Indiana</option>
+				</div>
 
-                                                                                                                           <option value="KS">Kansas</option>
 
-                                                                                                                           <option value="KY">Kentucky</option>
 
-                                                                                                                           <option value="LA">Louisiana</option>
+				<div className="form-group row">
 
-                                                                                                                           <option value="MA">Massachusetts</option>
+					<label htmlFor="state" className="col-sm-2 col-form-label">State:</label>
 
-                                                                                                                           <option value="MD">Maryland</option>
+					<div className="col-sm-10">
 
-                                                                                                                           <option value="ME">Maine</option>
+						<select
 
-                                                                                                                           <option value="MI">Michigan</option>
+							value={this.state.us_state}
 
-                                                                                                                           <option value="MN">Minnesota</option>
+							className="custom-select"
 
-                                                                                                                           <option value="MO">Missouri</option>
+							id="state"
 
-                                                                                                                           <option value="MS">Mississippi</option>
+							name="us_state"
 
-                                                                                                                           <option value="MT">Montana</option>
+							onChange={this.onChange}>
 
-                                                                                                                           <option value="NC">North Carolina</option>
+							<option value="">N/A</option>
 
-                                                                                                                           <option value="ND">North Dakota</option>
+							<option value="AK">Alaska</option>
 
-                                                                                                                           <option value="NE">Nebraska</option>
+							<option value="AL">Alabama</option>
 
-                                                                                                                           <option value="NH">New Hampshire</option>
+							<option value="AR">Arkansas</option>
 
-                                                                                                                           <option value="NJ">New Jersey</option>
+							<option value="AZ">Arizona</option>
 
-                                                                                                                           <option value="NM">New Mexico</option>
+							<option value="CA">California</option>
 
-                                                                                                                           <option value="NV">Nevada</option>
+							<option value="CO">Colorado</option>
 
-                                                                                                                           <option value="NY">New York</option>
+							<option value="CT">Connecticut</option>
 
-                                                                                                                           <option value="OH">Ohio</option>
+							<option value="DC">District of Columbia</option>
 
-                                                                                                                           <option value="OK">Oklahoma</option>
+							<option value="DE">Delaware</option>
 
-                                                                                                                           <option value="OR">Oregon</option>
+							<option value="FL">Florida</option>
 
-                                                                                                                           <option value="PA">Pennsylvania</option>
+							<option value="GA">Georgia</option>
 
-                                                                                                                           <option value="PR">Puerto Rico</option>
+							<option value="HI">Hawaii</option>
 
-                                                                                                                           <option value="RI">Rhode Island</option>
+							<option value="IA">Iowa</option>
 
-                                                                                                                           <option value="SC">South Carolina</option>
+							<option value="ID">Idaho</option>
 
-                                                                                                                           <option value="SD">South Dakota</option>
+							<option value="IL">Illinois</option>
 
-                                                                                                                           <option value="TN">Tennessee</option>
+							<option value="IN">Indiana</option>
 
-                                                                                                                           <option value="TX">Texas</option>
+							<option value="KS">Kansas</option>
 
-                                                                                                                           <option value="UT">Utah</option>
+							<option value="KY">Kentucky</option>
 
-                                                                                                                           <option value="VA">Virginia</option>
+							<option value="LA">Louisiana</option>
 
-                                                                                                                           <option value="VT">Vermont</option>
+							<option value="MA">Massachusetts</option>
 
-                                                                                                                           <option value="WA">Washington</option>
+							<option value="MD">Maryland</option>
 
-                                                                                                                           <option value="WI">Wisconsin</option>
+							<option value="ME">Maine</option>
 
-                                                                                                                           <option value="WV">West Virginia</option>
+							<option value="MI">Michigan</option>
 
-                                                                                                                           <option value="WY">Wyoming</option>
+							<option value="MN">Minnesota</option>
 
-                                                                                                             </select>
+							<option value="MO">Missouri</option>
 
-                                                                                                </div>
+							<option value="MS">Mississippi</option>
 
-                                                                                   </div>
+							<option value="MT">Montana</option>
 
- 
+							<option value="NC">North Carolina</option>
 
- 
+							<option value="ND">North Dakota</option>
 
-                                                                                  <div className="form-group row">
+							<option value="NE">Nebraska</option>
 
-                                                                                                <label htmlFor="city" className="col-sm-2 col-form-label">City:</label>
+							<option value="NH">New Hampshire</option>
 
-                                                                                                <div className="col-sm-10">
+							<option value="NJ">New Jersey</option>
 
-                                                                                                             <input type="text"
+							<option value="NM">New Mexico</option>
 
-                                                                                                             className="form-control"
+							<option value="NV">Nevada</option>
 
-                                                                                                             id="city"
+							<option value="NY">New York</option>
 
-                                                                                                             name="city"
+							<option value="OH">Ohio</option>
 
-                                                                                                             onChange={this.onChange}
+							<option value="OK">Oklahoma</option>
 
-                                                                                                             value={this.state.city}
+							<option value="OR">Oregon</option>
 
-                                                                                                             />
+							<option value="PA">Pennsylvania</option>
 
-                                                                                                </div>
+							<option value="PR">Puerto Rico</option>
 
-                                                                                   </div>
+							<option value="RI">Rhode Island</option>
 
- 
+							<option value="SC">South Carolina</option>
 
-                                                                                  <div className="form-group row">
+							<option value="SD">South Dakota</option>
 
-                                                                                                <label htmlFor="zip" className="col-sm-2 col-form-label">Zip Code:</label>
+							<option value="TN">Tennessee</option>
 
-                                                                                                <div className="col-sm-10">
+							<option value="TX">Texas</option>
 
-                                                                                                             <input type="text"
+							<option value="UT">Utah</option>
 
-                                                                                                             name="zip"
+							<option value="VA">Virginia</option>
 
-                                                                                                             onChange={this.onChange}
+							<option value="VT">Vermont</option>
 
-                                                                                                             className="form-control"
+							<option value="WA">Washington</option>
 
-                                                                                                             value={this.state.zip}
+							<option value="WI">Wisconsin</option>
 
-                                                                                                             id="zip" />
+							<option value="WV">West Virginia</option>
 
-                                                                                                </div>
+							<option value="WY">Wyoming</option>
 
-                                                                                   </div>
+						</select>
 
- 
+					</div>
 
-                                                                                  <div className="form-group row">
+				</div>
 
-                                                                                                <label htmlFor="party" className="col-sm-2 col-form-label">Party:</label>
 
-                                                                                                <div className ="col-sm-10">
 
-                                                                                                             <select
 
-                                                                                                             value={this.state.party}
 
-                                                                                                             className ="custom-select"
+				<div className="form-group row">
 
-                                                                                                             id="party"
+					<label htmlFor="city" className="col-sm-2 col-form-label">City:</label>
 
-                                                                                                             name="party"
+					<div className="col-sm-10">
 
-                                                                                                             onChange={this.onChange}>
+						<input type="text"
 
-                                                                                                                           <option value="">N/A</option>
+							className="form-control"
 
-                                                                                                                           <option value="REP">Republican Party</option>
+							id="city"
 
-                                                                                                                           <option value="DEM">Democratic Party</option>
+							name="city"
 
-                                                                                                                           <option value="FES">Flat Earth Society</option>
+							onChange={this.onChange}
 
-                                                                                                             </select>
+							value={this.state.city}
 
-                                                                                                </div>
+						/>
 
-                                                                                   </div>
+					</div>
 
-                                                                                  {
+				</div>
 
-                                                                                                this.state.role.includes("candidate") ? (
 
-                                                                                                             <div className="form-group row">
 
-                                                                                                                           <label htmlFor="bio" className="col-sm-2 col-form-label">Bio:</label>
+				<div className="form-group row">
 
-                                                                                                                           <div className="col-sm-10">
+					<label htmlFor="zip" className="col-sm-2 col-form-label">Zip Code:</label>
 
-                                                                                                                                         <input type="text"
+					<div className="col-sm-10">
 
-                                                                                                                                         name="bio"
+						<input type="text"
 
-                                                                                                                                         value={this.state.bio}
+							name="zip"
 
-                                                                                                                                         onChange={e => this.setState({ bio: e.target.value }) }
+							onChange={this.onChange}
 
-                                                                                                                                         className="form-control"
+							className="form-control"
 
-                                                                                                                                         id="bio" />
+							value={this.state.zip}
 
-                                                                                                                           </div>
+							id="zip" />
 
-                                                                                                             </div>
+					</div>
 
-                                                                                                ) : ""
+				</div>
 
-                                                                                  }
 
- 
 
-                                                                                   {/*Remember to put this info later*/}
+				<div className="form-group row">
 
-                                                                       <fieldset className="form-group">
+					<label htmlFor="party" className="col-sm-2 col-form-label">Party:</label>
 
-                                                                         <div className="row">
+					<div className="col-sm-10">
 
-                                                                           <legend className="col-form-label col-sm-2 pt-0">Role:</legend>
+						<select
 
-                                                                           <div className="col-sm-10">
+							value={this.state.party}
 
-                                                                             <div className="form-check">
+							className="custom-select"
 
-                                                                                                                           {
+							id="party"
 
-                                                                                                                                         this.state.role[0] == "Not Applicable" ? (
+							name="party"
 
-                                                                                                                                                       <input className="form-check-input" type="radio" name="gridRadios1" id="gridRadios1" value="option1" disabled checked/>
+							onChange={this.onChange}>
 
-                                                                                                                                         ) : (
+							<option value="">N/A</option>
 
-                                                                                                                                                       <input className="form-check-input" type="radio" name="gridRadios1" id="gridRadios1" value="option1" disabled/>
+							<option value="REP">Republican Party</option>
 
-                                                                                                                                         )
+							<option value="DEM">Democratic Party</option>
 
-                                                                                                                           }
+							<option value="FES">Flat Earth Society</option>
 
-                                                                               <label className="form-check-label" htmlFor="gridRadios1">
+						</select>
 
-                                                                                                                                                       Not Applicable
+					</div>
+
+				</div>
+
+				{
+
+					this.state.role.includes("candidate") ? (
+
+						<div className="form-group row">
+
+							<label htmlFor="bio" className="col-sm-2 col-form-label">Bio:</label>
+
+							<div className="col-sm-10">
+
+								<input type="text"
+
+									name="bio"
+
+									value={this.state.bio}
+
+									onChange={e => this.setState({ bio: e.target.value })}
+
+									className="form-control"
+
+									id="bio" />
+
+							</div>
+
+						</div>
+
+					) : ""
+
+				}
+
+
+
+				{/*Remember to put this info later*/}
+
+				<fieldset className="form-group">
+
+					<div className="row">
+
+						<legend className="col-form-label col-sm-2 pt-0">Role:</legend>
+
+						<div className="col-sm-10">
+
+							<div className="form-check">
+
+								{
+
+									this.state.role[0] == "Not Applicable" ? (
+
+										<input className="form-check-input" type="radio" name="gridRadios1" id="gridRadios1" value="option1" disabled checked />
+
+									) : (
+
+											<input className="form-check-input" type="radio" name="gridRadios1" id="gridRadios1" value="option1" disabled />
+
+										)
+
+								}
+
+								<label className="form-check-label" htmlFor="gridRadios1">
+
+									Not Applicable
 
                                                                                </label>
 
-                                                                             </div>
+							</div>
 
- 
 
-                                                                                                                           <div className="form-check">
 
-                                                                                                                           {
+							<div className="form-check">
 
-                                                                                                                                                       this.state.role.includes("voter") ? (
+								{
 
-                                                                                                                                                                     <input className="form-check-input" type="radio" name="gridRadios2" id="gridRadios2" value="option2" disabled checked/>
+									this.state.role.includes("voter") ? (
 
-                                                                                                                                                       ) : (
+										<input className="form-check-input" type="radio" name="gridRadios2" id="gridRadios2" value="option2" disabled checked />
 
-                                                                                                                                                                     <input className="form-check-input" type="radio" name="gridRadios2" id="gridRadios2" value="option2" disabled/>
+									) : (
 
-                                                                                                                                                       )
+											<input className="form-check-input" type="radio" name="gridRadios2" id="gridRadios2" value="option2" disabled />
 
-                                                                                                                           }
+										)
 
-                                                                                                                                         <label className="form-check-label" htmlFor="gridRadios2">
+								}
 
-                                                                                                                                         Voter
+								<label className="form-check-label" htmlFor="gridRadios2">
 
-                                                                                                                                         </label>
-
-                                                                                                                           </div>
-
- 
-
- 
-
-                                                                             <div className="form-check">
-
-                                                                                                                           {
-
-                                                                                                                                                       this.state.role.includes("candidate") ? (
-
-                                                                                                                                                                     <input className="form-check-input" type="radio" name="gridRadios3" id="gridRadios3" value="option2" disabled checked/>
-
-                                                                                                                                                       ) : (
-
-                                                                                                                                                                     <input className="form-check-input" type="radio" name="gridRadios3" id="gridRadios3" value="option2" disabled/>
-
-                                                                                                                                                       )
-
-                                                                                                                           }
-
-                                                                               <input className="form-check-input" type="radio" name="gridRadios3" id="gridRadios3" value="option3" disabled/>
-
-                                                                               <label className="form-check-label" htmlFor="gridRadios3">
-
-                                                                                                                                                       Candidate
+									Voter
 
                                                                                                                                          </label>
 
-                                                                             </div>
+							</div>
 
-                                                                             <div className="form-check disabled">
 
-                                                                                                                           {
 
-                                                                                                                                                       this.state.role.includes("admin") ? (
 
-                                                                                                                                                                     <input className="form-check-input" type="radio" name="gridRadios4" id="gridRadios4" value="option4" disabled checked/>
 
-                                                                                                                                                      ) : (
+							<div className="form-check">
 
-                                                                                                                                                                     <input className="form-check-input" type="radio" name="gridRadios4" id="gridRadios4" value="option4" disabled/>
+								{
 
-                                                                                                                                                       )
+									this.state.role.includes("candidate") ? (
 
-                                                                                                                           }
+										<input className="form-check-input" type="radio" name="gridRadios3" id="gridRadios3" value="option2" disabled checked />
 
-                                                                               <input className="form-check-input" type="radio" name="gridRadios4" id="gridRadios4" value="option4" disabled />
+									) : (
 
-                                                                               <label className="form-check-label" htmlFor="gridRadios4">
+											<input className="form-check-input" type="radio" name="gridRadios3" id="gridRadios3" value="option2" disabled />
 
-                                                                                 Election Official
+										)
+
+								}
+
+								<input className="form-check-input" type="radio" name="gridRadios3" id="gridRadios3" value="option3" disabled />
+
+								<label className="form-check-label" htmlFor="gridRadios3">
+
+									Candidate
+
+                                                                                                                                         </label>
+
+							</div>
+
+							<div className="form-check disabled">
+
+								{
+
+									this.state.role.includes("admin") ? (
+
+										<input className="form-check-input" type="radio" name="gridRadios4" id="gridRadios4" value="option4" disabled checked />
+
+									) : (
+
+											<input className="form-check-input" type="radio" name="gridRadios4" id="gridRadios4" value="option4" disabled />
+
+										)
+
+								}
+
+								<input className="form-check-input" type="radio" name="gridRadios4" id="gridRadios4" value="option4" disabled />
+
+								<label className="form-check-label" htmlFor="gridRadios4">
+
+									Election Official
 
                                                                                </label>
 
-                                                                             </div>
+							</div>
 
-                                                                           </div>
+						</div>
 
-                                                                         </div>
+					</div>
 
-                                                                       </fieldset>
+				</fieldset>
 
- 
 
-                                                                       <div className="form-group row">
 
-                                                                         <div className="col-sm-10">
+				<div className="form-group row">
 
-                                                                           <button onClick = {this.saveUserInfo} type="button" className="btn btn-primary">Save Your Profile</button>
+					<div className="col-sm-10">
 
-                                                                                                             {
+						<button onClick={this.saveUserInfo} type="button" className="btn btn-primary">Save Your Profile</button>
 
-                                                                                                                           this.state.updateSuccess ? <p className="text-success">Update Information Success</p> : ""
+						{
 
-                                                                                                             }
+							this.state.updateSuccess ? <p className="text-success">Update Information Success</p> : ""
 
-                                                                                                </div>
+						}
 
-                                                                       </div>
+					</div>
 
- 
+				</div>
 
-        </div>
 
-      );
 
-    }
+			</div>
+
+		);
+
+	}
 
 }
