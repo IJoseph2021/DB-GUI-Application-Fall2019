@@ -199,3 +199,31 @@ exports.getCandidateInfo = function(req,res){
       }
     );
 }
+
+
+exports.updateCandidateInfo = function(req,res){
+    userId = req.params.userId
+    partyCode = req.params.partyCode
+    zipCode = req.params.zipCode
+    state = req.params.state
+    city = req.params.city
+    bio = req.params.bio
+    mysqlConnection.query(`UPDATE CANDIDATE
+      SET 
+      userId = '${userId}',
+      partyCode = '${partyCode}',
+      zipCode = '${zipCode}',
+      state = '${state}',
+      city = '${city}' WHERE
+      bio = '${bio}'` ,
+    function(err,rows,fields){
+        if(err){
+            res.send(404)
+        }
+        else {
+            res.send("Update Success")
+            };
+
+        }
+    );
+}
