@@ -16,10 +16,10 @@ exports.createQuestion = function(req,res){
     askee_ID = req.params.askee_ID;
     question = req.params.question;
     active = 1;
-    update_Time = dateTime;
+    //update_Time = dateTime;
 
-    query = "INSERT INTO electionBuddy.CANDIDATE_QUESTION (question_ID, question_Time, asker_ID, askee_ID, question, active, update_Time)"+
-    " VALUES(\""+ question_ID + "\",\"" + question_Time + "\",\"" + asker_ID + "\",\"" + askee_ID + "\",\"" + question + "\",\"" + active + "\",\"" + update_Time + "\" );";
+    query = "INSERT INTO electionBuddy.CANDIDATE_QUESTION (questionTime, askerId, askeeId, question, active)"+
+    " VALUES(\"" + question_Time + "\",\"" + asker_ID + "\",\"" + askee_ID + "\",\"" + question + "\",\"" + active + "\");";
 
     console.log(query);
     mysqlConnection.query(query, 
@@ -38,8 +38,8 @@ exports.getQuestion = function(req, res){
     userID = req.session.userId;
     qID = req.params.question_ID;
 
-    console.log(`SELECT question FROM CANDIDATE_QUESTION WHERE question_ID = '${qID}';`);
-    mysqlConnection.query(`SELECT question FROM CANDIDATE_QUESTION WHERE question_ID = '${qID}';`,function(err,rows,fields){
+    console.log(`SELECT question FROM CANDIDATE_QUESTION WHERE questionId = '${qID}';`);
+    mysqlConnection.query(`SELECT question FROM CANDIDATE_QUESTION WHERE questionId = '${qID}';`,function(err,rows,fields){
         if(rows[0] != undefined){
             res.send(rows[0].question);
         }
