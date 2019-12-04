@@ -108,7 +108,7 @@ exports.getInfoVoter = function(req,res){
         } else {
           res.send(rows)
         }
-    });
+    );
 }
 
 exports.updateInfoVoter = function(req,res){
@@ -126,7 +126,7 @@ exports.updateInfoVoter = function(req,res){
             };
 
         }
-    });
+    );
 }
 
 
