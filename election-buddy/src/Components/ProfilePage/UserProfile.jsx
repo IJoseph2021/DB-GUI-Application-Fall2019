@@ -3,11 +3,12 @@ import React from 'react';
 import './UserProfile.css';
 
 import UserFunctions from '../../API/UserFunctions';
+import CandidateFunctions from '../../API/CandidateFunctions';
 
 export default class UserProfile extends React.Component {
 
 	userFuncs = new UserFunctions();
-
+	candidateFuncs = new CandidateFunctions();
 
 
 	constructor(props) {
