@@ -64,6 +64,7 @@ export default class UserProfile extends React.Component {
 	onChange = event => {
 
 		this.setState({ [event.target.name]: event.target.value })
+		this.updateBio()
 
 	}
 
