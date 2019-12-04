@@ -216,7 +216,7 @@ exports.getQuestionsAsked = function(req,res){
     //mysqlConnection.query(`SELECT * FROM USER JOIN CANDIDATE_QUESTION WHERE USER.id = ${req.params.userID};`,function(err,rows,fields){
     //mysqlConnection.query(`SELECT * FROM USER JOIN CANDIDATE_QUESTION WHERE askerId = ${req.params.userID};`,function(err,rows,fields){
 
-    mysqlConnection.query('SELECT * FROM USER JOIN CANDIDATE_QUESTION on USER.id = CANDIDATE_QUESTION.askerId WHERE CANDIDATE_QUESTION.askeeId = ${req.params.userID};',function(err,rows,fields){
+    mysqlConnection.query(`SELECT * FROM USER JOIN CANDIDATE_QUESTION on USER.id = CANDIDATE_QUESTION.askerId WHERE CANDIDATE_QUESTION.askeeId = ${req.params.userID};`, function(err,rows,fields){
 
         if(err){
             res.send(404);
