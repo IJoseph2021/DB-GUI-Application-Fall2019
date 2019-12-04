@@ -274,7 +274,7 @@ app.get('/election/getElections/citiesWithElections', elections.getElectionsInCi
 //return all info given electionId
 app.get('/election/returnElectionInfo/:electionId',elections.returnElectionInfo);
 
-//return election location 
+//return election location
 app.get('/election/getElectionLocation/:electionId',elections.getElectionLocation);
 
 //return all election ID's that a candidate is in (ID)
@@ -319,19 +319,19 @@ app.post('/sendEmailOtherIssues', (req, res) => {
 	});
 
 
-  // var mailOptions = {
-  //   from: `${JSON.stringify(req.body.sender)} <electionbuddy.fa2019@gmail.com>`,
-  //   to: 'mfontenot@lyle.smu.edu',
-  //   subject: `${JSON.stringify(req.body.sender)} + from Election Buddy Sent You A Messsage`,
-  //   text: JSON.stringify(req.body.content)
-  // };
+  var mailOptions = {
+    from: `${JSON.stringify(req.body.sender)} <electionbuddy.fa2019@gmail.com>`,
+    to: 'mfonten@lyle.smu.edu',
+    subject: `${JSON.stringify(req.body.subject)} + from Election Buddy Sent You A Messsage`,
+    text: JSON.stringify(req.body.details)
+  };
 
-	var mailOptions = {
-	  from: `${JSON.stringify(req.body.sender)} <electionbuddy.fa2019@gmail.com>`,
-	  to: 'skylert@smu.edu',
-	  subject: `${JSON.stringify(req.body.subject)}`,
-	  text: JSON.stringify(req.body.explanation)
-	};
+	// var mailOptions = {
+	//   from: `${JSON.stringify(req.body.sender)} <electionbuddy.fa2019@gmail.com>`,
+	//   to: 'skylert@smu.edu',
+	//   subject: `${JSON.stringify(req.body.subject)}`,
+	//   text: JSON.stringify(req.body.details)
+	// };
 
   transporter.sendMail(mailOptions, function(error, info){
     if (error) {
@@ -364,19 +364,19 @@ app.post('/sendEmailLocalAuth', (req, res) => {
 	});
 
 
-  // var mailOptions = {
-  //   from: `${JSON.stringify(req.body.sender)} <electionbuddy.fa2019@gmail.com>`,
-  //   to: 'mfontenot@lyle.smu.edu',
-  //   subject: `${JSON.stringify(req.body.sender)} + from Election Buddy Sent You A Messsage`,
-  //   text: JSON.stringify(req.body.content)
-  // };
+  var mailOptions = {
+    from: `${JSON.stringify(req.body.sender)} <electionbuddy.fa2019@gmail.com>`,
+    to: 'mfonten@lyle.smu.edu',
+    subject: `${JSON.stringify(req.body.sender)} + from Election Buddy Sent You A Messsage`,
+    text: JSON.stringify(req.body.concern)
+  };
 
-	var mailOptions = {
-	  from: `${JSON.stringify(req.body.sender)} <electionbuddy.fa2019@gmail.com>`,
-	  to: 'skylert@smu.edu',
-	  subject: `${JSON.stringify(req.body.sender)} from Election Buddy Sent You A Concern`,
-	  text: JSON.stringify(req.body.concern)
-	};
+	// var mailOptions = {
+	//   from: `${JSON.stringify(req.body.sender)} <electionbuddy.fa2019@gmail.com>`,
+	//   to: 'skylert@smu.edu',
+	//   subject: `${JSON.stringify(req.body.sender)} from Election Buddy Sent You A Concern`,
+	//   text: JSON.stringify(req.body.concern)
+	// };
 
   transporter.sendMail(mailOptions, function(error, info){
     if (error) {
