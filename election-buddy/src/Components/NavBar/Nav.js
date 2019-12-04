@@ -35,12 +35,19 @@ class Nav extends Component {
                     <Link className="nav-link" to="/news">News</Link>
                   </li>
                   <li className="nav-item dropdown">
-                    <Link className="nav-link dropdown-toggle" to="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span style={{"cursor": "pointer"}} className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       Account
-                    </Link>
+                    </span>
                     <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                       <Link className="dropdown-item" to="/profile">User Profile</Link>
                       <Link className="dropdown-item" to="/changepwd">Change password</Link>
+                      {
+                        this.props.role.includes("admin") ? (
+                          <Link className="dropdown-item" to="/admintask">Admin Task</Link>
+                        ) : (
+                          ""
+                        )
+                      }
                       <div className="dropdown-divider"></div>
                       <Link className="dropdown-item" to="/logout">Log out</Link>
                     </div>

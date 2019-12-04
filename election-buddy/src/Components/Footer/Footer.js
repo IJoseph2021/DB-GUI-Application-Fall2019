@@ -15,12 +15,10 @@ function Footer() {
           <hr/>
           <div className = "content">
             <ul>
-              <Router>
                 <li className = "left"><Link to="/terms">Terms of Use</Link></li>
                 <li className = "left"><Link to="/privacy">Privacy Policy</Link></li>
                 <li className = "left"><Link to="/about">About Us</Link></li>
                 <li className = "left"><Link to="/support">Support</Link></li>
-              </Router>
             </ul>
             <p>&copy; 2019 Election Buddy. SHARK Inc. All Rights Reserved.</p>
             <p>Southern Methodist University - Computer Science department</p>
