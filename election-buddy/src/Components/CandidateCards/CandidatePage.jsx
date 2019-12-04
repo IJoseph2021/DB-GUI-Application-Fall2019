@@ -176,7 +176,7 @@ export default class CandidatePage extends React.Component {
         const groupedArticles = this.createGroups()
         return (
             <div>
-                <div className={`${this.state.party} container-fluid}`}>
+                <div className={`${this.state.party} cointainer-fluid`}>
                     <h1 style={{'color': 'black'}}>
                         {this.state.candidateName}
                     </h1>

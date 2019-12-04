@@ -24,10 +24,6 @@ export default class UserProfile extends React.Component {
 			profile: false
 		};
 
-
-
-
-
 		this.onChange = this.onChange.bind(this);
 		this.getUserInfo = this.getUserInfo.bind(this);
 		this.toggleForm = this.toggleForm.bind(this);
