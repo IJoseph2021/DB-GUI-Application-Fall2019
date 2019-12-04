@@ -55,6 +55,12 @@ class Signup extends Component {
             email: ""
           })
 
+          this.userFuncs.addVote(user).then(res => {
+
+          }).catch(err => {
+
+          })
+          
           this.userFuncs.signUp(user).then(res => {
               if (!!res.indexOf("made")) {
                 this.setState({signUpSuccess: false})
@@ -173,7 +179,8 @@ class Signup extends Component {
 
                               </div>
 
-                              <div>
+                              {/*
+                                <div>
                                 <label htmlFor="role">What is your role?</label>
                                 <select
                                 name="role"
@@ -192,7 +199,8 @@ class Signup extends Component {
                                 )
                                 }
                                 </select>
-                              </div>
+                                </div>
+                                */}
 
         											<button style={{"marginTop": "2em"}}
         											className="btn btn-lg btn-primary btn-block text-uppercase"

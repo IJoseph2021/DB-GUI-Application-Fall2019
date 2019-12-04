@@ -89,6 +89,12 @@ export default class UserProfile extends React.Component {
 
 		});
 
+		// this.userFuncs.getUserInfo().then(res => {
+		//
+		// }).catch({
+		//
+		// })
+
 	}
 
 	saveUserInfo = async (event) =>{
