@@ -208,17 +208,21 @@ exports.updateCandidateInfo = function(req,res){
     state = req.params.state
     city = req.params.city
     bio = req.params.bio
+    verified = req.params.verified
     mysqlConnection.query(`UPDATE CANDIDATE
       SET 
-      userId = '${userId}',
       partyCode = '${partyCode}',
       zipCode = '${zipCode}',
       state = '${state}',
-      city = '${city}' WHERE
-      bio = '${bio}'` ,
+      city = '${city}', 
+      bio = '${bio}',
+      verified = ${verified}
+      WHERE
+      userId = ${userId};` ,
     function(err,rows,fields){
         if(err){
-            res.send(404)
+            console.log(userId)
+            console.log(err.message)
         }
         else {
             res.send("Update Success")

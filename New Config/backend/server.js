@@ -222,6 +222,9 @@ app.get('/candidate/getCandidateParty/:id', candidate.getCandidateParty);
 //get all candidate info
 app.get('/candidate/getCandidateInfo/:userId', candidate.getCandidateInfo);
 
+//update Candidate info
+app.get('/candidate/updateCandidateInfo/:userId/:partyCode/:zipCode/:state/:city/:bio/:verified', candidate.updateCandidateInfo)
+
 
 
 
