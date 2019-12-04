@@ -261,6 +261,8 @@ app.get('/question/getQuestionsAsked/:userID', questions.getQuestionsAsked);
 //app.get('/questions/session/reportComment/:comment_ID', questions.reportComment);
 
 //election routes
+
+//return elections in cities
 app.get('/election/getElections/citiesWithElections', elections.getElectionsInCities);
 
 //return all info given electionId

@@ -180,3 +180,22 @@ exports.getCandidateParty = function(req,res){
         }
     });
 }
+
+//i.j.
+exports.getInfoCandidate = function(req,res){
+    userId = req.params.userId
+    mysqlConnection.query(`SELECT * 
+    FROM CANDIDATE
+    JOIN USER
+    ON CANDIDATE.userId = USER.id
+    WHERE CANDIDATE.userID = '${userId}'`,
+    function(err,rows,fields){
+        if(err){console.log(err.message)};
+        if(rows.length == undefined || rows[0] == undefined){
+            res.send('Cannot find user');
+        } else {
+          res.send(rows)
+        }
+      }
+    );
+}
