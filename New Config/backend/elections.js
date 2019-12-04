@@ -36,3 +36,16 @@ exports.getElectionLocation = function(req,res){
         }
     })
 }
+
+exports.getElectionsByCandidate = function(req,res){
+    userId =  req.params.userId
+    mysqlconnection.query(`SELECT electionId 
+    FROM ELECTION_CANDIDATES
+    WHERE userId = ${req.params.userId};`,function(err,rows,fields){
+        if(err){
+            res.send(404);
+        } else {
+            res.send(rows);
+        }
+    })
+}
