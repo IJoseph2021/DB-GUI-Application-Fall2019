@@ -1,5 +1,6 @@
 export default class Comment {
-    constructor(userName, comment, response) {
+    constructor(questionId, userName, comment, response) {
+        this.questionId = questionId;
         this.userName = userName;
         this.comment = comment;
         this.response = response;

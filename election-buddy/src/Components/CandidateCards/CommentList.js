@@ -6,14 +6,16 @@ export default class CommentList extends React.Component {
     candidateFuncs = new CandidateFunctions();
     constructor(props){
         super(props);
-
+        console.log(this.props.userId);
         this.state = {
             userId: this.props.userId || localStorage.getItem('token'),
             candidateName: '',
             response: ''
         };
+        console.log(this.props.candidateId);
+        console.log(this.props.userId);
     }
-
+    
     handleResponse = (event) => {
         event.preventDefault();
         this.props.handleResponse(this.state);
@@ -47,13 +49,13 @@ export default class CommentList extends React.Component {
                               <div className="card">
 
 
-                              <div className="card-header">
-                                  <p>{x.userName}</p>
-                              </div>
+                                <div className="card-header">
+                                    <p>{x.userName}</p>
+                                </div>
 
-                              <div className="card-body">
-                                  {x.comment}
-                              </div>
+                                <div className="card-body font-weight-bold">
+                                    {x.comment}
+                                </div>
                               </div>
 
                               <div className="card" style={{ "display": x.response != '' ? 'block' : 'none' }}>
@@ -63,15 +65,15 @@ export default class CommentList extends React.Component {
                                   <p className="card-body">{x.response}</p>
                               </div>
 
-                              <div style={{ "display": x.response.length == 0 ? 'block' : 'none' }}>
+                              <div className="candidate_response card" style={{ "display": x.response.length == 0 ? 'block' : 'none' }}>
                                   <form className="candidate_response card"
+                                        style={{ "display": this.props.candidateId === this.props.userId ? 'block' : 'none' }}
                                         onSubmit={this.handleResponse}>
                                       <input type="text"
                                           id="name"
                                           name="name"
-                                          placeholder="Candidate Name"
                                           className="form-control"
-                                          value={this.state.candidateName}
+                                          value={this.props.candidateName}
                                           onChange={ e => this.setState({ candidateName: e.target.value }) } />
 
                                       <input type="text"
@@ -80,12 +82,18 @@ export default class CommentList extends React.Component {
                                           placeholder="What's your response?"
                                           className="form-control"
                                           value={this.state.response}
-                                          onChange={ e => this.setState({ response: e.target.value }) } />
+                                          onChange={ e => this.setState({ response: e.target.value }) } 
+                                          //onChange={ e => ( x.response = e.target.value) }
+                                          />
                                       <button type="submit"
                                           className="btn btn-primary">
                                           Post
                                       </button>
                                   </form>
+                                  <div  style={{ "display": i.response != '' && this.props.candidateId !== this.props.userId ? 'block' : 'none' }}
+                                        className="candidate_response card form-control">
+                                        <p><mark>{this.props.candidateName} has not answered this question</mark></p>
+                                  </div>
                               </div>
                           </li>
                       )}
