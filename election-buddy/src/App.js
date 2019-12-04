@@ -77,11 +77,8 @@ class App extends React.Component {
 	            )
 	          )}/>
 
-						<Route exact path="/admintask" render={() => (
-							this.state.role.includes("admin") ? (
-								<AdminTask/>
-							) : ""
-						)}/>
+						{this.state.loginState && <Route exact path="/admintask" exact component ={AdminTask} />}
+
 
 						{/*this.state.loginState && <Route path="/candidate" exact component={(props) => <CandidatePage {...props} userId={this.state.userId}/>}/>*/}
 						{this.state.loginState && <Route path="/support" exact component={Support} />}

@@ -39,16 +39,15 @@ export default class ConvertToCandidateForm extends React.Component{
     }
 
     handleSubmit(){
-      const content = {
-        sender: this.state.name,
-        subject: this.state.subject,
-        details: this.state.details
+      const user = {
+        id: localStorage.getItem('token')
       }
-      // this.forms.convertCandidate(content).then(res => {
-      //   //do something here
-      // }).catch(err => {
-      //   //do sth here
-      // })
+
+      this.forms.convertCandidate(user).then(res => {
+        console.log(res)
+      }).catch(err => {
+        //do sth here
+      })
 
       this.setState({
         subject: "",
@@ -67,7 +66,7 @@ export default class ConvertToCandidateForm extends React.Component{
         <div className="">
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">
-            <li className="breadcrumb-item"><Link onClick={this.props.backToSupport}>Support</Link></li>
+            <li className="breadcrumb-item"><Link to='/support' onClick={this.props.backToSupport}>Support</Link></li>
             <li className="breadcrumb-item active" aria-current="page">Convert To Candidate Form</li>
           </ol>
         </nav>

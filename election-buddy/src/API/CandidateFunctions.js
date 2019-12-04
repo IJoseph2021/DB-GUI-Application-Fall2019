@@ -127,6 +127,42 @@ export default class CandidateFunctions {
     })
     }
 
+    // //get all candidate info
+    //
+    // //update Candidate info
+    // app.get('/candidate/updateCandidateInfo/:userId/:partyCode/:zipCode/:state/:city/:bio/:verified', candidate.updateCandidateInfo)
+
+    getCandidateInfo(userId){
+      // app.get('/candidate/getCandidateInfo/:userId', candidate.getCandidateInfo);
+        return new Promise((resolve, reject) => {
+          return axios.get(this.URL + '/candidate/getCandidateInfo/' + userId
+
+          )
+                .then(resp => {
+                  resolve(resp.data)
+                })
+                .catch(resp => reject(resp));
+        })
+    }
+
+    updateCandidateInfo(user){
+      // app.get('/candidate/updateCandidateInfo/:userId/:partyCode/:zipCode/:state/:city/:bio/:verified', candidate.updateCandidateInfo)
+      return new Promise((resolve, reject) => {
+        return axios.get(this.URL + '/candidate/updateCandidateInfo/' +
+        user.userId + '/' +
+        user.partyCode + '/' +
+        user.zipCode + '/' +
+        user.state + '/' +
+        user.city + '/' +
+        user.bio
+        )
+              .then(resp => {
+                resolve(resp.data)
+              })
+              .catch(resp => reject(resp));
+      })
+    }
+
     addCandidate(candidate){
 
     }
