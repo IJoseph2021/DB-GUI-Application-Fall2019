@@ -167,6 +167,9 @@ export default class CandidatePage extends React.Component {
       return groupedArticles
     }
 
+    editBio() {
+
+    }
 
     render () {
 
@@ -189,9 +192,10 @@ export default class CandidatePage extends React.Component {
                     <p style={{padding: "0em 1.5em"}}>
                         {this.state.candidateInfo}
                     </p>
+                    
                 </div>
 
-                <div className="candidateInfo">
+                <div className="candidateInfo2">
                     <h3 style={{padding: "0em 0.8em"}}>
                         Questions and Answers
                     </h3>

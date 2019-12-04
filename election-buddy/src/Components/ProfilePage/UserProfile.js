@@ -1,22 +1,25 @@
 import React from 'react';
 import './UserProfile.css';
 import UserFunctions from '../../API/UserFunctions';
+import CandidateFunctions from '../../API/CandidateFunctions';
+
 export default class UserProfile extends React.Component {
 	userFuncs = new UserFunctions();
-
+	candidateFuncs = new CandidateFunctions();
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			userId: this.props.userId || localStorage.getItem('token'),
 			username: this.props.username || "",
-      firstName: "",
-      lastname: "",
+      		firstName: "",
+      		lastname: "",
 			passhash: "",
-      us_state: "",
-      city: "",
-      zip: "",
-      party: "",
+      		us_state: "",
+      		city: "",
+      		zip: "",
+			party: "",
+			bio: "",
 			role: [],
 			profile: false
 		};
@@ -39,6 +42,7 @@ export default class UserProfile extends React.Component {
 
 	onChange = event => {
 		this.setState({[event.target.name]: event.target.value})
+		this.updateBio()
 	}
 
 	getUserInfo = async (event) => {
@@ -94,12 +98,20 @@ export default class UserProfile extends React.Component {
 		// }).catch({
 		//
 		// })
+		this.candidateFuncs.getCandidateBio(user.userId)
+		.then(res => {
+			this.setState({bio: res[0].bio})
+		})
+		.catch(err => {
+			console.log("Error occured")
+		});
 
+		
 	}
 
 	saveUserInfo = async (event) =>{
 		event.preventDefault();
-
+		
 		const userInfo = {
 			// username: this.state.username,
 			// pass: this.state.password,
@@ -108,8 +120,24 @@ export default class UserProfile extends React.Component {
 			us_state: this.state.us_state,
 			city: this.state.city,
 			zip: this.state.zip,
-			party: this.state.party
+			party: this.state.party,
+			bio: this.state.bio
 		};
+		
+		
+	}
+
+	updateBio = () => {
+		this.candidateFuncs.updateCandidateBio(this.state.userId, this.state.bio)
+		.then(res => {
+			this.setState({bio: res[0].bio})
+			console.log("in update bio")
+			console.log(this.state.userId)
+			console.log(this.state.bio)
+		})
+		.catch(err => {
+			console.log("Error occured")
+		});
 	}
 
     render() {
@@ -276,6 +304,18 @@ export default class UserProfile extends React.Component {
 									<option value="DEM">Democratic Party</option>
 									<option value="FES">Flat Earth Society</option>
 								</select>
+							</div>
+						</div>
+
+						<div className="form-group row">
+							<label htmlFor="bio" className="col-sm-2 col-form-label">Bio:</label>
+							<div className="col-sm-10">
+								<input type="text"
+								name="bio"
+								value={this.state.bio}
+								onChange= {e => this.setState({ bio: e.target.value }) }
+								className="form-control"
+								id="bio" />
 							</div>
 						</div>
 
