@@ -219,6 +219,12 @@ app.get('/candidate/getBio/:id', candidate.getBio);
 //get candidate party
 app.get('/candidate/getCandidateParty/:id', candidate.getCandidateParty);
 
+//get all candidate info
+app.get('/candidate/getCandidateInfo/:userId', candidate.getCandidateInfo);
+
+//update Candidate info
+app.get('/candidate/updateCandidateInfo/:userId/:partyCode/:zipCode/:state/:city/:bio/:verified', candidate.updateCandidateInfo)
+
 
 
 
@@ -261,6 +267,8 @@ app.get('/question/getQuestionsAsked/:userID', questions.getQuestionsAsked);
 //app.get('/questions/session/reportComment/:comment_ID', questions.reportComment);
 
 //election routes
+
+//return elections in cities
 app.get('/election/getElections/citiesWithElections', elections.getElectionsInCities);
 
 //return all info given electionId
