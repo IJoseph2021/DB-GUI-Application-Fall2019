@@ -191,6 +191,16 @@ export default class CandidatePage extends React.Component {
                     </p>
                 </div>
 
+                <div className="candidateInfo">
+                    <h3 style={{padding: "0em 0.8em"}}>
+                        Questions and Answers
+                    </h3>
+                    <CommentList questions={this.state.questions} handleResponse={response => this.handleResponse(response)} candidateName={this.state.candidateName} userId={this.state.userId} candidateId={this.state.candidateId}/>
+                    <CommentForm onQuestionSubmit={question => this.handleQuestionSubmit(question)}/>
+                </div>
+
+                
+{/*
                 <div className="candidateNews">
                     <h3 style={{padding: "0em 0.8em"}}>
                         Live Candidate Updates
@@ -221,11 +231,10 @@ export default class CandidatePage extends React.Component {
                             </div>
                             ))
                         }
-                </div>
+                    </div>*/}
 
-                <div className="questions">
-                    <CommentList questions={this.state.questions} handleResponse={response => this.handleResponse(response)} candidateName={this.state.candidateName} userId={this.state.userId} candidateId={this.state.candidateId}/>
-                    <CommentForm onQuestionSubmit={question => this.handleQuestionSubmit(question)}/>
+                <div className="questions candidateInfo">
+                    
                 </div>
             </div>
         )
