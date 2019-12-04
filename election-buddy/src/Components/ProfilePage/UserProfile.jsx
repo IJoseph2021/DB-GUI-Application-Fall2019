@@ -256,7 +256,7 @@ export default class UserProfile extends React.Component {
 
 		};
 
-
+		this.updateBio()
 
 		this.userFuncs.updateVoterInfo(userInfo).then(res => {
 
