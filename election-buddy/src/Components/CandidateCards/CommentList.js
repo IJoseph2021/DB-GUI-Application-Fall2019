@@ -72,7 +72,6 @@ export default class CommentList extends React.Component {
                                       <input type="text"
                                           id="name"
                                           name="name"
-                                          
                                           className="form-control"
                                           value={this.props.candidateName}
                                           onChange={ e => this.setState({ candidateName: e.target.value }) } />
@@ -83,7 +82,9 @@ export default class CommentList extends React.Component {
                                           placeholder="What's your response?"
                                           className="form-control"
                                           value={this.state.response}
-                                          onChange={ e => this.setState({ response: e.target.value }) } />
+                                          onChange={ e => this.setState({ response: e.target.value }) } 
+                                          //onChange={ e => ( x.response = e.target.value) }
+                                          />
                                       <button type="submit"
                                           className="btn btn-primary">
                                           Post
