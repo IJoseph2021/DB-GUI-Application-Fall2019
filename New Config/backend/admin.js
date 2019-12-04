@@ -66,3 +66,9 @@ exports.addAdmin = function(req,res){
     })
 
 }
+
+exports.getUnverified = function(req,res){
+    mysqlconnection.query(`SELECT * FROM CANDIDATE WHERE CANDIDATE.verified = 0;`,function(err,rows,fields){
+        res.send(rows);
+    });
+}

@@ -184,6 +184,8 @@ app.get('/admin/session/addElection/:level/:location/:time/:name',  admin.isAdmi
 //makes a user an admin
 app.get('/admin/addAdmin/:userAddingAdmin/:newAdmin/:adminLevel', admin.addAdmin);
 
+app.get('/admin/getUnverified', admin.getUnverified);
+
 //Candidate Routes
 
 //Allows a user to become a candidate
