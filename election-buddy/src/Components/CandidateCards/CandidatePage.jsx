@@ -22,7 +22,8 @@ export default class CandidatePage extends React.Component {
             party: '',
             candidateInfo: '',
             candidateNews: [],
-            questions: []
+            questions: [],
+            questionUserNames: []
         }
       }
 
@@ -65,13 +66,38 @@ export default class CandidatePage extends React.Component {
 		.catch(err => {
 			console.log("Error occured")
         });
-
+/*
         this.candidateFuncs.getCandidateQuestionsAsked(params.id)
 		.then(resp => {
             console.log("Theres no error")
             console.log(resp)
             for (var i = 0; i < resp.length; i++) 
             {
+                this.userFuncs.getUserName(resp[i].askerId).then(res => {
+                    console.log(res[0].username)
+                    this.setState(prevState => {
+                        prevState.questionUserNames.push(res[0].username)
+                    })
+                })
+                this.setState(prevState => {
+                    prevState.questions.push(new Comment(resp[i].questionId, this.state.questionUserNames[i], resp[i].question, ''))
+                })
+            }
+        })
+        .catch(err => {
+            console.log("Error occured")
+        })
+*/
+        
+        this.candidateFuncs.getCandidateQuestionsAsked(params.id)
+		.then(resp => {
+            console.log("Theres no error")
+            console.log(resp)
+            for (var i = 0; i < resp.length; i++) 
+            {
+                this.userFuncs.getUserName(resp[i].askerId).then(res => {
+                    console.log(res[0].username)
+                })
                 this.setState(prevState => {
                     prevState.questions.push(new Comment(resp[i].questionId, resp[i].username, resp[i].question, ''))
                 })
@@ -80,6 +106,7 @@ export default class CandidatePage extends React.Component {
         .catch(err => {
             console.log("Error occured")
         })
+        
 
         this.candidateFuncs.getCandidateQuestionsAnswered(params.id)
 		.then(resp => {
@@ -104,18 +131,20 @@ export default class CandidatePage extends React.Component {
     handleQuestionSubmit(question) {
         console.log(question.userName);
         this.userFuncs.getUserIdCamel(question).then(res => {
-            this.candidateFuncs.createQuestion(this.state.userId, res.userId, question.comment).then(resp => {
+            this.candidateFuncs.createQuestion(res.userId, this.state.candidateId, question.comment).then(resp => {
+                console.log(this.state.candidateId)
+                console.log(res.userId)
                 console.log("Question submitted")
             });
         })
         .catch(err => {
             console.log("Error occured in question submitting")
         })
-/*
+
         this.setState(prevState => {
             prevState.questions.push(new Comment(-1, question.userName, question.comment, ''));
             return prevState;
-        });*/
+        });
     }
 
     handleResponse(response) {

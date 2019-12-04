@@ -30,6 +30,20 @@ class UserFunctions {
         })
     }
 
+    
+    getUserName(userId){
+      return new Promise((resolve, reject) => {
+          return axios.get(this.URL + '/login/getUsername/' +
+          userId
+          ).then(resp =>
+            {
+              console.log(resp)
+              resolve(resp.data)
+            })
+              .catch(resp => reject(resp));
+      })
+    }
+
 
     updateUserEmail(user) {
         return new Promise((resolve, reject) => {
@@ -88,6 +102,7 @@ class UserFunctions {
               .catch(resp => reject(resp));
       })
     }
+
 
     getUserInfo(userIdOrName){
       return new Promise((resolve, reject) => {
