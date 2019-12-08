@@ -88,7 +88,6 @@ exports.updateQuestion = function(req, res){
 
 
 //remove, reply, soft delete, time stamps for create and update
-
 exports.createComment = function(req, res){
     
     var today = new Date();
@@ -97,7 +96,6 @@ exports.createComment = function(req, res){
     var dateTime = date+' '+time;
 
     comment_Time = dateTime;
-    //commenter_ID = req.params.commenter_ID;
     questionID = req.params.questionID;
     commenter_ID= req.params.commenter_ID;
     commentee_ID=req.params.user_ID;
@@ -179,7 +177,6 @@ exports.getQuestionTree = function(req, res){
                 res.send("question not found");
             }
             else{
-                //res.send(rows.comment);
                 res.send(rows);
             }
         });
@@ -212,10 +209,6 @@ exports.getQuestionsAnswered = function(req,res){
 }
 
 exports.getQuestionsAsked = function(req,res){
-    //mysqlConnection.query(`SELECT * FROM USER JOIN CANDIDATE_QUESTION ON USER.id = CANDIDATE_QUESTION.askeeId WHERE USER.id = ${req.params.userID};`,function(err,rows,fields){
-    //mysqlConnection.query(`SELECT * FROM USER JOIN CANDIDATE_QUESTION WHERE USER.id = ${req.params.userID};`,function(err,rows,fields){
-    //mysqlConnection.query(`SELECT * FROM USER JOIN CANDIDATE_QUESTION WHERE askerId = ${req.params.userID};`,function(err,rows,fields){
-
     mysqlConnection.query(`SELECT * FROM USER JOIN CANDIDATE_QUESTION on USER.id = CANDIDATE_QUESTION.askerId WHERE CANDIDATE_QUESTION.askeeId = ${req.params.userID};`, function(err,rows,fields){
 
         if(err){
@@ -226,36 +219,5 @@ exports.getQuestionsAsked = function(req,res){
     })
 }
 
-/*
-exports.getQuestionsAsked2 = function(req,res){
-    mysqlConnection.query(`SELECT * FROM )
-}
 
 
-/*
-
-/*
-//not currently working do not use
-exports.reportComment = function(req, res){
-    cID = req.params.commentee_ID
-    emailCC = ""
-    var emailEB = 'electionbuddyReports@gmail.com';
-    var subjectEB = `'Report for ' + '${cID}'`;
-    var emailBody = 'Hi EB Team,';
-
-    //window.open("mailto:"+email+"?subject="+subject+"&body="+emailBody);
-    
-    //window.location.href ="mailto:"+email+"?subject="+subject+"&body="+emailBody;
-
-    window.open('mailto:'+emailEB+'?cc='+emailCC+'&subject='+subjectEB+'&body='+emailBody, '_self');
-    
-
-
-    if(err){
-        res.send("Email Client Failed to Open");
-    }
-    else{
-        res.send("Email Client Opened");
-    }
-
-}*/
