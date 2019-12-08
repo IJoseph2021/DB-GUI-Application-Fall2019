@@ -1,0 +1,13 @@
+*{
+    box-sizing: border-box;
+}
+
+.invalid-signup{
+  text-align: center;
+  color: red;
+}
+
+.valid-update{
+  text-align: center;
+  color: green;
+}

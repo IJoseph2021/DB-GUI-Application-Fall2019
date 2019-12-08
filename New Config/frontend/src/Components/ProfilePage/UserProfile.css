@@ -1,0 +1,29 @@
+*{
+    box-sizing: border-box;
+}
+
+
+.login-heading{
+  text-align: center;
+}
+
+hr {
+  width: 100%;
+}
+
+.form-button {
+  text-align: center;
+  padding: .5em;
+  width: 100%;
+}
+
+
+select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}

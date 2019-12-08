@@ -1,0 +1,32 @@
+body {
+  margin: 0;
+  background-color: white;
+  margin: auto;
+}
+
+.generalNews {
+    background: lightgray;
+    width: 100%;
+    padding: 1% 2% 0% 2%;
+    text-align: left;
+}
+.cards {
+   display: flex;
+   justify-content: space-between;
+}
+
+#article_link{
+    text-decoration: "none";
+    color: #FFFFFF;
+}
+
+#button {
+    margin: 15px 0;
+}
+
+#card{
+     padding: 0 20px;
+}
+#title {
+    height: 100px;
+}

@@ -1,72 +1,102 @@
 import React from 'react';
 import './App.css';
-import axios from 'axios';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import  { Redirect } from 'react-router-dom';
+import UserFunctions from './API/UserFunctions';
+import Nav from './Components/NavBar/Nav'
+import Footer from './Components/Footer/Footer';
+import Homepage from './Components/Homepage/Homepage';
+import Login from './Components/Login/Login';
+import Signup from './Components/Signup/Signup';
+import UserProfile from './Components/ProfilePage/UserProfile';
+import Logout from './Components/Logout/Logout';
+import Candidate from './Components/CandidateCards/Candidate';
+import CandidatePage from './Components/CandidateCards/CandidatePage';
+import ChangePassword from './Components/ProfilePage/ChangePassword';
+import News from './Components/News/News';
+import Support from './Components/Support/Support';
+import AdminTask from './Components/AdminTask/AdminTask'
 
 class App extends React.Component {
+	userFuncs = new UserFunctions();
 
-  constructor(props){
-    super(props);
-    this.state = {
-      number: "",
-      values: []
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+	constructor(props) {
+		super(props);
 
-  handleChange(e) {
-    this.setState({number: e.target.value})
-  }
+		this.state = {
+			userId: localStorage.getItem('token') || "",
+			loginState: !!localStorage.getItem('token'),
+			role: []
+		}
+		this.updateLoginState = this.updateLoginState.bind(this);
+	}
 
-  handleSubmit(e){
-    e.preventDefault();
-    let prod = this.state.number * this.state.number;
-    axios.post('http://localhost:8000/multplynumber', {product: prod}).then(res => {
-      console.log(res);
-      this.fetchVals();
-    });
-    this.setState({number: ""});
-  }
+	componentDidMount(){
+		this.userFuncs.getRoles(localStorage.getItem('token')).then(res => {
+			console.log("Roles: ", res)
+			if(!res){
+				this.setState({ role: [...this.state.role, "Not Applicable"] });
+			}
+			else {
+				this.setState({ role: Object.keys(res)})
+				}
+		})
+		.catch(err => {
+			//error caught here
 
-  initSetup = () => {
-    axios.post('http://localhost:8000/setupdb').then(res => {
-      console.log(res);
-      this.fetchVals();
-    });
-  }
+		});
+	}
 
-  componentDidMount(){
-    this.fetchVals();
-  }
+	updateLoginState = () => {
+		if(localStorage.getItem('token')){
+			this.setState({
+					loginState: true,
+					userId: localStorage.getItem('token')
+			});
+		}
+		else{
+			this.setState({
+				loginState: false
+			});
+		}
+	}
 
-  fetchVals = () => {
-    axios.get('http://localhost:8000/values').then(
-      res => {
-        const values = res.data;
-        console.log(values.data);
-        this.setState({ values: values.data });
-    });
-  }
+	render() {
+		return (
+			<div>
+      <Router>
+      <Nav loginState={this.state.loginState} role={this.state.role}/>
+				<div className="main-content">
+					<Switch>
+					<Route exact path="/logout" render={(props) => <Logout {...props} loginState={this.state.loginState} updateLoginState={this.updateLoginState}/>}/>
+	          <Route exact path="/" render={() => (
+	            this.state.loginState ? (
+	              <Homepage/>
+	            ) : (
+								<Redirect to="/login"/>
+	            )
+	          )}/>
+
+						{this.state.loginState && <Route exact path="/admintask" exact component ={AdminTask} />}
 
 
-  render(){
-    return (
-      <div className="App">
-        <header className="App-header">
-        <button onClick={this.initSetup}> Initialize DB </button>
-          <form onSubmit={this.handleSubmit}>
-            <input type="text" value={this.state.number} onChange={this.handleChange}/>
-            <br/>
-            <input type="submit" value="Submit" />
-          </form>
-          <ul>
-            { this.state.values.map((value, i) => <li key={i}>{value.value}</li>) }
-          </ul>
-        </header>
-      </div>
-    );
-  }
-
+						{/*this.state.loginState && <Route path="/candidate" exact component={(props) => <CandidatePage {...props} userId={this.state.userId}/>}/>*/}
+						{this.state.loginState && <Route path="/support" exact component={Support} />}
+						{this.state.loginState && <Route path="/candidate/:id" exact component={CandidatePage} />}
+						{this.state.loginState && <Route path="/" exact component={Homepage} />}
+						{this.state.loginState && <Route path="/news" exact component={News} />}
+						{!this.state.loginState && <Route exact path="/login" render={(props) => <Login {...props} updateLoginState={this.updateLoginState}/>}/>}
+						{/*!this.state.loginState && <Route exact path="/login" render={(props) => <Login {...props} updateLoginState={this.updateLoginState}/>}/>*/}
+						{!this.state.loginState && <Route exact path="/registration" exact component={Signup}/>}
+						{this.state.loginState && <Route path="/profile" exact component={(props) => <UserProfile {...props} userId={this.state.userId}/>}/>}/>}
+						{this.state.loginState && <Route path="/changepwd" exact component={(props) => <ChangePassword {...props} userId={this.state.userId}/>}/>}/>}
+					</Switch>
+				</div>
+			<Footer/>
+      </Router>
+			</div>
+		);
+	}
 }
 
 export default App;
